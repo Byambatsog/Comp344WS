@@ -1,0 +1,22 @@
+<bean
+        class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <property name="defaultContentType" value="application/json" />
+    <property name="ignoreAcceptHeader" value="true" />
+    <property name="favorPathExtension" value="true" />
+    <property name="mediaTypes">
+        <map>
+            <entry key="xml" value="application/xml" />
+            <entry key="json" value="application/json" />
+        </map>
+    </property>
+    <property name="favorParameter" value="true" />
+    <property name="defaultViews">
+        <list>
+            <bean
+                    class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+            <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+                <property name="marshaller" ref="objectXmlMarshaller" />
+            </bean>
+        </list>
+    </property>
+</bean>
