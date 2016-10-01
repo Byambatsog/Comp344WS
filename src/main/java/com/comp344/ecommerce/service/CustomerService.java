@@ -2,6 +2,7 @@ package com.comp344.ecommerce.service;
 
 import com.comp344.ecommerce.dao.HibernateCustomerRepository;
 import com.comp344.ecommerce.domain.Customer;
+import com.comp344.ecommerce.domain.Partner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +16,15 @@ import java.util.Date;
  * Created by Byambatsog on 9/27/16.
  */
 @Controller("customerService")
-@RequestMapping("/")
+@RequestMapping("/customer")
 public class CustomerService {
 
     @Autowired
     private HibernateCustomerRepository repository;
 
-    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
-    public Customer init() throws Exception {
+    public Customer create() throws Exception {
 
         Customer customer = new Customer();
         customer.setFirstName("Byambatsog");
@@ -33,5 +34,7 @@ public class CustomerService {
         repository.save(customer);
         return customer;
     }
+
+
 
 }
