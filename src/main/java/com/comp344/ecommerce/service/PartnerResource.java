@@ -55,21 +55,3 @@ public class PartnerResource {
         return partner;
     }
 }
-
-
-git add src/main/java/com/comp344/ecommerce/business/PartnerService.java
-git add src/main/java/com/comp344/ecommerce/config/MainConfig.java
-git add src/main/java/com/comp344/ecommerce/dao/HibernateCustomerRepository.java
-git add src/main/java/com/comp344/ecommerce/dao/HibernateLoginRepository.java
-git add src/main/java/com/comp344/ecommerce/dao/HibernatePartnerRepository.java
-git add src/main/java/com/comp344/ecommerce/domain/Customer.java
-git add src/main/java/com/comp344/ecommerce/domain/Login.java
-git add src/main/java/com/comp344/ecommerce/domain/Partner.java
-git add src/main/java/com/comp344/ecommerce/service/CustomerResource.java
-git add src/main/java/com/comp344/ecommerce/service/PartnerResource.java
-git add src/main/java/com/comp344/ecommerce/utils/PasswordEncoder.java
-git add src/main/java/com/comp344/ecommerce/utils/PasswordGenerator.java
-git add src/main/resources/DatabaseSchema.mwb
-git add src/main/resources/DatabaseSchema.mwb.bak
-git add src/main/resources/database.sql
-git add src/main/webapp/WEB-INF/classes/application.properties
