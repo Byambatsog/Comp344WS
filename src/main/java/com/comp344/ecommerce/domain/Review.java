@@ -41,7 +41,7 @@ public class Review implements Serializable {
         this.customer = customer;
     }
 
-    @JoinColumn(name = "customers_id")
+    @JoinColumn(name = "products_id")
     @ManyToOne
     public Product getProduct() {
         return product;

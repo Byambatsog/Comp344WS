@@ -27,6 +27,15 @@ public class CustomerService {
         return customer;
     }
 
+    public Customer update(Customer customer) throws Exception {
+        customerRepository.save(customer);
+        return customer;
+    }
+
+    public Customer get(Integer id) throws Exception {
+        return customerRepository.get(id);
+    }
+
 
 
 }

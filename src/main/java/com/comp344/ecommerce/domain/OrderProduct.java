@@ -18,6 +18,7 @@ public class OrderProduct implements Serializable {
     private Double unitPrice;
     private OrderProductStatus status;
 
+    @Id
     @JoinColumn(name = "orders_id")
     @ManyToOne
     public Order getOrder() {
@@ -28,6 +29,7 @@ public class OrderProduct implements Serializable {
         this.order = order;
     }
 
+    @Id
     @JoinColumn(name = "products_id")
     @ManyToOne
     public Product getProduct() {

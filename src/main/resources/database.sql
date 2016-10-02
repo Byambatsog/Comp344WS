@@ -192,8 +192,8 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`orders` (
   FOREIGN KEY (`partners_id`)
   REFERENCES `comp344_ecommerce`.`partners` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+    ON UPDATE NO ACTION)
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -225,6 +225,7 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`order_products` (
   `status` VARCHAR(20) NULL,
   INDEX `fk_order_products_orders1_idx` (`orders_id` ASC),
   INDEX `fk_order_products_products1_idx` (`products_id` ASC),
+  PRIMARY KEY (`orders_id`, `products_id`),
   CONSTRAINT `fk_order_products_orders1`
   FOREIGN KEY (`orders_id`)
   REFERENCES `comp344_ecommerce`.`orders` (`id`)
@@ -288,9 +289,3 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`reviews` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
   ENGINE = InnoDB;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

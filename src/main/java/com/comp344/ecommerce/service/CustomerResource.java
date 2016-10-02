@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
@@ -43,5 +44,21 @@ public class CustomerResource {
         customer.setLogin(login);
         customerService.create(customer);
         return customer;
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @ResponseBody
+    public Customer update() throws Exception {
+
+        Customer customer = customerService.get(1);
+        customer.getLogin().setEmail("byambatsog@gmail.com");
+        customerService.update(customer);
+        return customer;
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @ResponseBody
+    public Customer get(@RequestParam(value = "id") Integer id) throws Exception {
+        return customerService.get(id);
     }
 }

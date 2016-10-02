@@ -1,6 +1,7 @@
 package com.comp344.ecommerce.dao;
 
 import com.comp344.ecommerce.domain.Customer;
+import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.utils.ListPage;
 import com.comp344.ecommerce.utils.Page;
 import org.hibernate.SessionFactory;
@@ -20,6 +21,12 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
     public HibernateCustomerRepository(SessionFactory sessionFactory) {
         super(Customer.class);
         super.setSessionFactory(sessionFactory);
+    }
+
+    public Customer findByLogin(Login login){
+        List list = getHibernateTemplate().find("from Login where login_id=?", new Object[]{login.getId()});
+        if(list.isEmpty()) return null;
+        return (Customer) list.get(0);
     }
 
     public Page<Customer> list(String firstName, String lastName, String email, String orderBy, int page, int size){

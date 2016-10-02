@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Byambatsog on 10/1/16.
  */
 @Repository
-public class HibernatePartnerRepository  extends HibernateBaseRepository<Partner> {
+public class HibernatePartnerRepository extends HibernateBaseRepository<Partner> {
 
     @Autowired
     public HibernatePartnerRepository(SessionFactory sessionFactory) {
