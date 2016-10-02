@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Byambatsog on 9/27/16.
  */
 @Repository
-public class HibernateCustomerRepository  extends HibernateBaseRepo<Customer> implements CustomerRepository {
+public class HibernateCustomerRepository extends HibernateBaseRepository<Customer> {
 
     @Autowired
     public HibernateCustomerRepository(SessionFactory sessionFactory) {

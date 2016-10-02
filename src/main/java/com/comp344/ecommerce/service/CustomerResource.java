@@ -1,8 +1,9 @@
 package com.comp344.ecommerce.service;
 
-import com.comp344.ecommerce.dao.HibernateCustomerRepository;
+import com.comp344.ecommerce.business.CustomerService;
 import com.comp344.ecommerce.domain.Customer;
-import com.comp344.ecommerce.domain.Partner;
+import com.comp344.ecommerce.domain.Login;
+import com.comp344.ecommerce.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,16 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 
-
 /**
- * Created by Byambatsog on 9/27/16.
+ * Created by Byambatsog on 10/2/16.
  */
-@Controller("customerService")
+@Controller
 @RequestMapping("/customer")
-public class CustomerService {
+public class CustomerResource {
 
     @Autowired
-    private HibernateCustomerRepository repository;
+    private CustomerService customerService;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     @ResponseBody
@@ -31,10 +31,17 @@ public class CustomerService {
         customer.setLastName("Chimed");
         customer.setEmail("Email");
         customer.setCreatedAt(new Date());
-        repository.save(customer);
+
+        Login login = new Login();
+        login.setEmail("bchimed@luc.edu");
+        login.setUsername("byambatsog");
+        PasswordEncoder passwordEncoder = new PasswordEncoder();
+        login.setPassword(passwordEncoder.encode("123456789"));
+        login.setActive(true);
+        login.setAdmin(true);
+        login.setCreatedAt(new Date());
+        customer.setLogin(login);
+        customerService.create(customer);
         return customer;
     }
-
-
-
 }

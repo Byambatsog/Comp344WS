@@ -26,6 +26,7 @@ public class Partner implements Serializable {
     private String zipCode;
     private String country;
     private Date createdAt;
+    private Login login;
 
     @Id
     @GeneratedValue
@@ -137,5 +138,15 @@ public class Partner implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @JoinColumn(name = "login_id")
+    @OneToOne
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
 }

@@ -1,10 +1,8 @@
 package com.comp344.ecommerce.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Byambatsog on 9/27/16.
@@ -21,9 +19,7 @@ public class Login implements Serializable{
     private String password;
     private Boolean active;
     private Boolean admin;
-    private String createdAt;
-    private Customer customer;
-    private Partner partner;
+    private Date createdAt;
 
     @Id
     @GeneratedValue
@@ -75,27 +71,12 @@ public class Login implements Serializable{
         this.admin = admin;
     }
 
-    public String getCreatedAt() {
+    @Column(name = "created_at")
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Partner getPartner() {
-        return partner;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
     }
 }

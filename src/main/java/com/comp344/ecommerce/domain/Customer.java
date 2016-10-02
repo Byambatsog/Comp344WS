@@ -18,6 +18,7 @@ public class Customer implements Serializable {
     private String lastName;
     private String email;
     private Date createdAt;
+    private Login login;
 
     @Id
     @GeneratedValue
@@ -62,5 +63,15 @@ public class Customer implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @JoinColumn(name = "login_id")
+    @OneToOne
+    public Login getLogin() {
+        return login;
+    }
+
+    public void setLogin(Login login) {
+        this.login = login;
     }
 }

@@ -17,12 +17,12 @@ import java.util.List;
  * Time: 2:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HibernateBaseRepo<I> extends HibernateDaoSupport implements BaseRepo<I>{
+public class HibernateBaseRepository<I> extends HibernateDaoSupport implements BaseRepository<I> {
 
     protected Class<I> domain;
     protected String domainName;
 
-    public HibernateBaseRepo(Class<I> domain){
+    public HibernateBaseRepository(Class<I> domain){
         this.domain = domain;
         this.domainName = domain.getSimpleName();
     }
