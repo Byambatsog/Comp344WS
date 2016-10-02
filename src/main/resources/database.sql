@@ -167,10 +167,12 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`orders` (
   `customers_id` INT NOT NULL,
   `shipping_addresses_id` INT NOT NULL,
   `billing_addresses_id` INT NOT NULL,
+  `partners_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_orders_customers1_idx` (`customers_id` ASC),
   INDEX `fk_orders_customer_addresses1_idx` (`shipping_addresses_id` ASC),
   INDEX `fk_orders_customer_addresses2_idx` (`billing_addresses_id` ASC),
+  INDEX `fk_orders_partners1_idx` (`partners_id` ASC),
   CONSTRAINT `fk_orders_customers1`
   FOREIGN KEY (`customers_id`)
   REFERENCES `comp344_ecommerce`.`customers` (`id`)
@@ -185,8 +187,13 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`orders` (
   FOREIGN KEY (`billing_addresses_id`)
   REFERENCES `comp344_ecommerce`.`customer_addresses` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-  ENGINE = InnoDB;
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_partners1`
+  FOREIGN KEY (`partners_id`)
+  REFERENCES `comp344_ecommerce`.`partners` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
