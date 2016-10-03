@@ -45,6 +45,7 @@ public class CustomerService {
 
     public Customer get(Integer id) throws Exception {
         return customerRepository.get(id);
+
     }
 
     public Customer findByLogin(Integer loginId){

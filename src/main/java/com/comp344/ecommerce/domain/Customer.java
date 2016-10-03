@@ -20,6 +20,8 @@ public class Customer implements Serializable {
     private String email;
     private Date createdAt;
     private Login login;
+    private List<CustomerAddress> addresses;
+    private List<CreditCard> creditCards;
 
     @Id
     @GeneratedValue
@@ -76,4 +78,21 @@ public class Customer implements Serializable {
         this.login = login;
     }
 
+    @Transient
+    public List<CustomerAddress> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<CustomerAddress> addresses) {
+        this.addresses = addresses;
+    }
+
+    @Transient
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(List<CreditCard> creditCards) {
+        this.creditCards = creditCards;
+    }
 }

@@ -82,6 +82,9 @@ public class CustomerResource {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Customer get(@PathVariable(value = "id") Integer id) throws Exception {
-        return customerService.get(id);
+        Customer customer = customerService.get(id);
+        customer.setAddresses(customerService.getAllAddresses(customer.getId()));
+        customer.setCreditCards(customerService.getAllCreditCards(customer.getId()));
+        return customer;
     }
 }
