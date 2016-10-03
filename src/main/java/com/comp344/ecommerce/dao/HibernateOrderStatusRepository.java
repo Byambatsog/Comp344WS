@@ -22,7 +22,7 @@ public class HibernateOrderStatusRepository extends HibernateBaseRepository<Orde
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<OrderStatus> list(Integer orderId, OrderStatus status, String orderBy,
+    public Page<OrderStatus> find(Integer orderId, OrderStatus status, String orderBy,
                                    int page, int size){
 
         String where = "";

@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`orders` (
 CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`order_status` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(20) NULL,
-  `updated_at` DATETIME NULL,
+  `created_at` DATETIME NULL,
   `orders_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_order_status_orders1_idx` (`orders_id` ASC),

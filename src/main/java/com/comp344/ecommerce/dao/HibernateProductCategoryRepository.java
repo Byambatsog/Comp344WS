@@ -22,7 +22,7 @@ public class HibernateProductCategoryRepository extends HibernateBaseRepository<
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<ProductCategory> list(String name, Boolean status, String orderBy, int page, int size){
+    public Page<ProductCategory> find(String name, Boolean status, String orderBy, int page, int size){
 
         String where = "";
         String conn = " where ";

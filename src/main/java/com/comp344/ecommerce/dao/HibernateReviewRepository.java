@@ -22,7 +22,7 @@ public class HibernateReviewRepository extends HibernateBaseRepository<Review> {
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<Review> list(Integer productId, Integer customerId, String orderBy, int page, int size){
+    public Page<Review> find(Integer productId, Integer customerId, String orderBy, int page, int size){
 
         String where = "";
         String conn = " where ";

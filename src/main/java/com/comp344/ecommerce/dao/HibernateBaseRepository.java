@@ -47,7 +47,7 @@ public class HibernateBaseRepository<I> extends HibernateDaoSupport implements B
     }
 
     @Override
-    public List<I> list(){
+    public List<I> find(){
         return getHibernateTemplate().find("from "+domainName);
     }
 

@@ -96,7 +96,7 @@ public class CreditCard implements Serializable {
         this.createdAt = createdAt;
     }
 
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customers_id")
     @ManyToOne
     public Customer getCustomer() {
         return customer;

@@ -23,7 +23,13 @@ public class HibernatePartnerRepository extends HibernateBaseRepository<Partner>
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<Partner> list(String companyName, String firstName, String lastName, PartnerType type, String phone,
+    public Partner findByLogin(Integer loginId){
+        List list = getHibernateTemplate().find("from Partner where login_id=?", new Object[]{loginId});
+        if(list.isEmpty()) return null;
+        return (Partner) list.get(0);
+    }
+
+    public Page<Partner> find(String companyName, String firstName, String lastName, PartnerType type, String phone,
                               String email, String city, String state, String zipCode, String country, String orderBy, int page, int size){
 
         String where = "";

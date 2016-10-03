@@ -20,7 +20,7 @@ public class HibernateCreditCardRepository extends HibernateBaseRepository<Credi
         super.setSessionFactory(sessionFactory);
     }
 
-    public List<CreditCard> findByCustomer(Customer customer){
-        return getHibernateTemplate().find("from CreditCard where customers_id=?", new Object[]{customer.getId()});
+    public List<CreditCard> findByCustomer(Integer customerId){
+        return getHibernateTemplate().find("from CreditCard where customers_id=?", new Object[]{customerId});
     }
 }

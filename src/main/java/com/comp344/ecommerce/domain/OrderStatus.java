@@ -16,7 +16,7 @@ public class OrderStatus implements Serializable {
     private Integer id;
     private OrderStatusType status;
     private Order order;
-    private Date updatedAt;
+    private Date createdAt;
 
     @Id
     @GeneratedValue
@@ -47,12 +47,12 @@ public class OrderStatus implements Serializable {
         this.order = order;
     }
 
-    @Column(name = "updated_at")
-    public Date getUpdatedAt() {
-        return updatedAt;
+    @Column(name = "created_at")
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

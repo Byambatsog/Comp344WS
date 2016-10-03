@@ -3,6 +3,7 @@ package com.comp344.ecommerce.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Byambatsog on 9/27/16.
@@ -74,4 +75,5 @@ public class Customer implements Serializable {
     public void setLogin(Login login) {
         this.login = login;
     }
+
 }

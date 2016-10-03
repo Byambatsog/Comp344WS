@@ -23,13 +23,13 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
         super.setSessionFactory(sessionFactory);
     }
 
-    public Customer findByLogin(Login login){
-        List list = getHibernateTemplate().find("from Login where login_id=?", new Object[]{login.getId()});
+    public Customer findByLogin(Integer loginId){
+        List list = getHibernateTemplate().find("from Login where login_id=?", new Object[]{loginId});
         if(list.isEmpty()) return null;
         return (Customer) list.get(0);
     }
 
-    public Page<Customer> list(String firstName, String lastName, String email, String orderBy, int page, int size){
+    public Page<Customer> find(String firstName, String lastName, String email, String orderBy, int page, int size){
 
         String where = "";
         String conn = " where ";

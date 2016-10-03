@@ -16,6 +16,7 @@ public class CustomerAddress implements Serializable {
     private Integer id;
     private Customer customer;
     private String street;
+    private String city;
     private String state;
     private String zipCode;
     private String country;
@@ -32,7 +33,7 @@ public class CustomerAddress implements Serializable {
         this.id = id;
     }
 
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customers_id")
     @ManyToOne
     public Customer getCustomer() {
         return customer;
@@ -48,6 +49,14 @@ public class CustomerAddress implements Serializable {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getState() {

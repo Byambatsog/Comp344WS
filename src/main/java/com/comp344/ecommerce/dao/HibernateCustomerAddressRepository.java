@@ -23,7 +23,7 @@ public class HibernateCustomerAddressRepository extends HibernateBaseRepository<
         super.setSessionFactory(sessionFactory);
     }
 
-    public List<CustomerAddress> findByCustomer(Customer customer){
-        return getHibernateTemplate().find("from CustomerAddress where customers_id=?", new Object[]{customer.getId()});
+    public List<CustomerAddress> findByCustomer(Integer customerId){
+        return getHibernateTemplate().find("from CustomerAddress where customers_id=?", new Object[]{customerId});
     }
 }

@@ -35,7 +35,7 @@ public class HibernateLoginRepository extends HibernateBaseRepository<Login> {
         return (Login)list.get(0);
     }
 
-    public Page<Login> list(String email, String username, Boolean active, Boolean admin, String orderBy,
+    public Page<Login> find(String email, String username, Boolean active, Boolean admin, String orderBy,
                             int page, int size){
 
         String where = "";

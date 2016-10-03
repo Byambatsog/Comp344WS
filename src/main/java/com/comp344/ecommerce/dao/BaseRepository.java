@@ -14,5 +14,5 @@ public interface BaseRepository<I> {
     public void save(I item);
     public I get(Integer id);
     public void delete(I i);
-    public List<I> list();
+    public List<I> find();
 }
