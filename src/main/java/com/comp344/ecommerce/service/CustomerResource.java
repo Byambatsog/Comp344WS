@@ -8,10 +8,7 @@ import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,9 +24,9 @@ public class CustomerResource {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void create() throws Exception {
+    public Customer create() throws Exception {
 
         Customer customer = new Customer();
         customer.setFirstName("Byambatsog");
@@ -70,19 +67,21 @@ public class CustomerResource {
         card.setSecurityCode("221");
         card.setCreatedAt(new Date());
         card.setCustomer(customer);
+        customerService.saveCreditCard(card);
+
+        return customer;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public void update(@PathVariable(value = "id") Integer id) throws Exception {
+
 
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public void update() throws Exception {
-
-
-    }
-
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    @ResponseBody
-    public Customer get(@RequestParam(value = "id") Integer id) throws Exception {
+    public Customer get(@PathVariable(value = "id") Integer id) throws Exception {
         return customerService.get(id);
     }
 }
