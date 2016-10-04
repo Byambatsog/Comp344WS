@@ -3,6 +3,7 @@ package com.comp344.ecommerce.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Byambatsog on 10/2/16.
@@ -25,6 +26,7 @@ public class Product implements Serializable {
     private Double unitPrice;
     private Double weight;
     private Date createdAt;
+    private List<Review> reviews;
 
     @Id
     @GeneratedValue
@@ -130,5 +132,14 @@ public class Product implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Transient
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

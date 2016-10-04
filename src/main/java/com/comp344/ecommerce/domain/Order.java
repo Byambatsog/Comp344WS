@@ -3,6 +3,7 @@ package com.comp344.ecommerce.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Byambatsog on 10/2/16.
@@ -21,6 +22,10 @@ public class Order implements Serializable {
     private CustomerAddress shippingAddress;
     private CustomerAddress billingAddress;
     private Partner partner;
+
+    private List<OrderProduct> products;
+    private List<OrderStatus> statuses;
+    private List<OrderPayment> payments;
 
     @Id
     @GeneratedValue
@@ -97,5 +102,32 @@ public class Order implements Serializable {
 
     public void setPartner(Partner partner) {
         this.partner = partner;
+    }
+
+    @Transient
+    public List<OrderProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<OrderProduct> products) {
+        this.products = products;
+    }
+
+    @Transient
+    public List<OrderStatus> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<OrderStatus> statuses) {
+        this.statuses = statuses;
+    }
+
+    @Transient
+    public List<OrderPayment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<OrderPayment> payments) {
+        this.payments = payments;
     }
 }

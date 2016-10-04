@@ -23,7 +23,7 @@ public class PartnerResource {
     @Autowired
     private PartnerService partnerService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Partner create() throws Exception {
 

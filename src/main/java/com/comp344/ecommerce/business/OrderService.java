@@ -1,9 +1,6 @@
 package com.comp344.ecommerce.business;
 
-import com.comp344.ecommerce.dao.HibernateOrderPaymentRepository;
-import com.comp344.ecommerce.dao.HibernateOrderProductRepository;
-import com.comp344.ecommerce.dao.HibernateOrderRepository;
-import com.comp344.ecommerce.dao.HibernateOrderStatusRepository;
+import com.comp344.ecommerce.dao.*;
 import com.comp344.ecommerce.domain.*;
 import com.comp344.ecommerce.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ public class OrderService {
     private HibernateOrderRepository orderRepository;
 
     @Autowired
-    private HibernateOrderProductRepository productRepository;
+    private HibernateOrderProductRepository orderProductRepository;
 
     @Autowired
     private HibernateOrderPaymentRepository paymentRepository;
@@ -31,16 +28,26 @@ public class OrderService {
     @Autowired
     private HibernateOrderStatusRepository orderStatusRepository;
 
+    @Autowired
+    private HibernateProductRepository productRepository;
+
     @Transactional
-    public void create(Order order, List<OrderProduct> products, List<OrderPayment> payments) throws Exception {
+    public void create(Order order) throws Exception {
         orderRepository.save(order);
 
-        for(OrderProduct product : products){
-            product.setOrder(order);
+
+        for(OrderProduct orderProduct : order.getProducts()){
+
+            orderProduct.setOrder(order);
+            orderProductRepository.save(orderProduct);
+
+            Product product = productRepository.get(orderProduct.getProduct().getId());
+            product.setQuantityInStock(product.getQuantityInStock() - orderProduct.getQuantity());
             productRepository.save(product);
+
         }
 
-        for(OrderPayment payment : payments){
+        for(OrderPayment payment : order.getPayments()){
             payment.setOrder(order);
             paymentRepository.save(payment);
         }
@@ -65,9 +72,9 @@ public class OrderService {
     @Transactional
     public void delete(Integer id) throws Exception {
         Order order = orderRepository.get(id);
-        List<OrderProduct> products = productRepository.find(order.getId(), null, null, null, 0, 0).getThisPageElements();
+        List<OrderProduct> products = orderProductRepository.find(order.getId(), null, null, null, 0, 0).getThisPageElements();
         for(OrderProduct product : products){
-            productRepository.delete(product);
+            orderProductRepository.delete(product);
         }
 
         List<OrderPayment> payments = paymentRepository.find(order.getId(), null, null, 0, 0).getThisPageElements();
@@ -89,21 +96,21 @@ public class OrderService {
     }
 
     public void saveProduct(OrderProduct product){
-        productRepository.save(product);
+        orderProductRepository.save(product);
     }
 
     public void deleteProduct(Integer productId){
-        OrderProduct product = productRepository.get(productId);
-        productRepository.delete(product);
+        OrderProduct product = orderProductRepository.get(productId);
+        orderProductRepository.delete(product);
     }
 
     public OrderProduct getProduct(Integer productId){
-        return productRepository.get(productId);
+        return orderProductRepository.get(productId);
     }
 
     public Page<OrderProduct> find(Integer orderId, Integer productId, OrderProductStatus status, String orderBy,
                                    int page, int size){
-        return productRepository.find(orderId, productId, status, orderBy, page, size);
+        return orderProductRepository.find(orderId, productId, status, orderBy, page, size);
     }
 
     public void savePayment(OrderPayment payment){

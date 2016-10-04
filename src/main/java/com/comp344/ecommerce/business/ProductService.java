@@ -38,6 +38,14 @@ public class ProductService {
         return productRepository.find(name, categoryId, partnerId, brandName, status, orderBy, page, size);
     }
 
+    public Boolean checkAvailibilty(Integer productId, Integer quantity){
+        Product product = productRepository.get(productId);
+        if(product!=null && product.getQuantityInStock() > quantity)
+            return Boolean.TRUE;
+        else
+            return Boolean.FALSE;
+    }
+
     public void saveCategory(ProductCategory category) throws Exception {
         categoryRepository.save(category);
     }
