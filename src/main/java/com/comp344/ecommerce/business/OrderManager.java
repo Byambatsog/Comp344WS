@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Byambatsog on 10/2/16.
  */
 @Service("orderService")
-public class OrderService {
+public class OrderManager {
 
     @Autowired
     private HibernateOrderRepository orderRepository;

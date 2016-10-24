@@ -1,6 +1,6 @@
 package com.comp344.ecommerce.service;
 
-import com.comp344.ecommerce.business.CustomerService;
+import com.comp344.ecommerce.business.CustomerManager;
 import com.comp344.ecommerce.domain.CreditCard;
 import com.comp344.ecommerce.domain.Customer;
 import com.comp344.ecommerce.domain.CustomerAddress;
@@ -18,13 +18,13 @@ import java.util.List;
  * Created by Byambatsog on 10/2/16.
  */
 @Controller
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerResource {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerManager customerService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/customer", method = RequestMethod.POST)
     @ResponseBody
     public Customer create() throws Exception {
 
@@ -72,14 +72,14 @@ public class CustomerResource {
         return customer;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public void update(@PathVariable(value = "id") Integer id) throws Exception {
 
 
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Customer get(@PathVariable(value = "id") Integer id) throws Exception {
         Customer customer = customerService.get(id);

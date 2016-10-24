@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by Byambatsog on 10/2/16.
  */
 @Service("loginService")
-public class LoginService {
+public class LoginManager {
 
     @Autowired
     private HibernateLoginRepository loginRepository;

@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Byambatsog on 9/27/16.
  */
 @Service("customerService")
-public class CustomerService {
+public class CustomerManager {
 
     @Autowired
     private HibernateLoginRepository loginRepository;

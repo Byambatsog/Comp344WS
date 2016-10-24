@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by Byambatsog on 10/2/16.
  */
 @Service("reviewService")
-public class ReviewService {
+public class ReviewManager {
 
     @Autowired
     private HibernateReviewRepository reviewRepository;

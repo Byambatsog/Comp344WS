@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * Created by Byambatsog on 10/2/16.
  */
 @Service("productService")
-public class ProductService {
+public class ProductManager {
 
     @Autowired
     private HibernateProductRepository productRepository;

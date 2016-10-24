@@ -1,6 +1,6 @@
 package com.comp344.ecommerce.service;
 
-import com.comp344.ecommerce.business.PartnerService;
+import com.comp344.ecommerce.business.PartnerManager;
 import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.domain.Partner;
 import com.comp344.ecommerce.domain.PartnerType;
@@ -21,7 +21,7 @@ import java.util.Date;
 public class PartnerResource {
 
     @Autowired
-    private PartnerService partnerService;
+    private PartnerManager partnerService;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody

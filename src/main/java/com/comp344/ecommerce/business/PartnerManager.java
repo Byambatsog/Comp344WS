@@ -19,7 +19,7 @@ import java.util.Date;
  * Created by Byambatsog on 10/1/16.
  */
 @Service("partnerService")
-public class PartnerService {
+public class PartnerManager {
 
     @Autowired
     private HibernatePartnerRepository partnerRepository;
