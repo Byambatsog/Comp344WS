@@ -7,12 +7,10 @@ import com.comp344.ecommerce.dao.HibernateLoginRepository;
 import com.comp344.ecommerce.domain.CreditCard;
 import com.comp344.ecommerce.domain.Customer;
 import com.comp344.ecommerce.domain.CustomerAddress;
-import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 
