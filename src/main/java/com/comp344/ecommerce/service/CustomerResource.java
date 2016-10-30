@@ -36,7 +36,6 @@ public class CustomerResource {
 
         Login login = new Login();
         login.setEmail("bchimed@luc.edu");
-        login.setUsername("byambatsog");
         PasswordEncoder passwordEncoder = new PasswordEncoder();
         login.setPassword(passwordEncoder.encode("123456789"));
         login.setActive(true);

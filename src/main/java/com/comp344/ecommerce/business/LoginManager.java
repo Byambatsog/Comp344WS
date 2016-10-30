@@ -24,10 +24,6 @@ public class LoginManager {
         return loginRepository.get(id);
     }
 
-    public Login findByUserName(String username){
-        return loginRepository.findByUserName(username);
-    }
-
     public Login findByEmail(String email){
         return loginRepository.findByEmail(email);
     }

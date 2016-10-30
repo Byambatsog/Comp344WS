@@ -23,12 +23,6 @@ public class HibernateLoginRepository extends HibernateBaseRepository<Login> {
         super.setSessionFactory(sessionFactory);
     }
 
-    public Login findByUserName(String userName){
-        List list = getHibernateTemplate().find("from Login where username=?", new Object[]{userName});
-        if(list.isEmpty()) return null;
-        return (Login)list.get(0);
-    }
-
     public Login findByEmail(String email){
         List list = getHibernateTemplate().find("from Login where email=?", new Object[]{email});
         if(list.isEmpty()) return null;
