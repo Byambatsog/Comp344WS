@@ -22,7 +22,7 @@ public class HibernateProductRepository extends HibernateBaseRepository<Product>
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<Product> find(String name, Integer categoryId, Integer partnerId, String brandName, Boolean status,
+    public Page<Product> find(String searchQuery, Integer categoryId, Integer partnerId, Boolean status,
                               String orderBy, int page, int size){
 
         String where = "";
@@ -34,10 +34,12 @@ public class HibernateProductRepository extends HibernateBaseRepository<Product>
 
         List params=new ArrayList();
 
-        if(name != null && !name.equals("")){
-            where+=conn + "name like ?";
+        if(searchQuery != null && !searchQuery.equals("")){
+            where+=conn + "name like ? or brand_name like ? or description like ?";
             conn = " and ";
-            params.add("%" + name + "%");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
         }
 
         if(categoryId != null){
@@ -50,12 +52,6 @@ public class HibernateProductRepository extends HibernateBaseRepository<Product>
             where+=conn + "partners_id=?";
             conn = " and ";
             params.add(partnerId);
-        }
-
-        if(brandName != null && !brandName.equals("")){
-            where+=conn + "brandName like ?";
-            conn = " and ";
-            params.add("%" + brandName + "%");
         }
 
         if(status != null){

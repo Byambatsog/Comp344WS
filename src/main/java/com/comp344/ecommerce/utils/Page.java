@@ -9,27 +9,9 @@ public interface Page<E> {
 
     public final static int FIRST_PAGE=1;
 
-    boolean isFirstPage();
-
-    boolean isLastPage();
-
-    boolean hasNextPage();
-
-    boolean hasPreviousPage();
-
-    int getLastPageNumber();
-
-    List<E> getThisPageElements();
+    List<E> getElements();
 
     int getTotalNumberOfElements();
-
-    int getThisPageFirstElementNumber();
-
-    int getThisPageLastElementNumber();
-
-    int getNextPageNumber();
-
-    int getPreviousPageNumber();
 
     int getPageSize();
 

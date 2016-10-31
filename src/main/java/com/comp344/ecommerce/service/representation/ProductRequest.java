@@ -12,8 +12,7 @@ public class ProductRequest {
 	private Double unitPrice;
 	private Double weight;
 	private Integer categoryId;
-	private Integer partnerId;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -74,12 +73,4 @@ public class ProductRequest {
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
-	public Integer getPartnerId() {
-		return partnerId;
-	}
-	public void setPartnerId(Integer partnerId) {
-		this.partnerId = partnerId;
-	}
-	
-	
 }

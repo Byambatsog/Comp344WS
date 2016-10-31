@@ -9,6 +9,7 @@ import com.comp344.ecommerce.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,7 @@ public class PartnerManager {
     @Autowired
     private HibernateLoginRepository loginRepository;
 
+    @Transactional
     public void create(Partner partner) throws Exception {
         loginRepository.save(partner.getLogin());
         partnerRepository.save(partner);
@@ -50,8 +52,7 @@ public class PartnerManager {
         partnerRepository.delete(partner);
     }
 
-    public Page<Partner> find(String companyName, String firstName, String lastName, PartnerType type, String phone,
-                              String email, String city, String state, String zipCode, String country, String orderBy, int page, int size){
-        return partnerRepository.find(companyName, firstName, lastName, type, phone, email, city, state, zipCode, country, orderBy, page, size);
+    public Page<Partner> find(String searchQuery, PartnerType type, String orderBy, int page, int size){
+        return partnerRepository.find(searchQuery, type, orderBy, page, size);
     }
 }

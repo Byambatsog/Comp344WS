@@ -24,10 +24,20 @@ public class RestExceptionProcessor {
         return new ErrorInfo(errorURL, errorMessage);
     }
 
+    @ExceptionHandler(LoginRegistrationException.class)
+    @ResponseStatus(value= HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorInfo loginRegistration(HttpServletRequest req, LoginRegistrationException ex) {
+        String errorMessage = ex.getErrorMessage();
+        String errorURL = req.getRequestURL().toString();
+        return new ErrorInfo(errorURL, errorMessage);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorInfo internalServerException(HttpServletRequest req, Exception ex) {
+        ex.printStackTrace();
         String errorMessage = "internal server error";
         String errorURL = req.getRequestURL().toString();
         return new ErrorInfo(errorURL, errorMessage);

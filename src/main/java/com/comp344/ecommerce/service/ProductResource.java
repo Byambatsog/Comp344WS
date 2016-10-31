@@ -21,17 +21,17 @@ public class ProductResource {
 	@Autowired
     private ProductActivity productActivity;
 
-    @RequestMapping(value="/product", method = RequestMethod.POST, consumes="application/json")
-    @ResponseBody
-    public ProductRepresentation create(@RequestBody ProductRequest productRequest) throws Exception {
-    	return productActivity.createProduct(productRequest);
-    }
+//    @RequestMapping(value="/product", method = RequestMethod.POST, consumes="application/json")
+//    @ResponseBody
+//    public ProductRepresentation create(@RequestBody ProductRequest productRequest) throws Exception {
+//    	return productActivity.createProduct(productRequest);
+//    }
     
-    @RequestMapping(value="/product", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ProductRepresentation> getProducts(@RequestParam(value = "search", required = true) String search,
-    		@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-    		@RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) throws Exception {
-    	return productActivity.searchProduct(search, page, pageSize);
-    }
+//    @RequestMapping(value="/product", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<ProductRepresentation> getProducts(@RequestParam(value = "search", required = true) String search,
+//    		@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+//    		@RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) throws Exception {
+//    	return productActivity.searchProduct(search, page, pageSize);
+//    }
 }

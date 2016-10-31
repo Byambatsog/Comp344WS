@@ -29,8 +29,7 @@ public class HibernatePartnerRepository extends HibernateBaseRepository<Partner>
         return (Partner) list.get(0);
     }
 
-    public Page<Partner> find(String companyName, String firstName, String lastName, PartnerType type, String phone,
-                              String email, String city, String state, String zipCode, String country, String orderBy, int page, int size){
+    public Page<Partner> find(String searchQuery, PartnerType type, String orderBy, int page, int size){
 
         String where = "";
         String conn = " where ";
@@ -41,64 +40,18 @@ public class HibernatePartnerRepository extends HibernateBaseRepository<Partner>
 
         List params=new ArrayList();
 
-        if(companyName!=null&&!companyName.equals("")){
-            where+=conn + "companyName like ?";
+        if(searchQuery != null && !searchQuery.equals("")){
+            where+=conn + "companyName like ? or firstName like ? or lastName like ?";
             conn = " and ";
-            params.add("%" + companyName + "%");
-        }
-
-        if(firstName!=null&&!firstName.equals("")){
-            where+=conn + "firstName like ?";
-            conn = " and ";
-            params.add("%" + firstName + "%");
-        }
-
-        if(lastName!=null&&!lastName.equals("")){
-            where+=conn + "lastName like ?";
-            conn = " and ";
-            params.add("%" + lastName + "%");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
         }
 
         if (type!=null){
             where+=conn + "type=?";
             conn = " and ";
             params.add(type);
-        }
-
-        if(phone!=null&&!phone.equals("")){
-            where+=conn + "phone like ?";
-            conn = " and ";
-            params.add("%" + phone + "%");
-        }
-
-        if(email!=null&&!email.equals("")){
-            where+=conn + "email like ?";
-            conn = " and ";
-            params.add("%" + email + "%");
-        }
-
-        if(city!=null&&!city.equals("")){
-            where+=conn + "city like ?";
-            conn = " and ";
-            params.add("%" + city + "%");
-        }
-
-        if(state!=null&&!state.equals("")){
-            where+=conn + "state=?";
-            conn = " and ";
-            params.add(state);
-        }
-
-        if(zipCode!=null&&!zipCode.equals("")){
-            where+=conn + "zipCode=?";
-            conn = " and ";
-            params.add(zipCode);
-        }
-
-        if(country!=null&&!country.equals("")){
-            where+=conn + "country like ?";
-            conn = " and ";
-            params.add("%" + country + "%");
         }
 
         Page result;

@@ -72,17 +72,17 @@ public class OrderManager {
     @Transactional
     public void delete(Integer id) throws Exception {
         Order order = orderRepository.get(id);
-        List<OrderProduct> products = orderProductRepository.find(order.getId(), null, null, null, 0, 0).getThisPageElements();
+        List<OrderProduct> products = orderProductRepository.find(order.getId(), null, null, null, 0, 0).getElements();
         for(OrderProduct product : products){
             orderProductRepository.delete(product);
         }
 
-        List<OrderPayment> payments = paymentRepository.find(order.getId(), null, null, 0, 0).getThisPageElements();
+        List<OrderPayment> payments = paymentRepository.find(order.getId(), null, null, 0, 0).getElements();
         for(OrderPayment payment : payments){
             paymentRepository.delete(payment);
         }
 
-        List<OrderStatus> statuses = orderStatusRepository.find(order.getId(), null, null, 0, 0).getThisPageElements();
+        List<OrderStatus> statuses = orderStatusRepository.find(order.getId(), null, null, 0, 0).getElements();
         for(OrderStatus status : statuses){
             orderStatusRepository.delete(status);
         }
