@@ -112,6 +112,10 @@ public class PartnerActivity {
     }
 
     public void deletePartner(Integer id) throws Exception {
+        Partner partner = partnerManager.get(id);
+        if(partner == null) {
+            throw new ResourceNotFoundException("No partner found with id " + id);
+        }
         partnerManager.delete(id);
     }
 
@@ -158,7 +162,6 @@ public class PartnerActivity {
 
     public void updateProduct(Integer id, ProductRequest productRequest) throws Exception {
 
-
         Product product = productManager.get(id);
         product.setName(productRequest.getName());
         product.setPicture(productRequest.getPicture());
@@ -170,5 +173,25 @@ public class PartnerActivity {
         product.setWeight(productRequest.getWeight());
         product.setCategory(productManager.getCategory(productRequest.getCategoryId()));
         productManager.save(product);
+    }
+
+    public PartnerProductRepresentation getProduct(Integer id, Integer partnerId) throws Exception {
+        Product product = productManager.get(id);
+        if(product == null) {
+            throw new ResourceNotFoundException("No product found with id " + id);
+        } else if (!product.getPartner().getId().equals(partnerId)){
+            throw new ResourceNotFoundException("No product found with id " + id + "in partner with id " + partnerId);
+        }
+        return new PartnerProductRepresentation(product);
+    }
+
+    public void deleteProduct(Integer id, Integer partnerId) throws Exception {
+        Product product = productManager.get(id);
+        if(product == null) {
+            throw new ResourceNotFoundException("No product found with id " + id);
+        } else if (!product.getPartner().getId().equals(partnerId)){
+            throw new ResourceNotFoundException("No product found with id " + id + "in partner with id " + partnerId);
+        }
+        productManager.delete(id);
     }
 }

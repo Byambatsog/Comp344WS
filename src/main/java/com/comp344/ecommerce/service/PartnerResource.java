@@ -73,7 +73,7 @@ public class PartnerResource {
         return new ResponseEntity<Page<PartnerProductRepresentation>>(partnerActivity.findProducts(searchQuery, categoryId, partnerId, status, orderBy, page, pageSize), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/partner/{id}/product/${productId}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/partner/{id}/product", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public ResponseEntity<PartnerProductRepresentation> createProduct(@PathVariable(value = "id") Integer partnerId,
                                                @RequestBody ProductRequest productRequest) throws Exception {
@@ -88,5 +88,21 @@ public class PartnerResource {
                                                   @RequestBody ProductRequest productRequest) throws Exception {
         partnerActivity.updateProduct(productId, productRequest);
         return new ResponseEntity<Message>(new Message("Product updated successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/partner/{id}/product/{productId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<PartnerProductRepresentation> getProduct(@PathVariable(value = "id") Integer partnerId,
+                                                 @PathVariable(value = "productId") Integer productId) throws Exception {
+        return new ResponseEntity<PartnerProductRepresentation>(partnerActivity.getProduct(productId, partnerId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/partner/{id}/product/{productId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> deleteProduct(@PathVariable(value = "id") Integer partnerId,
+                                                 @PathVariable(value = "productId") Integer productId) throws Exception {
+
+        partnerActivity.deleteProduct(productId, partnerId);
+        return new ResponseEntity<Message>(new Message("Product deleted successfully"), HttpStatus.OK);
     }
 }

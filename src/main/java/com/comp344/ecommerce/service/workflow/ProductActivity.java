@@ -26,7 +26,6 @@ public class ProductActivity {
 	private PartnerManager partnerManager;
 
 
-
 //	public List<ProductRepresentation> searchProduct(String searchQuery, int page, int pageSize){
 //		Page<Product> list = productManager.find(searchQuery, null, null, null, true, null, page, pageSize);
 //		List<ProductRepresentation> products = new ArrayList<ProductRepresentation>();
