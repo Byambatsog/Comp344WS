@@ -393,7 +393,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   KEY `fk_products_product_categories1_idx` (`product_categories_id`),
   KEY `fk_products_partners1_idx` (`partners_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -402,7 +402,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Nikon D500 20.9MP Digital SLR Camera','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','description',1,120,1668.92,32.10,'2016-10-24 21:19:39',1,1);
+INSERT INTO `products` VALUES (1,'Nikon D500 20.9MP Digital SLR Camera','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','description',1,120,1668.92,32.10,'2016-10-24 21:19:39',1,1),(2,'Apple iPhone 7 Plus (Latest Model)1','http://i.ebayimg.com/images/g/yZ8AAOSw4shX-HvJ/s-l5001.jpg','Apple1','GPS, Internet Browser, Music Player, Near Field Communication1',0,41,991.00,2.10,'2016-10-31 15:41:51',2,4);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -449,4 +449,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-30 21:39:44
+-- Dump completed on 2016-10-31 16:03:34
