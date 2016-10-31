@@ -16,7 +16,15 @@
   "firstName":"John",
   "lastName":"Dow",
   "companyName":"Big Value Inc"
+},
+
+{
+  "cardNumber": "9384857673346332",
+  "cardType": "Visa",
+  "expireMonth": 9,
+  "expireYear": 2020,
+  "nameOnCard": "Byambatsog",
+  "securityCode": "223"
 }
 ]
 
-src/main/java/com/comp344/ecommerce/business/PartnerManager.java src/main/java/com/comp344/ecommerce/business/ProductManager.java src/main/java/com/comp344/ecommerce/dao/HibernatePartnerRepository.java src/main/java/com/comp344/ecommerce/dao/HibernateProductRepository.java src/main/java/com/comp344/ecommerce/exception/LoginRegistrationException.java src/main/java/com/comp344/ecommerce/exception/RestExceptionProcessor.java src/main/java/com/comp344/ecommerce/service/DefaultResource.java src/main/java/com/comp344/ecommerce/service/Message.java src/main/java/com/comp344/ecommerce/service/PartnerResource.java src/main/java/com/comp344/ecommerce/service/ProductResource.java src/main/java/com/comp344/ecommerce/service/representation/BaseRepresentation.java src/main/java/com/comp344/ecommerce/service/representation/Link.java src/main/java/com/comp344/ecommerce/service/representation/PartnerCreateRequest.java src/main/java/com/comp344/ecommerce/service/representation/PartnerProductRepresentation.java src/main/java/com/comp344/ecommerce/service/representation/PartnerRepresentation.java src/main/java/com/comp344/ecommerce/service/representation/PartnerRequest.java src/main/java/com/comp344/ecommerce/service/representation/ProductRequest.java src/main/java/com/comp344/ecommerce/service/workflow/PartnerActivity.java src/main/java/com/comp344/ecommerce/service/workflow/ProductActivity.java src/main/java/com/comp344/ecommerce/utils/ListPage.java src/main/java/com/comp344/ecommerce/utils/Page.java src/main/resources/Ecommerce-ERDiagram.png src/main/resources/database.sql src/main/resources/post_json_request.json src/main/webapp/WEB-INF/classes/documentation.json

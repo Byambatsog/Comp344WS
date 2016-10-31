@@ -2,13 +2,12 @@ package com.comp344.ecommerce.service.workflow;
 
 import com.comp344.ecommerce.business.CustomerManager;
 import com.comp344.ecommerce.business.LoginManager;
+import com.comp344.ecommerce.domain.CreditCard;
 import com.comp344.ecommerce.domain.Customer;
 import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.exception.LoginRegistrationException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
-import com.comp344.ecommerce.service.representation.CustomerCreateRequest;
-import com.comp344.ecommerce.service.representation.CustomerRepresentation;
-import com.comp344.ecommerce.service.representation.CustomerRequest;
+import com.comp344.ecommerce.service.representation.*;
 import com.comp344.ecommerce.utils.ListPage;
 import com.comp344.ecommerce.utils.Page;
 import com.comp344.ecommerce.utils.PasswordEncoder;
@@ -96,5 +95,64 @@ public class CustomerActivity {
             throw new ResourceNotFoundException("No customer found with id " + id);
         }
         customerManager.delete(id);
+    }
+
+    public List<CreditCardRepresentation> getAllCreditCards(Integer customerId) throws Exception{
+
+        List<CreditCard> cards = customerManager.getAllCreditCards(customerId);
+
+        List<CreditCardRepresentation> cardRepresentations = new ArrayList<CreditCardRepresentation>();
+        for(CreditCard card : cards){
+            cardRepresentations.add(new CreditCardRepresentation(card));
+        }
+        return cardRepresentations;
+    }
+
+    public CreditCardRepresentation createCreditCard(Integer customerId, CreditCardRequest cardRequest) throws Exception {
+
+        CreditCard card = new CreditCard();
+        card.setCardNumber(cardRequest.getCardNumber());
+        card.setCardType(cardRequest.getCardType());
+        card.setExpireMonth(cardRequest.getExpireMonth());
+        card.setExpireYear(cardRequest.getExpireYear());
+        card.setNameOnCard(cardRequest.getNameOnCard());
+        card.setSecurityCode(cardRequest.getSecurityCode());
+        card.setCustomer(customerManager.get(customerId));
+        card.setCreatedAt(new Date());
+        customerManager.saveCreditCard(card);
+        CreditCardRepresentation cardRep = new CreditCardRepresentation(card);
+        return cardRep;
+    }
+
+    public void updateCreditCard(Integer id, CreditCardRequest cardRequest) throws Exception {
+
+        CreditCard card = customerManager.getCreditCard(id);
+        card.setCardNumber(cardRequest.getCardNumber());
+        card.setCardType(cardRequest.getCardType());
+        card.setExpireMonth(cardRequest.getExpireMonth());
+        card.setExpireYear(cardRequest.getExpireYear());
+        card.setNameOnCard(cardRequest.getNameOnCard());
+        card.setSecurityCode(cardRequest.getSecurityCode());
+        customerManager.saveCreditCard(card);
+    }
+
+    public CreditCardRepresentation getCreditCard(Integer id, Integer customerId) throws Exception {
+        CreditCard card = customerManager.getCreditCard(id);
+        if(card == null) {
+            throw new ResourceNotFoundException("No credit card found with id " + id);
+        } else if (!card.getCustomer().getId().equals(customerId)){
+            throw new ResourceNotFoundException("No credit card found with id " + id + " for customer with id " + customerId);
+        }
+        return new CreditCardRepresentation(card);
+    }
+
+    public void deleteCreditCard(Integer id, Integer customerId) throws Exception {
+        CreditCard card = customerManager.getCreditCard(id);
+        if(card == null) {
+            throw new ResourceNotFoundException("No credit card found with id " + id);
+        } else if (!card.getCustomer().getId().equals(customerId)){
+            throw new ResourceNotFoundException("No credit card found with id " + id + " for customer with id " + customerId);
+        }
+        customerManager.deleteCreditCard(id);
     }
 }
