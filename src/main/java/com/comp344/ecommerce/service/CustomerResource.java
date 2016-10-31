@@ -5,8 +5,16 @@ import com.comp344.ecommerce.domain.CreditCard;
 import com.comp344.ecommerce.domain.Customer;
 import com.comp344.ecommerce.domain.CustomerAddress;
 import com.comp344.ecommerce.domain.Login;
+import com.comp344.ecommerce.service.representation.CustomerCreateRequest;
+import com.comp344.ecommerce.service.representation.CustomerRepresentation;
+import com.comp344.ecommerce.service.representation.CustomerRequest;
+import com.comp344.ecommerce.service.representation.Message;
+import com.comp344.ecommerce.service.workflow.CustomerActivity;
+import com.comp344.ecommerce.utils.Page;
 import com.comp344.ecommerce.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,72 +26,48 @@ import java.util.List;
  * Created by Byambatsog on 10/2/16.
  */
 @Controller
-@RequestMapping("/customers")
+@RequestMapping("/customerservice")
 public class CustomerResource {
 
     @Autowired
-    private CustomerManager customerService;
-
-    @RequestMapping(value="/customer", method = RequestMethod.POST)
-    @ResponseBody
-    public Customer create() throws Exception {
-
-        Customer customer = new Customer();
-        customer.setFirstName("Byambatsog");
-        customer.setLastName("Chimed");
-        customer.setEmail("Email");
-        customer.setCreatedAt(new Date());
-
-        Login login = new Login();
-        login.setEmail("bchimed@luc.edu");
-        PasswordEncoder passwordEncoder = new PasswordEncoder();
-        login.setPassword(passwordEncoder.encode("123456789"));
-        login.setActive(true);
-        login.setAdmin(true);
-        login.setCreatedAt(new Date());
-        customer.setLogin(login);
-
-        customerService.create(customer);
-
-        CustomerAddress address = new CustomerAddress();
-        address.setStreet("1246 W Pratt blvd");
-        address.setCity("Chicago");
-        address.setState("IL");
-        address.setZipCode("60626");
-        address.setCountry("United States");
-        address.setPhone("7734567212");
-        address.setCreatedAt(new Date());
-        address.setCustomer(customer);
-
-        customerService.saveAddress(address);
-
-        CreditCard card = new CreditCard();
-        card.setCardNumber("4444555566667777");
-        card.setCardType("Master");
-        card.setExpireMonth(8);
-        card.setExpireYear(2019);
-        card.setNameOnCard("Byambatsog");
-        card.setSecurityCode("221");
-        card.setCreatedAt(new Date());
-        card.setCustomer(customer);
-        customerService.saveCreditCard(card);
-
-        return customer;
-    }
-
-    @RequestMapping(value = "/customer/{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public void update(@PathVariable(value = "id") Integer id) throws Exception {
-
-
-    }
+    private CustomerActivity customerActivity;
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Customer get(@PathVariable(value = "id") Integer id) throws Exception {
-        Customer customer = customerService.get(id);
-        customer.setAddresses(customerService.getAllAddresses(customer.getId()));
-        customer.setCreditCards(customerService.getAllCreditCards(customer.getId()));
-        return customer;
+    public ResponseEntity<CustomerRepresentation> getCustomer(@PathVariable(value = "id") Integer id) throws Exception {
+        return new ResponseEntity<CustomerRepresentation>(customerActivity.getCustomer(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Page<CustomerRepresentation>>  getCustomers(
+            @RequestParam(value = "q", required = false) String searchQuery,
+            @RequestParam(value = "orderBy", required = false) String orderBy,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) throws Exception {
+        return new ResponseEntity<Page<CustomerRepresentation>>(customerActivity.findCustomers(searchQuery, orderBy, page, pageSize), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer", method = RequestMethod.POST, consumes="application/json")
+    @ResponseBody
+    public ResponseEntity<CustomerRepresentation> createCustomer(@RequestBody CustomerCreateRequest customerCreateRequest) throws Exception {
+        return new ResponseEntity<CustomerRepresentation>(customerActivity.createCustomer(customerCreateRequest), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.PUT, consumes="application/json")
+    @ResponseBody
+    public ResponseEntity<Message> updateCustomer(@PathVariable(value = "id") Integer id,
+                                                 @RequestBody CustomerRequest customerRequest) throws Exception {
+
+        customerActivity.updateCustomer(id, customerRequest);
+        return new ResponseEntity<Message>(new Message("Customer updated successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> deleteCustomer(@PathVariable(value = "id") Integer id) throws Exception {
+
+        customerActivity.deleteCustomer(id);
+        return new ResponseEntity<Message>(new Message("Customer deleted successfully"), HttpStatus.OK);
     }
 }

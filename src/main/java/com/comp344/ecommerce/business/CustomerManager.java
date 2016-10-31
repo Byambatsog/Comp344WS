@@ -56,8 +56,8 @@ public class CustomerManager {
         customerRepository.delete(customer);
     }
 
-    public Page<Customer> find(String firstName, String lastName, String email, String orderBy, int page, int size){
-        return customerRepository.find(firstName, lastName, email, orderBy, page, size);
+    public Page<Customer> find(String searchQuery, String orderBy, int page, int size){
+        return customerRepository.find(searchQuery, orderBy, page, size);
     }
 
     public CustomerAddress saveAddress(CustomerAddress customerAddress){

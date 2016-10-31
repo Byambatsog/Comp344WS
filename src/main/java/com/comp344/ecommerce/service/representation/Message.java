@@ -1,4 +1,4 @@
-package com.comp344.ecommerce.service;
+package com.comp344.ecommerce.service.representation;
 
 /**
  * Created by Byambatsog on 10/30/16.

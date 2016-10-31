@@ -29,7 +29,7 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
         return (Customer) list.get(0);
     }
 
-    public Page<Customer> find(String firstName, String lastName, String email, String orderBy, int page, int size){
+    public Page<Customer> find(String searchQuery, String orderBy, int page, int size){
 
         String where = "";
         String conn = " where ";
@@ -40,22 +40,10 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
 
         List params=new ArrayList();
 
-        if(firstName!=null&&!firstName.equals("")){
-            where+=conn + "firstName like ?";
+        if(searchQuery!=null&&!searchQuery.equals("")){
+            where+=conn + "firstName like ? or lastName like ? or email like ?";
             conn = " and ";
-            params.add("%" + firstName + "%");
-        }
-
-        if(lastName!=null&&!lastName.equals("")){
-            where+=conn + "lastName like ?";
-            conn = " and ";
-            params.add("%" + lastName + "%");
-        }
-
-        if(email!=null&&!email.equals("")){
-            where+=conn + "email like ?";
-            conn = " and ";
-            params.add("%" + email + "%");
+            params.add("%" + searchQuery + "%");
         }
 
         Page result;

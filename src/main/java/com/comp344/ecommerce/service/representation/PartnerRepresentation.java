@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by Byambatsog on 10/29/16.
  */
-public class PartnerRepresentation extends BaseRepresentation {
+public class PartnerRepresentation {
 
     private Integer id;
     private String companyName;

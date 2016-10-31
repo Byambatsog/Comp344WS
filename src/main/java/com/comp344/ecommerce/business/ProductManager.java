@@ -34,8 +34,8 @@ public class ProductManager {
     }
 
     public Page<Product> find(String searchQuery, Integer categoryId, Integer partnerId, Boolean status,
-                              String orderBy, int page, int size){
-        return productRepository.find(searchQuery, categoryId, partnerId, status, orderBy, page, size);
+                              String orderBy, int page, int pageSize){
+        return productRepository.find(searchQuery, categoryId, partnerId, status, orderBy, page, pageSize);
     }
 
     public Boolean checkAvailibilty(Integer productId, Integer quantity){
