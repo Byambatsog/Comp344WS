@@ -25,6 +25,11 @@
   "expireYear": 2020,
   "nameOnCard": "Byambatsog",
   "securityCode": "223"
+},
+
+{
+  "productId": 1,
+  "quantity": 1
 }
 ]
 

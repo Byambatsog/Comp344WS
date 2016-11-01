@@ -33,8 +33,10 @@ public class CartManager {
         cartRepository.delete(cart);
     }
 
-    public List<Cart> find(Integer customerId){
-        return cartRepository.findByCustomer(customerId);
+    public Cart findActiveCart(Integer customerId){
+        List<Cart> list = cartRepository.findByCustomer(customerId, Boolean.TRUE);
+        if(list != null && list.size()>0) return list.get(0);
+        else return null;
     }
     
     public void saveItem(CartItem cartItem) throws Exception {

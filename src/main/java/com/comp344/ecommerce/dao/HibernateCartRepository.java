@@ -17,8 +17,8 @@ public class HibernateCartRepository  extends HibernateBaseRepository<Cart> {
         super.setSessionFactory(sessionFactory);
     }
 
-    public List<Cart> findByCustomer(Integer customerId){
-        return getHibernateTemplate().find("from Cart where customers_id=?", new Object[]{customerId});
+    public List<Cart> findByCustomer(Integer customerId, Boolean status){
+        return getHibernateTemplate().find("from Cart where customers_id=? and status=?", new Object[]{customerId, status});
     }
 
 }

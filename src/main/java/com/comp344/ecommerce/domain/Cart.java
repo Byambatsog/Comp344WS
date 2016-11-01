@@ -22,6 +22,7 @@ public class Cart  implements Serializable {
 	
 	private Integer id;
     private Customer customer;
+	private Boolean status;
     private Date createdAt;
     
     @Id
@@ -51,5 +52,13 @@ public class Cart  implements Serializable {
 	
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 }

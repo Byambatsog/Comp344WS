@@ -119,6 +119,7 @@ DROP TABLE IF EXISTS `customer_carts`;
 CREATE TABLE `customer_carts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` varchar(45) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `customers_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
