@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,11 +53,18 @@ public class OrderManager {
             paymentRepository.save(payment);
         }
 
+        order.setPaidAt(new Date());
+        orderRepository.save(order);
+
         OrderStatus status = new OrderStatus();
         status.setOrder(order);
         status.setStatus(OrderStatusType.ORDERED);
         status.setCreatedAt(new Date());
         orderStatusRepository.save(status);
+
+        List<OrderStatus> statuses = new ArrayList<OrderStatus>();
+        statuses.add(status);
+        order.setStatuses(statuses);
 
     }
 
@@ -90,9 +98,9 @@ public class OrderManager {
         orderRepository.delete(order);
     }
 
-    public Page<Order> find(Integer customerId, Integer shippingAddresssId, Integer billingAddressId, Integer partnerId,
+    public Page<Order> find(Integer customerId, Integer shippingAddresssId, Integer billingAddressId,
                             String orderBy, int page, int size){
-        return orderRepository.find(customerId, shippingAddresssId, billingAddressId, partnerId, orderBy, page, size);
+        return orderRepository.find(customerId, shippingAddresssId, billingAddressId, orderBy, page, size);
     }
 
     public void saveProduct(OrderProduct product){

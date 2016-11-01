@@ -288,12 +288,10 @@ CREATE TABLE `orders` (
   `customers_id` int(11) NOT NULL,
   `shipping_addresses_id` int(11) NOT NULL,
   `billing_addresses_id` int(11) NOT NULL,
-  `partners_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_orders_customers1_idx` (`customers_id`),
   KEY `fk_orders_customer_addresses1_idx` (`shipping_addresses_id`),
-  KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`),
-  KEY `fk_orders_partners1_idx` (`partners_id`)
+  KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

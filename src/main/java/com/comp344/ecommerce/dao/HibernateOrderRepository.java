@@ -22,7 +22,7 @@ public class HibernateOrderRepository extends HibernateBaseRepository<Order> {
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<Order> find(Integer customerId, Integer shippingAddresssId, Integer billingAddressId, Integer partnerId,
+    public Page<Order> find(Integer customerId, Integer shippingAddresssId, Integer billingAddressId,
                             String orderBy, int page, int size){
 
         String where = "";
@@ -50,12 +50,6 @@ public class HibernateOrderRepository extends HibernateBaseRepository<Order> {
             where+=conn + "billing_addresses_id=?";
             conn = " and ";
             params.add(billingAddressId);
-        }
-
-        if(partnerId != null){
-            where+=conn + "partners_id=?";
-            conn = " and ";
-            params.add(partnerId);
         }
 
         Page result;

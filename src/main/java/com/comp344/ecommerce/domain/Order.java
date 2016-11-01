@@ -21,7 +21,6 @@ public class Order implements Serializable {
     private Customer customer;
     private CustomerAddress shippingAddress;
     private CustomerAddress billingAddress;
-    private Partner partner;
 
     private List<OrderProduct> products;
     private List<OrderStatus> statuses;
@@ -92,16 +91,6 @@ public class Order implements Serializable {
 
     public void setBillingAddress(CustomerAddress billingAddress) {
         this.billingAddress = billingAddress;
-    }
-
-    @JoinColumn(name = "partners_id")
-    @ManyToOne
-    public Partner getPartner() {
-        return partner;
-    }
-
-    public void setPartner(Partner partner) {
-        this.partner = partner;
     }
 
     @Transient

@@ -5,8 +5,9 @@ package com.comp344.ecommerce.domain;
  */
 public enum OrderProductStatus {
 
+    ORDERED,
+    FULFILLED,
     CANCELLED,
     SHIPPED,
-    DELIVERED,
-    CREATED
+    DELIVERED
 }

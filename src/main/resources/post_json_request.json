@@ -46,6 +46,13 @@
   "comment": "This photo camera is amazing",
   "rating": 5,
   "customerId": 1
+},
+
+{
+  "customerId": 1,
+  "shippingAddressId": 1,
+  "billingAddressId": 1,
+  "creditCardId": 1
 }
 
 ]

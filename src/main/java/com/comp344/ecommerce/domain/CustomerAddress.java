@@ -100,4 +100,16 @@ public class CustomerAddress implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Transient
+    public String getAddress(){
+        String address = "";
+        if(this.street != null && !this.street.equals("")) address = address + street;
+        if(this.city != null && !this.city.equals("")) address = address + ", " + city;
+        if(this.state != null && !this.state.equals("")) address = address + ", " + state;
+        if(this.zipCode != null && !this.zipCode.equals("")) address = address + " " + zipCode;
+        if(this.country != null && !this.country.equals("")) address = address + ", " + country;
+        if(this.phone != null && !this.phone.equals("")) address = address + ", " + phone;
+        return address;
+    }
 }
