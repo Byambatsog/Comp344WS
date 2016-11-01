@@ -39,6 +39,13 @@
   "zipCode": "60660",
   "country": "United States",
   "phone": "7735556666"
+},
+
+{
+  "title": "Amazing",
+  "comment": "This photo camera is amazing",
+  "rating": 5,
+  "customerId": 1
 }
 
 ]
