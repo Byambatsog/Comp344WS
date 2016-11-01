@@ -4,6 +4,7 @@ import com.comp344.ecommerce.business.CustomerManager;
 import com.comp344.ecommerce.business.LoginManager;
 import com.comp344.ecommerce.domain.CreditCard;
 import com.comp344.ecommerce.domain.Customer;
+import com.comp344.ecommerce.domain.CustomerAddress;
 import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.exception.LoginRegistrationException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
@@ -154,5 +155,63 @@ public class CustomerActivity {
             throw new ResourceNotFoundException("No credit card found with id " + id + " for customer with id " + customerId);
         }
         customerManager.deleteCreditCard(id);
+    }
+
+    public List<AddressRepresentation> getAllAddresses(Integer customerId) throws Exception{
+
+        List<CustomerAddress> addresses = customerManager.getAllAddresses(customerId);
+        List<AddressRepresentation> addressRepresentations = new ArrayList<AddressRepresentation>();
+        for(CustomerAddress address : addresses){
+            addressRepresentations.add(new AddressRepresentation(address));
+        }
+        return addressRepresentations;
+    }
+
+    public AddressRepresentation createAddress(Integer customerId, AddressRequest addressRequest) throws Exception {
+
+        CustomerAddress address = new CustomerAddress();
+        address.setStreet(addressRequest.getStreet());
+        address.setCity(addressRequest.getCity());
+        address.setState(addressRequest.getState());
+        address.setZipCode(addressRequest.getZipCode());
+        address.setCountry(addressRequest.getCountry());
+        address.setPhone(addressRequest.getPhone());
+        address.setCustomer(customerManager.get(customerId));
+        address.setCreatedAt(new Date());
+        customerManager.saveAddress(address);
+        AddressRepresentation addressRep = new AddressRepresentation(address);
+        return addressRep;
+    }
+
+    public void updateAddress(Integer id, AddressRequest addressRequest) throws Exception {
+
+        CustomerAddress address = customerManager.getAddress(id);
+        address.setStreet(addressRequest.getStreet());
+        address.setCity(addressRequest.getCity());
+        address.setState(addressRequest.getState());
+        address.setZipCode(addressRequest.getZipCode());
+        address.setCountry(addressRequest.getCountry());
+        address.setPhone(addressRequest.getPhone());
+        customerManager.saveAddress(address);
+    }
+
+    public AddressRepresentation getAddress(Integer id, Integer customerId) throws Exception {
+        CustomerAddress address = customerManager.getAddress(id);
+        if(address == null) {
+            throw new ResourceNotFoundException("No customer address found with id " + id);
+        } else if (!address.getCustomer().getId().equals(customerId)){
+            throw new ResourceNotFoundException("No customer address card found with id " + id + " for customer with id " + customerId);
+        }
+        return new AddressRepresentation(address);
+    }
+
+    public void deleteAddress(Integer id, Integer customerId) throws Exception {
+        CustomerAddress address = customerManager.getAddress(id);
+        if(address == null) {
+            throw new ResourceNotFoundException("No customer address found with id " + id);
+        } else if (!address.getCustomer().getId().equals(customerId)){
+            throw new ResourceNotFoundException("No customer address found with id " + id + " for customer with id " + customerId);
+        }
+        customerManager.deleteAddress(id);
     }
 }

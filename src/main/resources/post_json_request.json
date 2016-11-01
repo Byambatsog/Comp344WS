@@ -30,6 +30,16 @@
 {
   "productId": 1,
   "quantity": 1
+},
+
+{
+  "street": "25 E Pearson",
+  "city": "Chicago",
+  "state": "IL",
+  "zipCode": "60660",
+  "country": "United States",
+  "phone": "7735556666"
 }
+
 ]
 

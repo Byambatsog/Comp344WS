@@ -1,22 +1,14 @@
 package com.comp344.ecommerce.service;
 
-import com.comp344.ecommerce.business.CustomerManager;
-import com.comp344.ecommerce.domain.CreditCard;
-import com.comp344.ecommerce.domain.Customer;
-import com.comp344.ecommerce.domain.CustomerAddress;
-import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.service.representation.*;
 import com.comp344.ecommerce.service.workflow.CustomerActivity;
 import com.comp344.ecommerce.utils.Page;
-import com.comp344.ecommerce.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,7 +76,7 @@ public class CustomerResource {
 
     @RequestMapping(value = "/customer/{id}/creditcard/{cardId}", method = RequestMethod.PUT, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Message> updateProduct(@PathVariable(value = "id") Integer customerId,
+    public ResponseEntity<Message> updateCreditCard(@PathVariable(value = "id") Integer customerId,
                                                  @PathVariable(value = "cardId") Integer cardId,
                                                  @RequestBody CreditCardRequest cardRequest) throws Exception {
         customerActivity.updateCreditCard(cardId, cardRequest);
@@ -93,18 +85,57 @@ public class CustomerResource {
 
     @RequestMapping(value = "/customer/{id}/creditcard/{cardId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<CreditCardRepresentation> getProduct(@PathVariable(value = "id") Integer customerId,
+    public ResponseEntity<CreditCardRepresentation> getCreditCard(@PathVariable(value = "id") Integer customerId,
                                                                @PathVariable(value = "cardId") Integer cardId) throws Exception {
         return new ResponseEntity<CreditCardRepresentation>(customerActivity.getCreditCard(cardId, customerId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customer/{id}/creditcard/{cardId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Message> deleteProduct(@PathVariable(value = "id") Integer customerId,
+    public ResponseEntity<Message> deleteCreditCard(@PathVariable(value = "id") Integer customerId,
                                                  @PathVariable(value = "cardId") Integer cardId) throws Exception {
 
         customerActivity.deleteCreditCard(cardId, customerId);
         return new ResponseEntity<Message>(new Message("Credit card deleted successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{id}/address", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<AddressRepresentation>> getAllAddresses(@PathVariable(value = "id") Integer customerId) throws Exception {
+        return new ResponseEntity<List<AddressRepresentation>>(customerActivity.getAllAddresses(customerId), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/customer/{id}/address", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<AddressRepresentation> createAddresses(@PathVariable(value = "id") Integer customerId,
+                                                                     @RequestBody AddressRequest addressRequest) throws Exception {
+
+        return new ResponseEntity<AddressRepresentation>(customerActivity.createAddress(customerId, addressRequest), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{id}/address/{addressId}", method = RequestMethod.PUT, consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<Message> updateAddress(@PathVariable(value = "id") Integer customerId,
+                                                @PathVariable(value = "addressId") Integer addressId,
+                                                @RequestBody AddressRequest addressRequest) throws Exception {
+        customerActivity.updateAddress(addressId, addressRequest);
+        return new ResponseEntity<Message>(new Message("Address updated successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{id}/address/{addressId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<AddressRepresentation> getAddress(@PathVariable(value = "id") Integer customerId,
+                                                          @PathVariable(value = "addressId") Integer addressId) throws Exception {
+        return new ResponseEntity<AddressRepresentation>(customerActivity.getAddress(addressId, customerId), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customer/{id}/address/{addressId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> deleteAddress(@PathVariable(value = "id") Integer customerId,
+                                                @PathVariable(value = "addressId") Integer addressId) throws Exception {
+
+        customerActivity.deleteAddress(addressId, customerId);
+        return new ResponseEntity<Message>(new Message("Address deleted successfully"), HttpStatus.OK);
     }
     
 }
