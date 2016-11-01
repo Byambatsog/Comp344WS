@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class OrderRepresentation {
 
+    private Integer id;
     private Double totalPrice;
     private String createdAt;
     private String paidAt;
@@ -18,8 +19,10 @@ public class OrderRepresentation {
     private String billingAddress;
     private Integer customerId;
     private String customerFirstName;
+    private String paymentCardNumber;
+    private String paymentCardType;
+    private String lastStatus;
     private List<OrderProductRepresentation> products = new ArrayList<OrderProductRepresentation>();
-    private List<OrderPaymentRepresentation> payments = new ArrayList<OrderPaymentRepresentation>();
     private List<OrderStatusRepresentation> statuses = new ArrayList<OrderStatusRepresentation>();
 
     public OrderRepresentation(){}
@@ -28,25 +31,29 @@ public class OrderRepresentation {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        this.id = order.getId();
         this.totalPrice = order.getTotalPrice();
         this.createdAt = dateFormat.format(order.getCreatedAt());
         this.paidAt = order.getPaidAt() != null ? dateFormat.format(order.getPaidAt()) : "";
+        this.lastStatus = order.getLastStatus().name();
         this.shippingAddress = order.getShippingAddress().getAddress();
         this.billingAddress = order.getBillingAddress().getAddress();
         this.customerId = order.getCustomer().getId();
         this.customerFirstName = order.getCustomer().getFirstName();
+        this.paymentCardNumber = "..." + order.getPaymentCard().getCardNumber().substring(order.getPaymentCard().getCardNumber().length() - 4);
+        this.paymentCardType = order.getPaymentCard().getCardType();
 
         if(order.getProducts() != null && order.getProducts().size() > 0)
             for(OrderProduct orderProduct : order.getProducts())
                 this.products.add(new OrderProductRepresentation(orderProduct));
 
-        if(order.getPayments() != null && order.getPayments().size() > 0)
-            for(OrderPayment orderPayment : order.getPayments())
-                this.payments.add(new OrderPaymentRepresentation(orderPayment));
-
         if(order.getStatuses() != null && order.getStatuses().size() > 0)
             for(OrderStatus orderStatus : order.getStatuses())
                 this.statuses.add(new OrderStatusRepresentation(orderStatus));
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Double getTotalPrice() {
@@ -77,15 +84,31 @@ public class OrderRepresentation {
         return customerFirstName;
     }
 
+    public String getPaymentCardNumber() {
+        return paymentCardNumber;
+    }
+
+    public String getPaymentCardType() {
+        return paymentCardType;
+    }
+
+    public String getLastStatus() {
+        return lastStatus;
+    }
+
     public List<OrderProductRepresentation> getProducts() {
         return products;
     }
 
-    public List<OrderPaymentRepresentation> getPayments() {
-        return payments;
-    }
-
     public List<OrderStatusRepresentation> getStatuses() {
         return statuses;
+    }
+
+    public void setProducts(List<OrderProductRepresentation> products) {
+        this.products = products;
+    }
+
+    public void setStatuses(List<OrderStatusRepresentation> statuses) {
+        this.statuses = statuses;
     }
 }

@@ -2,6 +2,7 @@ package com.comp344.ecommerce.service;
 
 import com.comp344.ecommerce.service.representation.*;
 import com.comp344.ecommerce.service.workflow.CustomerActivity;
+import com.comp344.ecommerce.service.workflow.OrderActivity;
 import com.comp344.ecommerce.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class CustomerResource {
 
     @Autowired
     private CustomerActivity customerActivity;
+
+    @Autowired
+    private OrderActivity orderActivity;
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -137,5 +141,11 @@ public class CustomerResource {
         customerActivity.deleteAddress(addressId, customerId);
         return new ResponseEntity<Message>(new Message("Address deleted successfully"), HttpStatus.OK);
     }
-    
+
+    @RequestMapping(value = "/customer/{id}/order", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<OrderRepresentation>> getAllOrders(@PathVariable(value = "id") Integer customerId) throws Exception {
+        return new ResponseEntity<List<OrderRepresentation>>(orderActivity.getCustomerOrders(customerId), HttpStatus.CREATED);
+    }
+
 }

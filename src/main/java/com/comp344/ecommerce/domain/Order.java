@@ -21,10 +21,11 @@ public class Order implements Serializable {
     private Customer customer;
     private CustomerAddress shippingAddress;
     private CustomerAddress billingAddress;
+    private CreditCard paymentCard;
+    private OrderStatusType lastStatus;
 
     private List<OrderProduct> products;
     private List<OrderStatus> statuses;
-    private List<OrderPayment> payments;
 
     @Id
     @GeneratedValue
@@ -63,6 +64,16 @@ public class Order implements Serializable {
         this.createdAt = createdAt;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_status")
+    public OrderStatusType getLastStatus() {
+        return lastStatus;
+    }
+
+    public void setLastStatus(OrderStatusType lastStatus) {
+        this.lastStatus = lastStatus;
+    }
+
     @JoinColumn(name = "customers_id")
     @ManyToOne
     public Customer getCustomer() {
@@ -93,7 +104,7 @@ public class Order implements Serializable {
         this.billingAddress = billingAddress;
     }
 
-    @Transient
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<OrderProduct> getProducts() {
         return products;
     }
@@ -102,7 +113,7 @@ public class Order implements Serializable {
         this.products = products;
     }
 
-    @Transient
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<OrderStatus> getStatuses() {
         return statuses;
     }
@@ -111,12 +122,13 @@ public class Order implements Serializable {
         this.statuses = statuses;
     }
 
-    @Transient
-    public List<OrderPayment> getPayments() {
-        return payments;
+    @JoinColumn(name = "credit_cards_id")
+    @ManyToOne
+    public CreditCard getPaymentCard() {
+        return paymentCard;
     }
 
-    public void setPayments(List<OrderPayment> payments) {
-        this.payments = payments;
+    public void setPaymentCard(CreditCard paymentCard) {
+        this.paymentCard = paymentCard;
     }
 }

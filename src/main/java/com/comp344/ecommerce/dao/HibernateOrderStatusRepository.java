@@ -22,14 +22,13 @@ public class HibernateOrderStatusRepository extends HibernateBaseRepository<Orde
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<OrderStatus> find(Integer orderId, OrderStatus status, String orderBy,
-                                   int page, int size){
+    public List<OrderStatus> find(Integer orderId, OrderStatus status, String orderBy){
 
         String where = "";
         String conn = " where ";
 
         if (orderBy==null){
-            orderBy = "order by updated_at desc";
+            orderBy = "order by created_at desc";
         }
 
         List params=new ArrayList();
@@ -46,15 +45,6 @@ public class HibernateOrderStatusRepository extends HibernateBaseRepository<Orde
             params.add(status);
         }
 
-        Page result;
-        if(page>0&&size>0){
-            List l =getResult("from OrderStatus" + where + " " + orderBy,params.toArray(),page,size);
-            int count =getResultTotalSize("select count(*) from OrderStatus" + where,params.toArray());
-            result = new ListPage(l, page, size, count);
-        } else {
-            List l = getHibernateTemplate().find("from OrderStatus" + where + " " + orderBy,params.toArray());
-            result=new ListPage(l,1,l.size(),l.size());
-        }
-        return result;
+        return getHibernateTemplate().find("from OrderStatus" + where + " " + orderBy,params.toArray());
     }
 }

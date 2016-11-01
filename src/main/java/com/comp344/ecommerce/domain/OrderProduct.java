@@ -17,6 +17,7 @@ public class OrderProduct implements Serializable {
     private Integer quantity;
     private Double unitPrice;
     private OrderProductStatus status;
+    private String trackingNumber;
 
     @Id
     @JoinColumn(name = "orders_id")
@@ -64,5 +65,14 @@ public class OrderProduct implements Serializable {
 
     public void setStatus(OrderProductStatus status) {
         this.status = status;
+    }
+
+    @Column(name = "tracking_number")
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 }

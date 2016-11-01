@@ -2,9 +2,12 @@ package com.comp344.ecommerce.service.workflow;
 
 import com.comp344.ecommerce.business.*;
 import com.comp344.ecommerce.domain.*;
+import com.comp344.ecommerce.exception.NotAvailableException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
 import com.comp344.ecommerce.service.representation.OrderCreateRequest;
+import com.comp344.ecommerce.service.representation.OrderProductRepresentation;
 import com.comp344.ecommerce.service.representation.OrderRepresentation;
+import com.comp344.ecommerce.service.representation.OrderStatusRepresentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +26,6 @@ public class OrderActivity {
 
     @Autowired
     private CustomerManager customerManager;
-
-    @Autowired
-    private PartnerManager partnerManager;
 
     @Autowired
     private ProductManager productManager;
@@ -52,7 +52,16 @@ public class OrderActivity {
         Double totalPrice = 0d;
         List<OrderProduct> products = new ArrayList<OrderProduct>();
         for(CartItem cartItem : cartItems){
+
+            Product product = productManager.get(cartItem.getProduct().getId());
+            if (product == null) {
+                throw new NotAvailableException("The product '" + product.getName() + "' is no longer available");
+            } else if (product.getQuantityInStock() < cartItem.getQuantity()) {
+                throw new NotAvailableException("Sorry, we don't have enough number of product '" + product.getName() + "' that you want to buy");
+            }
+
             OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setOrder(order);
             orderProduct.setProduct(cartItem.getProduct());
             orderProduct.setUnitPrice(cartItem.getProduct().getUnitPrice());
             orderProduct.setQuantity(cartItem.getQuantity());
@@ -63,17 +72,70 @@ public class OrderActivity {
 
         order.setTotalPrice(totalPrice);
         order.setProducts(products);
-
-        List<OrderPayment> payments = new ArrayList<OrderPayment>();
-        OrderPayment orderPayment = new OrderPayment();
-        orderPayment.setAmount(order.getTotalPrice());
-        orderPayment.setCard(customerManager.getCreditCard(orderCreateRequest.getCreditCardId()));
-        orderPayment.setPaidAt(new Date());
-        payments.add(orderPayment);
-
-        order.setPayments(payments);
+        order.setPaymentCard(customerManager.getCreditCard(orderCreateRequest.getCreditCardId()));
+        order.setLastStatus(OrderStatusType.ORDERED);
+        order.setPaidAt(new Date());
         orderManager.create(order);
 
+        cart.setStatus(Boolean.FALSE);
+        cartManager.save(cart);
+
         return new OrderRepresentation(order);
+    }
+
+    public OrderRepresentation getOrder(Integer id) throws Exception {
+
+        Order order = orderManager.get(id);
+        if(order == null) {
+            throw new ResourceNotFoundException("No order found with id " + id);
+        }
+
+        order.setProducts(orderManager.findProduct(id, null, null, null, null));
+        order.setStatuses(orderManager.findStatuses(id, null, null));
+
+        return new OrderRepresentation(order);
+    }
+
+    public List<OrderStatusRepresentation> getOrderStatuses(Integer orderId) throws Exception {
+
+        Order order = orderManager.get(orderId);
+        if(order == null) {
+            throw new ResourceNotFoundException("No order found with id " + orderId);
+        }
+
+        List<OrderStatus> statuses = orderManager.findStatuses(orderId, null, null);
+
+        List<OrderStatusRepresentation> statusRepresentations = new ArrayList<OrderStatusRepresentation>();
+        for(OrderStatus status : statuses){
+            statusRepresentations.add(new OrderStatusRepresentation(status));
+        }
+        return statusRepresentations;
+    }
+
+    public List<OrderProductRepresentation> getOrderProducts(Integer orderId) throws Exception {
+
+        Order order = orderManager.get(orderId);
+        if(order == null) {
+            throw new ResourceNotFoundException("No order found with id " + orderId);
+        }
+
+        List<OrderProduct> products = orderManager.findProduct(orderId, null, null, null, null);
+
+        List<OrderProductRepresentation> productRepresentations = new ArrayList<OrderProductRepresentation>();
+        for(OrderProduct product : products){
+            productRepresentations.add(new OrderProductRepresentation(product));
+        }
+        return productRepresentations;
+    }
+
+    public List<OrderRepresentation> getCustomerOrders(Integer customerId) throws Exception {
+        List<Order> orders = orderManager.find(customerId, null, null, null, 0, 0).getElements();
+
+        List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
+        for(Order order : orders){
+            orderRepresentations.add(new OrderRepresentation(order));
+        }
+        return orderRepresentations;
+
     }
 }

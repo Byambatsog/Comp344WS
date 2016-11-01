@@ -24,9 +24,6 @@ public class OrderManager {
     private HibernateOrderProductRepository orderProductRepository;
 
     @Autowired
-    private HibernateOrderPaymentRepository paymentRepository;
-
-    @Autowired
     private HibernateOrderStatusRepository orderStatusRepository;
 
     @Autowired
@@ -34,38 +31,28 @@ public class OrderManager {
 
     @Transactional
     public void create(Order order) throws Exception {
+
         orderRepository.save(order);
 
-
         for(OrderProduct orderProduct : order.getProducts()){
-
-            orderProduct.setOrder(order);
-            orderProductRepository.save(orderProduct);
-
+            //orderProduct.setOrder(order);
+            //orderProductRepository.save(orderProduct);
             Product product = productRepository.get(orderProduct.getProduct().getId());
             product.setQuantityInStock(product.getQuantityInStock() - orderProduct.getQuantity());
             productRepository.save(product);
-
         }
-
-        for(OrderPayment payment : order.getPayments()){
-            payment.setOrder(order);
-            paymentRepository.save(payment);
-        }
-
-        order.setPaidAt(new Date());
-        orderRepository.save(order);
 
         OrderStatus status = new OrderStatus();
         status.setOrder(order);
         status.setStatus(OrderStatusType.ORDERED);
         status.setCreatedAt(new Date());
-        orderStatusRepository.save(status);
-
         List<OrderStatus> statuses = new ArrayList<OrderStatus>();
         statuses.add(status);
         order.setStatuses(statuses);
 
+        //orderStatusRepository.save(status);
+
+        orderRepository.save(order);
     }
 
     public Order save(Order order) throws Exception {
@@ -80,17 +67,12 @@ public class OrderManager {
     @Transactional
     public void delete(Integer id) throws Exception {
         Order order = orderRepository.get(id);
-        List<OrderProduct> products = orderProductRepository.find(order.getId(), null, null, null, 0, 0).getElements();
+        List<OrderProduct> products = orderProductRepository.find(order.getId(), null, null, null, null);
         for(OrderProduct product : products){
             orderProductRepository.delete(product);
         }
 
-        List<OrderPayment> payments = paymentRepository.find(order.getId(), null, null, 0, 0).getElements();
-        for(OrderPayment payment : payments){
-            paymentRepository.delete(payment);
-        }
-
-        List<OrderStatus> statuses = orderStatusRepository.find(order.getId(), null, null, 0, 0).getElements();
+        List<OrderStatus> statuses = orderStatusRepository.find(order.getId(), null, null);
         for(OrderStatus status : statuses){
             orderStatusRepository.delete(status);
         }
@@ -116,26 +98,8 @@ public class OrderManager {
         return orderProductRepository.get(productId);
     }
 
-    public Page<OrderProduct> find(Integer orderId, Integer productId, OrderProductStatus status, String orderBy,
-                                   int page, int size){
-        return orderProductRepository.find(orderId, productId, status, orderBy, page, size);
-    }
-
-    public void savePayment(OrderPayment payment){
-        paymentRepository.save(payment);
-    }
-
-    public void deletePayment(Integer paymentId){
-        OrderPayment payment = paymentRepository.get(paymentId);
-        paymentRepository.delete(payment);
-    }
-
-    public OrderPayment getPayment(Integer paymentId){
-        return paymentRepository.get(paymentId);
-    }
-
-    public Page<OrderPayment> find(Integer orderId, Integer creditCardId, String orderBy, int page, int size){
-        return paymentRepository.find(orderId, creditCardId, orderBy, page, size);
+    public List<OrderProduct> findProduct(Integer orderId, Integer productId, Integer partnerId, OrderProductStatus status, String orderBy){
+        return orderProductRepository.find(orderId, productId, partnerId, status, orderBy);
     }
 
     public void saveStatus(OrderStatus status){
@@ -151,8 +115,24 @@ public class OrderManager {
         return orderStatusRepository.get(statusId);
     }
 
-    public Page<OrderStatus> find(Integer orderId, OrderStatus status, String orderBy, int page, int size){
-        return orderStatusRepository.find(orderId, status, orderBy, page, size);
+    public List<OrderStatus> findStatuses(Integer orderId, OrderStatus status, String orderBy){
+        return orderStatusRepository.find(orderId, status, orderBy);
+    }
+
+    public OrderStatusType getLastStatusType(Integer orderId){
+        OrderStatus status = orderStatusRepository.find(orderId, null, null).get(0);
+        if(status != null)
+            return status.getStatus();
+        else
+            return null;
+    }
+
+    public OrderProductStatus getLastOrderProductStatus(Integer orderId, Integer productId){
+        OrderProduct orderProduct = orderProductRepository.find(orderId, productId, null, null, null).get(0);
+        if(orderProduct != null)
+            return orderProduct.getStatus();
+        else
+            return null;
     }
 
 }

@@ -232,6 +232,7 @@ CREATE TABLE `order_products` (
   `quantity` int(11) DEFAULT NULL,
   `unit_price` decimal(10,2) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
+  `tracking_number` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`orders_id`,`products_id`),
   KEY `fk_order_products_orders1_idx` (`orders_id`),
   KEY `fk_order_products_products1_idx` (`products_id`)
@@ -285,13 +286,16 @@ CREATE TABLE `orders` (
   `created_at` datetime DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
   `paid_at` datetime DEFAULT NULL,
+  `last_status` VARCHAR(29) NOT NULL DEFAULT 'ORDERED',
   `customers_id` int(11) NOT NULL,
   `shipping_addresses_id` int(11) NOT NULL,
   `billing_addresses_id` int(11) NOT NULL,
+  `credit_cards_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_orders_customers1_idx` (`customers_id`),
   KEY `fk_orders_customer_addresses1_idx` (`shipping_addresses_id`),
   KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`)
+  KEY `fk_orders_customer_credit_card_idx` (`credit_cards_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -435,6 +439,14 @@ LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `comp344_ecommerce`.`partner_orders` ;
+
+CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`partner_orders` (
+  `orders_id` INT NOT NULL,
+  `partners_id` INT NOT NULL,
+  PRIMARY KEY (`orders_id`, `partners_id`))
+ENGINE = InnoDB;
+
 --
 -- Dumping routines for database 'comp344_ecommerce'
 --
@@ -449,3 +461,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-10-31 16:03:34
+
+

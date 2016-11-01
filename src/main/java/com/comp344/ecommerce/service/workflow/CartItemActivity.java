@@ -5,6 +5,8 @@ import com.comp344.ecommerce.business.CustomerManager;
 import com.comp344.ecommerce.business.ProductManager;
 import com.comp344.ecommerce.domain.Cart;
 import com.comp344.ecommerce.domain.CartItem;
+import com.comp344.ecommerce.domain.Product;
+import com.comp344.ecommerce.exception.NotAvailableException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
 import com.comp344.ecommerce.service.representation.CartItemRepresentation;
 import com.comp344.ecommerce.service.representation.CartItemRequest;
@@ -55,6 +57,13 @@ public class CartItemActivity {
             cart.setCustomer(customerManager.get(customerId));
             cart.setStatus(Boolean.TRUE);
             cartManager.save(cart);
+        }
+
+        Product product = productManager.get(itemRequest.getProductId());
+        if (product == null) {
+            throw new NotAvailableException("The product is no longer available");
+        } else if (product.getQuantityInStock() < itemRequest.getQuantity()) {
+            throw new NotAvailableException("Sorry, we don't have enough number of product that you want to buy");
         }
 
         List<CartItem> cartItems = cartManager.findItem(cart.getId());

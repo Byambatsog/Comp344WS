@@ -23,8 +23,7 @@ public class HibernateOrderProductRepository extends HibernateBaseRepository<Ord
         super.setSessionFactory(sessionFactory);
     }
 
-    public Page<OrderProduct> find(Integer orderId, Integer productId, OrderProductStatus status, String orderBy,
-                                   int page, int size){
+    public List<OrderProduct> find(Integer orderId, Integer productId, Integer partnerId, OrderProductStatus status, String orderBy){
 
         String where = "";
         String conn = " where ";
@@ -47,22 +46,19 @@ public class HibernateOrderProductRepository extends HibernateBaseRepository<Ord
             params.add(productId);
         }
 
+        if(partnerId != null){
+            where+=conn + "product.partners_id=?";
+            conn = " and ";
+            params.add(partnerId);
+        }
+
         if(status != null){
             where+=conn + "status=?";
             conn = " and ";
             params.add(status);
         }
 
-        Page result;
-        if(page>0&&size>0){
-            List l =getResult("from OrderProduct" + where + " " + orderBy,params.toArray(),page,size);
-            int count =getResultTotalSize("select count(*) from OrderProduct" + where,params.toArray());
-            result = new ListPage(l, page, size, count);
-        } else {
-            List l = getHibernateTemplate().find("from OrderProduct" + where + " " + orderBy,params.toArray());
-            result=new ListPage(l,1,l.size(),l.size());
-        }
-        return result;
+        return getHibernateTemplate().find("from OrderProduct" + where + " " + orderBy,params.toArray());
     }
 
 }

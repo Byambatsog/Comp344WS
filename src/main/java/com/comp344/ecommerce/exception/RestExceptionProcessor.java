@@ -33,6 +33,15 @@ public class RestExceptionProcessor {
         return new ErrorInfo(errorURL, errorMessage);
     }
 
+    @ExceptionHandler(NotAvailableException.class)
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorInfo notAvailable(HttpServletRequest req, NotAvailableException ex) {
+        String errorMessage = ex.getErrorMessage();
+        String errorURL = req.getRequestURL().toString();
+        return new ErrorInfo(errorURL, errorMessage);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -43,12 +52,4 @@ public class RestExceptionProcessor {
         return new ErrorInfo(errorURL, errorMessage);
     }
 
-    @ExceptionHandler(NoSuchRequestHandlingMethodException.class)
-    @ResponseStatus(value= HttpStatus.NOT_FOUND)
-    @ResponseBody
-    public ErrorInfo resourceNotAvailable(HttpServletRequest req, NoSuchRequestHandlingMethodException ex) {
-        String errorMessage = "The requested resource is not available";
-        String errorURL = req.getRequestURL().toString();
-        return new ErrorInfo(errorURL, errorMessage);
-    }
 }
