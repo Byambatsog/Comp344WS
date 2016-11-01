@@ -19,11 +19,6 @@
 -- Table structure for table `credit_cards`
 --
 
-CREATE SCHEMA `comp344_ecommerce` DEFAULT CHARACTER SET utf8;
-USE `comp344_ecommerce`;
-
-
-
 DROP TABLE IF EXISTS `credit_cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -97,7 +92,7 @@ CREATE TABLE `customer_cart_items` (
   `customer_carts_id` int(11) NOT NULL,
   `products_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,6 +101,7 @@ CREATE TABLE `customer_cart_items` (
 
 LOCK TABLES `customer_cart_items` WRITE;
 /*!40000 ALTER TABLE `customer_cart_items` DISABLE KEYS */;
+INSERT INTO `customer_cart_items` VALUES (1,3,1,1),(3,3,1,2);
 /*!40000 ALTER TABLE `customer_cart_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,10 +115,10 @@ DROP TABLE IF EXISTS `customer_carts`;
 CREATE TABLE `customer_carts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` varchar(45) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
   `customers_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +127,7 @@ CREATE TABLE `customer_carts` (
 
 LOCK TABLES `customer_carts` WRITE;
 /*!40000 ALTER TABLE `customer_carts` DISABLE KEYS */;
+INSERT INTO `customer_carts` VALUES (1,'2016-10-31 21:00:02.072',0,1);
 /*!40000 ALTER TABLE `customer_carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +156,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'Byambatsog','Chimed','Email','2016-10-04 20:56:37',1);
+INSERT INTO `customers` VALUES (1,'Byambatsog','Chimed','byambatsog@gmail.com','2016-10-04 20:56:37',1);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,34 +189,6 @@ INSERT INTO `login` VALUES (1,'bigvalueinc@gmail.com','25f9e794323b453885f5181f1
 UNLOCK TABLES;
 
 --
--- Table structure for table `order_payments`
---
-
-DROP TABLE IF EXISTS `order_payments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order_payments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `orders_id` int(11) NOT NULL,
-  `credit_cards_id` int(11) NOT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
-  `paid_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_order_payments_orders1_idx` (`orders_id`),
-  KEY `fk_order_payments_credit_cards1_idx` (`credit_cards_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `order_payments`
---
-
-LOCK TABLES `order_payments` WRITE;
-/*!40000 ALTER TABLE `order_payments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_payments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `order_products`
 --
 
@@ -245,6 +214,7 @@ CREATE TABLE `order_products` (
 
 LOCK TABLES `order_products` WRITE;
 /*!40000 ALTER TABLE `order_products` DISABLE KEYS */;
+INSERT INTO `order_products` VALUES (1,1,3,1668.92,'ORDERED',NULL),(1,2,3,990.00,'ORDERED',NULL);
 /*!40000 ALTER TABLE `order_products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,7 +232,7 @@ CREATE TABLE `order_status` (
   `orders_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_order_status_orders1_idx` (`orders_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,6 +241,7 @@ CREATE TABLE `order_status` (
 
 LOCK TABLES `order_status` WRITE;
 /*!40000 ALTER TABLE `order_status` DISABLE KEYS */;
+INSERT INTO `order_status` VALUES (1,'ORDERED','2016-11-01 17:53:38',1);
 /*!40000 ALTER TABLE `order_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,17 +257,17 @@ CREATE TABLE `orders` (
   `created_at` datetime DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
   `paid_at` datetime DEFAULT NULL,
-  `last_status` VARCHAR(29) NOT NULL DEFAULT 'ORDERED',
+  `last_status` varchar(29) NOT NULL DEFAULT 'ORDERED',
   `customers_id` int(11) NOT NULL,
   `shipping_addresses_id` int(11) NOT NULL,
   `billing_addresses_id` int(11) NOT NULL,
-  `credit_cards_id` INT NOT NULL,
+  `credit_cards_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_orders_customers1_idx` (`customers_id`),
   KEY `fk_orders_customer_addresses1_idx` (`shipping_addresses_id`),
-  KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`)
+  KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`),
   KEY `fk_orders_customer_credit_card_idx` (`credit_cards_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,6 +276,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,'2016-11-01 17:53:38',7976.76,'2016-11-01 17:53:38','ORDERED',1,1,1,1);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +377,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Nikon D500 20.9MP Digital SLR Camera','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','description',1,120,1668.92,32.10,'2016-10-24 21:19:39',1,1),(2,'Apple iPhone 7 Plus (Latest Model)1','http://i.ebayimg.com/images/g/yZ8AAOSw4shX-HvJ/s-l5001.jpg','Apple1','GPS, Internet Browser, Music Player, Near Field Communication1',0,41,991.00,2.10,'2016-10-31 15:41:51',2,4);
+INSERT INTO `products` VALUES (1,'Nikon D500 20.9MP Digital SLR Camera','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','description',1,96,1668.92,32.10,'2016-10-24 21:19:39',1,1),(2,'Apple iPhone 7 Plus (Latest Model)','http://i.ebayimg.com/images/g/yZ8AAOSw4shX-HvJ/s-l500.jpg','Apple','GPS, Internet Browser, Music Player, Near Field Communication',1,11,990.00,2.40,'2016-10-31 15:41:51',3,4);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -427,7 +399,7 @@ CREATE TABLE `reviews` (
   PRIMARY KEY (`id`),
   KEY `fk_reviews_products1_idx` (`products_id`),
   KEY `fk_reviews_customers1_idx` (`customers_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,16 +408,9 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,'Amazing','This photo camera is amazing',5,'2016-10-31 22:13:41',1,1);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `comp344_ecommerce`.`partner_orders` ;
-
-CREATE TABLE IF NOT EXISTS `comp344_ecommerce`.`partner_orders` (
-  `orders_id` INT NOT NULL,
-  `partners_id` INT NOT NULL,
-  PRIMARY KEY (`orders_id`, `partners_id`))
-ENGINE = InnoDB;
 
 --
 -- Dumping routines for database 'comp344_ecommerce'
@@ -460,6 +425,4 @@ ENGINE = InnoDB;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-31 16:03:34
-
-
+-- Dump completed on 2016-11-01 18:54:55
