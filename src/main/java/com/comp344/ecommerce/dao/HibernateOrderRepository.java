@@ -1,6 +1,7 @@
 package com.comp344.ecommerce.dao;
 
 import com.comp344.ecommerce.domain.Order;
+import com.comp344.ecommerce.domain.OrderProductStatus;
 import com.comp344.ecommerce.utils.ListPage;
 import com.comp344.ecommerce.utils.Page;
 import org.hibernate.SessionFactory;
@@ -64,5 +65,38 @@ public class HibernateOrderRepository extends HibernateBaseRepository<Order> {
         return result;
     }
 
+    public Page<Order> findByPartner(Integer partnerId, OrderProductStatus status, String orderBy, int page, int size){
 
+        String where = "";
+        String conn = " where ";
+
+        if (orderBy==null){
+            orderBy = "order by o.createdAt desc";
+        }
+
+        List params=new ArrayList();
+
+        if(partnerId != null){
+            where+=conn + "p.partner.id=?";
+            conn = " and ";
+            params.add(partnerId);
+        }
+
+        if(status != null){
+            where+=conn + "op.status=?";
+            conn = " and ";
+            params.add(status);
+        }
+
+        Page result;
+        if(page>0&&size>0){
+            List l =getResult("select DISTINCT o from Order o JOIN FETCH o.products op JOIN FETCH op.product p" + where + " " + orderBy, params.toArray(), page, size);
+            int count =getResultTotalSize("select count(DISTINCT o) from Order o JOIN FETCH o.products op JOIN FETCH op.product p" + where + " " + orderBy, params.toArray());
+            result = new ListPage(l, page, size, count);
+        } else {
+            List l = getHibernateTemplate().find("select DISTINCT o from Order o JOIN FETCH o.products op JOIN FETCH op.product p" + where + " " + orderBy,params.toArray());
+            result=new ListPage(l,1,l.size(),l.size());
+        }
+        return result;
+    }
 }

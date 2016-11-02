@@ -1,7 +1,9 @@
 package com.comp344.ecommerce.service;
 
+import com.comp344.ecommerce.domain.OrderProductStatus;
 import com.comp344.ecommerce.domain.PartnerType;
 import com.comp344.ecommerce.service.representation.*;
+import com.comp344.ecommerce.service.workflow.OrderActivity;
 import com.comp344.ecommerce.service.workflow.PartnerActivity;
 import com.comp344.ecommerce.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -20,6 +24,9 @@ public class PartnerResource {
 
     @Autowired
     private PartnerActivity partnerActivity;
+
+    @Autowired
+    private OrderActivity orderActivity;
 
     @RequestMapping(value = "/partner/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -104,5 +111,39 @@ public class PartnerResource {
 
         partnerActivity.deleteProduct(productId, partnerId);
         return new ResponseEntity<Message>(new Message("Product deleted successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/partner/{id}/order", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<List<OrderRepresentation>> getAllOrders(@PathVariable(value = "id") Integer partnerId,
+                                                                  @RequestParam(value = "status", required = false) OrderProductStatus status) throws Exception {
+        return new ResponseEntity<List<OrderRepresentation>>(orderActivity.getPartnerOrders(partnerId, status), HttpStatus.CREATED);
+    }
+
+
+    @RequestMapping(value = "/partner/{id}/order/{orderId}/product/{productId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Message> fulfillOrder(@PathVariable(value = "id") Integer partnerId,
+                                                @PathVariable(value = "orderId") Integer orderId,
+                                                @PathVariable(value = "productId") Integer productId,
+                                                @RequestParam(value = "trackingNumber", required = true) String trackingNumber) throws Exception {
+        orderActivity.fulfillOrderProduct(partnerId, orderId, productId, trackingNumber);
+
+        return new ResponseEntity<Message>(new Message("Order product is fulfilled successfully"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/partner/{id}/order/{orderId}/product/{productId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity<Message> updateOrderProductStatus(@PathVariable(value = "id") Integer partnerId,
+                                                @PathVariable(value = "orderId") Integer orderId,
+                                                @PathVariable(value = "productId") Integer productId,
+                                                @RequestParam(value = "status", required = true) OrderProductStatus status) throws Exception {
+
+        if(status.equals(OrderProductStatus.SHIPPED)){
+            orderActivity.shipOrderProduct(partnerId, orderId, productId);
+        } else if(status.equals(OrderProductStatus.DELIVERED)){
+            orderActivity.setOrderProductStatusDelivered(partnerId, orderId, productId);
+        }
+        return new ResponseEntity<Message>(new Message("Order product's status is changed successfully to '" + status.name() + "'"), HttpStatus.OK);
     }
 }

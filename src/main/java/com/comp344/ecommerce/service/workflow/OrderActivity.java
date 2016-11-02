@@ -80,7 +80,7 @@ public class OrderActivity {
         cart.setStatus(Boolean.FALSE);
         cartManager.save(cart);
 
-        return new OrderRepresentation(order);
+        return new OrderRepresentation(order, Boolean.TRUE, Boolean.TRUE);
     }
 
     public OrderRepresentation getOrder(Integer id) throws Exception {
@@ -93,7 +93,7 @@ public class OrderActivity {
         order.setProducts(orderManager.findProduct(id, null, null, null, null));
         order.setStatuses(orderManager.findStatuses(id, null, null));
 
-        return new OrderRepresentation(order);
+        return new OrderRepresentation(order, Boolean.TRUE, Boolean.TRUE);
     }
 
     public List<OrderStatusRepresentation> getOrderStatuses(Integer orderId) throws Exception {
@@ -133,9 +133,150 @@ public class OrderActivity {
 
         List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
         for(Order order : orders){
-            orderRepresentations.add(new OrderRepresentation(order));
+            orderRepresentations.add(new OrderRepresentation(order, Boolean.FALSE, Boolean.FALSE));
         }
         return orderRepresentations;
+
+    }
+
+    public List<OrderRepresentation> getPartnerOrders(Integer partnerId, OrderProductStatus status) throws Exception {
+        List<Order> orders = orderManager.findByPartner(partnerId, status, null, 0, 0).getElements();
+
+        List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
+        for(Order order : orders){
+            Double totalPrice = 0d;
+            List<OrderProduct> orderProducts = orderManager.findProduct(order.getId(), null, partnerId, status, null);
+            for(OrderProduct orderProduct : orderProducts){
+                totalPrice = totalPrice + orderProduct.getQuantity() * orderProduct.getUnitPrice();
+            }
+            order.setTotalPrice(totalPrice);
+            order.setProducts(orderProducts);
+            orderRepresentations.add(new OrderRepresentation(order, Boolean.TRUE, Boolean.FALSE));
+        }
+        return orderRepresentations;
+
+    }
+
+    public void fulfillOrderProduct(Integer partnerId, Integer orderId, Integer productId, String trackingNumber) throws Exception {
+
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partnerId, OrderProductStatus.ORDERED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+        orderProduct.setStatus(OrderProductStatus.FULFILLED);
+        orderProduct.setTrackingNumber(trackingNumber);
+        orderManager.saveProduct(orderProduct);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        boolean allfulfilled = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.FULFILLED))
+                allfulfilled = false;
+        }
+
+        if(allfulfilled){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.FULFILLED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.FULFILLED);
+            orderManager.save(order);
+        }
+
+    }
+
+    public void shipOrderProduct(Integer partnerId, Integer orderId, Integer productId) throws Exception {
+
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partnerId, OrderProductStatus.FULFILLED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+
+        orderProduct.setStatus(OrderProductStatus.SHIPPED);
+        orderManager.saveProduct(orderProduct);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        boolean allshipped = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.SHIPPED))
+                allshipped = false;
+        }
+
+        if(allshipped){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.SHIPPED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.SHIPPED);
+            orderManager.save(order);
+        }
+    }
+
+    public void setOrderProductStatusDelivered(Integer partnerId, Integer orderId, Integer productId) throws Exception {
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partnerId, OrderProductStatus.SHIPPED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        orderProduct.setStatus(OrderProductStatus.DELIVERED);
+        orderManager.saveProduct(orderProduct);
+
+        boolean alldelivered = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.DELIVERED))
+                alldelivered = false;
+        }
+
+        if(alldelivered){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.DELIVERED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.DELIVERED);
+            orderManager.save(order);
+        }
+    }
+
+    public void cancelOrder(Integer customerId, Integer orderId) throws Exception {
+        Order order = orderManager.get(orderId);
+        if(order == null || !order.getCustomer().getId().equals(customerId)) {
+            throw new ResourceNotFoundException("No order found with id " + orderId);
+        }
+
+        if(order.getLastStatus().equals(OrderStatusType.SHIPPED)
+            || order.getLastStatus().equals(OrderStatusType.DELIVERED)
+            || order.getLastStatus().equals(OrderStatusType.CANCELLED)){
+            throw new NotAvailableException("Sorry, your order has been already '" + order.getLastStatus().name() + "'");
+        }
+
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setCreatedAt(new Date());
+        orderStatus.setStatus(OrderStatusType.CANCELLED);
+        orderStatus.setOrder(order);
+        orderManager.saveStatus(orderStatus);
+        order.setLastStatus(OrderStatusType.CANCELLED);
+        orderManager.save(order);
+
+        //todo
+        //refund function would be here
 
     }
 }

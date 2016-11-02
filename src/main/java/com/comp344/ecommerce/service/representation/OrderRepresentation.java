@@ -27,7 +27,7 @@ public class OrderRepresentation {
 
     public OrderRepresentation(){}
 
-    public OrderRepresentation(Order order){
+    public OrderRepresentation(Order order, Boolean showProducts, Boolean showStatuses){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -43,13 +43,17 @@ public class OrderRepresentation {
         this.paymentCardNumber = "..." + order.getPaymentCard().getCardNumber().substring(order.getPaymentCard().getCardNumber().length() - 4);
         this.paymentCardType = order.getPaymentCard().getCardType();
 
-        if(order.getProducts() != null && order.getProducts().size() > 0)
-            for(OrderProduct orderProduct : order.getProducts())
-                this.products.add(new OrderProductRepresentation(orderProduct));
+        if(showProducts) {
+            if (order.getProducts() != null && order.getProducts().size() > 0)
+                for (OrderProduct orderProduct : order.getProducts())
+                    this.products.add(new OrderProductRepresentation(orderProduct));
+        }
+        if(showStatuses) {
+            if(order.getStatuses() != null && order.getStatuses().size() > 0)
+                for(OrderStatus orderStatus : order.getStatuses())
+                    this.statuses.add(new OrderStatusRepresentation(orderStatus));
+        }
 
-        if(order.getStatuses() != null && order.getStatuses().size() > 0)
-            for(OrderStatus orderStatus : order.getStatuses())
-                this.statuses.add(new OrderStatusRepresentation(orderStatus));
     }
 
     public Integer getId() {

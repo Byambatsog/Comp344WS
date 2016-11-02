@@ -29,36 +29,36 @@ public class HibernateOrderProductRepository extends HibernateBaseRepository<Ord
         String conn = " where ";
 
         if (orderBy==null){
-            orderBy = "order by products_id desc";
+            orderBy = "order by op.product.id desc";
         }
 
         List params=new ArrayList();
 
         if(orderId != null){
-            where+=conn + "orders_id=?";
+            where+=conn + "op.order.id=?";
             conn = " and ";
             params.add(orderId);
         }
 
         if(productId != null){
-            where+=conn + "products_id=?";
+            where+=conn + "op.product.id=?";
             conn = " and ";
             params.add(productId);
         }
 
         if(partnerId != null){
-            where+=conn + "product.partners_id=?";
+            where+=conn + "op.product.partner.id=?";
             conn = " and ";
             params.add(partnerId);
         }
 
         if(status != null){
-            where+=conn + "status=?";
+            where+=conn + "op.status=?";
             conn = " and ";
             params.add(status);
         }
 
-        return getHibernateTemplate().find("from OrderProduct" + where + " " + orderBy,params.toArray());
+        return getHibernateTemplate().find("from OrderProduct op" + where + " " + orderBy,params.toArray());
     }
 
 }

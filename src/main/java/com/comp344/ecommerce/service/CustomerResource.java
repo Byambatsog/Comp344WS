@@ -148,4 +148,13 @@ public class CustomerResource {
         return new ResponseEntity<List<OrderRepresentation>>(orderActivity.getCustomerOrders(customerId), HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/customer/{id}/order/{orderId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> cancelOrder(@PathVariable(value = "id") Integer customerId,
+                                               @PathVariable(value = "orderId") Integer orderId) throws Exception {
+
+        orderActivity.cancelOrder(customerId, orderId);
+        return new ResponseEntity<Message>(new Message("Order cancelled successfully"), HttpStatus.OK);
+    }
+
 }

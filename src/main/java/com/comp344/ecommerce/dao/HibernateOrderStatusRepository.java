@@ -28,7 +28,7 @@ public class HibernateOrderStatusRepository extends HibernateBaseRepository<Orde
         String conn = " where ";
 
         if (orderBy==null){
-            orderBy = "order by created_at desc";
+            orderBy = "order by createdAt desc";
         }
 
         List params=new ArrayList();

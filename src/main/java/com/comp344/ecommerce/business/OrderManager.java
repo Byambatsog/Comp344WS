@@ -35,8 +35,6 @@ public class OrderManager {
         orderRepository.save(order);
 
         for(OrderProduct orderProduct : order.getProducts()){
-            //orderProduct.setOrder(order);
-            //orderProductRepository.save(orderProduct);
             Product product = productRepository.get(orderProduct.getProduct().getId());
             product.setQuantityInStock(product.getQuantityInStock() - orderProduct.getQuantity());
             productRepository.save(product);
@@ -49,9 +47,6 @@ public class OrderManager {
         List<OrderStatus> statuses = new ArrayList<OrderStatus>();
         statuses.add(status);
         order.setStatuses(statuses);
-
-        //orderStatusRepository.save(status);
-
         orderRepository.save(order);
     }
 
@@ -133,6 +128,10 @@ public class OrderManager {
             return orderProduct.getStatus();
         else
             return null;
+    }
+
+    public Page<Order> findByPartner(Integer partnerId, OrderProductStatus status, String orderBy, int page, int size){
+        return orderRepository.findByPartner(partnerId, status, orderBy, page, size);
     }
 
 }
