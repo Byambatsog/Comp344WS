@@ -233,15 +233,17 @@ public class OrderActivity {
         if(orderProduct == null)
             throw new ResourceNotFoundException("No order product is found with productId " + productId);
 
-        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
         orderProduct.setStatus(OrderProductStatus.DELIVERED);
         orderManager.saveProduct(orderProduct);
 
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
         boolean alldelivered = true;
         for(OrderProduct ordProduct : orderProducts){
             if(!ordProduct.getStatus().equals(OrderProductStatus.DELIVERED))
                 alldelivered = false;
         }
+
+        System.out.println("alldelivered: " + alldelivered);
 
         if(alldelivered){
             Order order = orderManager.get(orderId);
