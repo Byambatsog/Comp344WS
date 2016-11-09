@@ -44,6 +44,8 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
             where+=conn + "firstName like ? or lastName like ? or email like ?";
             conn = " and ";
             params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
+            params.add("%" + searchQuery + "%");
         }
 
         Page result;
