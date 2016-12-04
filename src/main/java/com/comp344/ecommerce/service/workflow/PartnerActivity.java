@@ -1,6 +1,7 @@
 package com.comp344.ecommerce.service.workflow;
 
 import com.comp344.ecommerce.business.LoginManager;
+import com.comp344.ecommerce.business.OrderManager;
 import com.comp344.ecommerce.business.PartnerManager;
 import com.comp344.ecommerce.business.ProductManager;
 import com.comp344.ecommerce.domain.*;
@@ -33,6 +34,9 @@ public class PartnerActivity {
 
     @Autowired
     private LoginManager loginManager;
+
+    @Autowired
+    private OrderManager orderManager;
 
     @Autowired
     private AuthorizationUtil authorizationUtil;
@@ -243,5 +247,180 @@ public class PartnerActivity {
                 "update", HttpMethod.PUT, "application/json");
         partnerProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/products/" + product.getId(),
                 "delete", HttpMethod.DELETE, "");
+    }
+
+
+    public List<OrderRepresentation> getPartnerOrders(Integer partnerId, OrderProductStatus status) throws Exception {
+
+        Partner partner = partnerManager.get(partnerId);
+        authorizationUtil.authorize(partner);
+
+        List<Order> orders = orderManager.findByPartner(partnerId, status, null, 0, 0).getElements();
+        List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
+        for(Order order : orders){
+            Double totalPrice = 0d;
+            List<OrderProduct> orderProducts = orderManager.findProduct(order.getId(), null, partnerId, status, null);
+            for(OrderProduct orderProduct : orderProducts){
+                totalPrice = totalPrice + orderProduct.getQuantity() * orderProduct.getUnitPrice();
+            }
+            order.setTotalPrice(totalPrice);
+            OrderRepresentation orderRepresentation = new OrderRepresentation(order);
+            setLink(orderRepresentation, order);
+            orderRepresentations.add(orderRepresentation);
+        }
+        return orderRepresentations;
+    }
+
+    public OrderRepresentation getPartnerOrder(Integer orderId) throws Exception {
+
+        Partner partner = authorizationUtil.getAuthenticatedPartner();
+
+        List<Order> orders = orderManager.findByPartner(partner.getId(), null, null, 0, 0).getElements();
+        for(Order order : orders){
+            if(order.getId().equals(orderId)){
+                Double totalPrice = 0d;
+                List<OrderProduct> orderProducts = orderManager.findProduct(order.getId(), null, partner.getId(), null, null);
+                for(OrderProduct orderProduct : orderProducts){
+                    totalPrice = totalPrice + orderProduct.getQuantity() * orderProduct.getUnitPrice();
+                }
+                order.setTotalPrice(totalPrice);
+                order.setProducts(orderProducts);
+
+                OrderRepresentation orderRepresentation = new OrderRepresentation(order);
+                for(OrderProduct orderProduct : order.getProducts()){
+                    OrderProductRepresentation productRepresentation = new OrderProductRepresentation(orderProduct);
+                    setLinks(productRepresentation, orderProduct);
+                    orderRepresentation.getProducts().add(productRepresentation);
+                }
+                setLink(orderRepresentation, order);
+                return orderRepresentation;
+            }
+        }
+        throw new ResourceNotFoundException("No order found with id " + orderId);
+    }
+
+    private void setLink(OrderRepresentation orderRepresentation, Order order) {
+        orderRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/orders/" + order.getId(),
+                "self", HttpMethod.GET, "");
+    }
+
+    public void fulfillOrderProduct(Integer orderId, Integer productId, String trackingNumber) throws Exception {
+
+        Partner partner = authorizationUtil.getAuthenticatedPartner();
+
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partner.getId(), OrderProductStatus.ORDERED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+        orderProduct.setStatus(OrderProductStatus.FULFILLED);
+        orderProduct.setTrackingNumber(trackingNumber);
+        orderManager.saveProduct(orderProduct);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        boolean allfulfilled = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.FULFILLED))
+                allfulfilled = false;
+        }
+
+        if(allfulfilled){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.FULFILLED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.FULFILLED);
+            orderManager.save(order);
+        }
+    }
+
+    public void shipOrderProduct(Integer orderId, Integer productId) throws Exception {
+
+        Partner partner = authorizationUtil.getAuthenticatedPartner();
+
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partner.getId(), OrderProductStatus.FULFILLED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+
+        orderProduct.setStatus(OrderProductStatus.SHIPPED);
+        orderManager.saveProduct(orderProduct);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        boolean allshipped = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.SHIPPED))
+                allshipped = false;
+        }
+
+        if(allshipped){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.SHIPPED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.SHIPPED);
+            orderManager.save(order);
+        }
+    }
+
+    public void setOrderProductStatusDelivered(Integer orderId, Integer productId) throws Exception {
+
+        Partner partner = authorizationUtil.getAuthenticatedPartner();
+
+        OrderProduct orderProduct = null;
+        List<OrderProduct> orderProducts = orderManager.findProduct(orderId, productId, partner.getId(), OrderProductStatus.SHIPPED, null);
+        if(orderProducts != null && orderProducts.size() > 0)
+            orderProduct = orderProducts.get(0);
+
+        if(orderProduct == null)
+            throw new ResourceNotFoundException("No order product is found with productId " + productId);
+
+        orderProduct.setStatus(OrderProductStatus.DELIVERED);
+        orderManager.saveProduct(orderProduct);
+
+        orderProducts = orderManager.findProduct(orderId, null, null, null, null);
+        boolean alldelivered = true;
+        for(OrderProduct ordProduct : orderProducts){
+            if(!ordProduct.getStatus().equals(OrderProductStatus.DELIVERED))
+                alldelivered = false;
+        }
+
+        if(alldelivered){
+            Order order = orderManager.get(orderId);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setCreatedAt(new Date());
+            orderStatus.setStatus(OrderStatusType.DELIVERED);
+            orderStatus.setOrder(order);
+            orderManager.saveStatus(orderStatus);
+            order.setLastStatus(OrderStatusType.DELIVERED);
+            orderManager.save(order);
+        }
+    }
+
+    private void setLinks(OrderProductRepresentation orderProductRepresentation, OrderProduct orderProduct) {
+
+        if(orderProduct.getStatus().equals(OrderProductStatus.ORDERED))
+            orderProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/orders/" + orderProduct.getOrder().getId()
+                    + "/products/" + orderProduct.getProduct().getId(), "fulfill", HttpMethod.POST, "");
+        if(orderProduct.getStatus().equals(OrderProductStatus.FULFILLED))
+            orderProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/orders/" + orderProduct.getOrder().getId()
+                    + "/products/" + orderProduct.getProduct().getId() + "?status=" + OrderProductStatus.SHIPPED
+                    , "ship", HttpMethod.PUT, "");
+        if(orderProduct.getStatus().equals(OrderProductStatus.SHIPPED))
+            orderProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/orders/" + orderProduct.getOrder().getId()
+                            + "/products/" + orderProduct.getProduct().getId() + "?status=" + OrderProductStatus.DELIVERED
+                    , "deliver", HttpMethod.PUT, "");
+
     }
 }

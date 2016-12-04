@@ -166,6 +166,8 @@ public class ProductActivity {
 				"reviews", HttpMethod.GET, "");
 		productDetailRepresentation.addLink(BaseRepresentation.BASE_URI + "/productservice/products/" + product.getId() + "/reviews",
 				"reviews.post", HttpMethod.POST, "application/json");
+		productDetailRepresentation.addLink(BaseRepresentation.BASE_URI + "/orderservice/orders",
+				"orders.create", HttpMethod.POST, "application/json");
 	}
 
 	private void setLink(ProductPartnerRepresentation partnerRepresentation, Partner partner) {

@@ -20,19 +20,19 @@ public class OrderResource {
     @Autowired
     private OrderActivity orderActivity;
 
-    @RequestMapping(value = "/order", method = RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value = "/orders", method = RequestMethod.POST, consumes="application/json")
     @ResponseBody
     public ResponseEntity<OrderRepresentation> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) throws Exception {
         return new ResponseEntity<OrderRepresentation>(orderActivity.createOrder(orderCreateRequest), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<OrderRepresentation> getOrder(@PathVariable(value = "id") Integer id) throws Exception {
         return new ResponseEntity<OrderRepresentation>(orderActivity.getOrder(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Message> cancelOrder(@PathVariable(value = "id") Integer id) throws Exception {
 
@@ -40,16 +40,23 @@ public class OrderResource {
         return new ResponseEntity<Message>(new Message("Order cancelled successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/{id}/status", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}/statuses", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<OrderStatusRepresentation>> getOrderStatuses(@PathVariable(value = "id") Integer orderId) throws Exception {
         return new ResponseEntity<List<OrderStatusRepresentation>>(orderActivity.getOrderStatuses(orderId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/order/{id}/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/orders/{id}/products", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<OrderProductRepresentation>> getOrderProducts(@PathVariable(value = "id") Integer orderId) throws Exception {
         return new ResponseEntity<List<OrderProductRepresentation>>(orderActivity.getOrderProducts(orderId), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/orders/{id}/products/{productId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> getOrderProduct(@PathVariable(value = "id") Integer orderId,
+                                                   @PathVariable(value = "productId") Integer productId) throws Exception {
+        orderActivity.cancelOrderProduct(orderId, productId);
+        return new ResponseEntity<Message>(new Message("Order Product cancelled successfully"), HttpStatus.OK);
+    }
 }

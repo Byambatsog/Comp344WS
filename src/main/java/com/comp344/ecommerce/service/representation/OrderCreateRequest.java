@@ -7,19 +7,10 @@ import java.util.List;
  */
 public class OrderCreateRequest {
 
-    private Integer customerId;
     private Integer shippingAddressId;
     private Integer billingAddressId;
     private Integer creditCardId;
     private List<CartItem> cartItems;
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
 
     public Integer getShippingAddressId() {
         return shippingAddressId;

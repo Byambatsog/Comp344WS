@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Byambatsog on 10/31/16.
  */
-public class OrderRepresentation {
+public class OrderRepresentation extends BaseRepresentation {
 
     private Integer id;
     private Double totalPrice;
@@ -27,7 +27,7 @@ public class OrderRepresentation {
 
     public OrderRepresentation(){}
 
-    public OrderRepresentation(Order order, Boolean showProducts, Boolean showStatuses){
+    public OrderRepresentation(Order order){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -42,18 +42,6 @@ public class OrderRepresentation {
         this.customerFirstName = order.getCustomer().getFirstName();
         this.paymentCardNumber = "..." + order.getPaymentCard().getCardNumber().substring(order.getPaymentCard().getCardNumber().length() - 4);
         this.paymentCardType = order.getPaymentCard().getCardType();
-
-        if(showProducts) {
-            if (order.getProducts() != null && order.getProducts().size() > 0)
-                for (OrderProduct orderProduct : order.getProducts())
-                    this.products.add(new OrderProductRepresentation(orderProduct));
-        }
-        if(showStatuses) {
-            if(order.getStatuses() != null && order.getStatuses().size() > 0)
-                for(OrderStatus orderStatus : order.getStatuses())
-                    this.statuses.add(new OrderStatusRepresentation(orderStatus));
-        }
-
     }
 
     public Integer getId() {

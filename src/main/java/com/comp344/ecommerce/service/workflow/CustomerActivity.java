@@ -246,7 +246,9 @@ public class CustomerActivity {
         List<Order> orders = orderManager.find(customerId, null, null, null, 0, 0).getElements();
         List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
         for(Order order : orders){
-            orderRepresentations.add(new OrderRepresentation(order, Boolean.FALSE, Boolean.FALSE));
+            OrderRepresentation orderRepresentation = new OrderRepresentation(order);
+            setLink(orderRepresentation, order);
+            orderRepresentations.add(orderRepresentation);
         }
         return orderRepresentations;
     }
@@ -273,6 +275,8 @@ public class CustomerActivity {
                 "creditcards.create", HttpMethod.POST, "application/json");
         customerRepresentation.addLink(BaseRepresentation.BASE_URI + "/customerservice/customers/" + customer.getId() + "/orders",
                 "orders", HttpMethod.GET, "");
+        customerRepresentation.addLink(BaseRepresentation.BASE_URI + "/orderservice/orders",
+                "orders.create", HttpMethod.POST, "application/json");
     }
 
     private void setLinks(CreditCardRepresentation creditCardRepresentation, CreditCard creditCard) {
@@ -291,5 +295,10 @@ public class CustomerActivity {
                 "update", HttpMethod.PUT, "application/json");
         addressRepresentation.addLink(BaseRepresentation.BASE_URI + "/customerservice/addresses/" + address.getId(),
                 "delete", HttpMethod.DELETE, "");
+    }
+
+    private void setLink(OrderRepresentation orderRepresentation, Order order) {
+        orderRepresentation.addLink(BaseRepresentation.BASE_URI + "/orderservice/orders/" + order.getId(),
+                "self", HttpMethod.GET, "");
     }
 }

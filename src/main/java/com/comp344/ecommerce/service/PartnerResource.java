@@ -25,9 +25,6 @@ public class PartnerResource {
     @Autowired
     private PartnerActivity partnerActivity;
 
-    @Autowired
-    private OrderActivity orderActivity;
-
     @RequestMapping(value = "/partners", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<PartnerRepresentation>>  getPartners(
@@ -114,32 +111,36 @@ public class PartnerResource {
     @ResponseBody
     public ResponseEntity<List<OrderRepresentation>> getAllOrders(@PathVariable(value = "id") Integer partnerId,
                                                                   @RequestParam(value = "status", required = false) OrderProductStatus status) throws Exception {
-        return new ResponseEntity<List<OrderRepresentation>>(orderActivity.getPartnerOrders(partnerId, status), HttpStatus.CREATED);
+        return new ResponseEntity<List<OrderRepresentation>>(partnerActivity.getPartnerOrders(partnerId, status), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<OrderRepresentation> getOrder(@PathVariable(value = "id") Integer id) throws Exception {
+        return new ResponseEntity<OrderRepresentation>(partnerActivity.getPartnerOrder(id), HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/partner/{id}/order/{orderId}/product/{productId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/orders/{orderId}/products/{productId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Message> fulfillOrder(@PathVariable(value = "id") Integer partnerId,
-                                                @PathVariable(value = "orderId") Integer orderId,
+    public ResponseEntity<Message> fulfillOrder(@PathVariable(value = "orderId") Integer orderId,
                                                 @PathVariable(value = "productId") Integer productId,
                                                 @RequestParam(value = "trackingNumber", required = true) String trackingNumber) throws Exception {
-        orderActivity.fulfillOrderProduct(partnerId, orderId, productId, trackingNumber);
+        partnerActivity.fulfillOrderProduct(orderId, productId, trackingNumber);
 
         return new ResponseEntity<Message>(new Message("Order product is fulfilled successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/order/{orderId}/product/{productId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/orders/{orderId}/products/{productId}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<Message> updateOrderProductStatus(@PathVariable(value = "id") Integer partnerId,
-                                                @PathVariable(value = "orderId") Integer orderId,
+    public ResponseEntity<Message> updateOrderProductStatus(@PathVariable(value = "orderId") Integer orderId,
                                                 @PathVariable(value = "productId") Integer productId,
                                                 @RequestParam(value = "status", required = true) OrderProductStatus status) throws Exception {
 
         if(status.equals(OrderProductStatus.SHIPPED)){
-            orderActivity.shipOrderProduct(partnerId, orderId, productId);
+            partnerActivity.shipOrderProduct(orderId, productId);
         } else if(status.equals(OrderProductStatus.DELIVERED)){
-            orderActivity.setOrderProductStatusDelivered(partnerId, orderId, productId);
+            partnerActivity.setOrderProductStatusDelivered(orderId, productId);
         }
         return new ResponseEntity<Message>(new Message("Order product's status is changed successfully to '" + status.name() + "'"), HttpStatus.OK);
     }
