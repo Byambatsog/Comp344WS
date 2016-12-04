@@ -175,6 +175,7 @@ CREATE TABLE `login` (
   `password` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `admin` tinyint(1) NOT NULL,
+  `role` varchar(20) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;

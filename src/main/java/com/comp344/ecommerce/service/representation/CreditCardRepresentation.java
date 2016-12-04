@@ -5,7 +5,7 @@ import com.comp344.ecommerce.domain.CreditCard;
 /**
  * Created by Byambatsog on 10/31/16.
  */
-public class CreditCardRepresentation {
+public class CreditCardRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String cardNumber;

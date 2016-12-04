@@ -28,13 +28,7 @@ public class PartnerResource {
     @Autowired
     private OrderActivity orderActivity;
 
-    @RequestMapping(value = "/partner/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<PartnerRepresentation>  getPartner(@PathVariable(value = "id") Integer id) throws Exception {
-        return new ResponseEntity<PartnerRepresentation>(partnerActivity.getPartner(id), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/partner", method = RequestMethod.GET)
+    @RequestMapping(value = "/partners", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<PartnerRepresentation>>  getPartners(
             @RequestParam(value = "q", required = false) String searchQuery,
@@ -45,13 +39,19 @@ public class PartnerResource {
         return new ResponseEntity<Page<PartnerRepresentation>>(partnerActivity.findPartners(searchQuery, type, orderBy, page, pageSize), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner", method = RequestMethod.POST, consumes="application/json")
+    @RequestMapping(value = "/partners", method = RequestMethod.POST, consumes="application/json")
     @ResponseBody
     public ResponseEntity<PartnerRepresentation> createPartner(@RequestBody PartnerCreateRequest partnerCreateRequest) throws Exception {
         return new ResponseEntity<PartnerRepresentation>(partnerActivity.createPartner(partnerCreateRequest), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/partner/{id}", method = RequestMethod.PUT, consumes="application/json")
+    @RequestMapping(value = "/partners/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<PartnerRepresentation>  getPartner(@PathVariable(value = "id") Integer id) throws Exception {
+        return new ResponseEntity<PartnerRepresentation>(partnerActivity.getPartner(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/partners/{id}", method = RequestMethod.PUT, consumes="application/json")
     @ResponseBody
     public ResponseEntity<Message> updatePartner(@PathVariable(value = "id") Integer id,
                                   @RequestBody PartnerRequest partnerRequest) throws Exception {
@@ -60,7 +60,7 @@ public class PartnerResource {
         return new ResponseEntity<Message>(new Message("Partner updated successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/partners/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Message> deletePartner(@PathVariable(value = "id") Integer id) throws Exception {
 
@@ -68,7 +68,7 @@ public class PartnerResource {
         return new ResponseEntity<Message>(new Message("Partner deleted successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/partners/{id}/products", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<PartnerProductRepresentation>> getPartners(@PathVariable(value = "id") Integer partnerId,
                                        @RequestParam(value = "q", required = false) String searchQuery,
@@ -80,7 +80,7 @@ public class PartnerResource {
         return new ResponseEntity<Page<PartnerProductRepresentation>>(partnerActivity.findProducts(searchQuery, categoryId, partnerId, status, orderBy, page, pageSize), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/partner/{id}/product", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/partners/{id}/products", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public ResponseEntity<PartnerProductRepresentation> createProduct(@PathVariable(value = "id") Integer partnerId,
                                                @RequestBody ProductRequest productRequest) throws Exception {
@@ -88,32 +88,29 @@ public class PartnerResource {
         return new ResponseEntity<PartnerProductRepresentation>(partnerActivity.createProduct(partnerId, productRequest), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/product/{productId}", method = RequestMethod.PUT, consumes = "application/json")
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT, consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<Message> updateProduct(@PathVariable(value = "id") Integer partnerId,
-                                                 @PathVariable(value = "productId") Integer productId,
-                                                  @RequestBody ProductRequest productRequest) throws Exception {
-        partnerActivity.updateProduct(productId, productRequest);
+    public ResponseEntity<Message> updateProduct(@PathVariable(value = "id") Integer id,
+                                                 @RequestBody ProductRequest productRequest) throws Exception {
+        partnerActivity.updateProduct(id, productRequest);
         return new ResponseEntity<Message>(new Message("Product updated successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/product/{productId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<PartnerProductRepresentation> getProduct(@PathVariable(value = "id") Integer partnerId,
-                                                 @PathVariable(value = "productId") Integer productId) throws Exception {
-        return new ResponseEntity<PartnerProductRepresentation>(partnerActivity.getProduct(productId, partnerId), HttpStatus.OK);
+    public ResponseEntity<PartnerProductRepresentation> getProduct(@PathVariable(value = "id") Integer id) throws Exception {
+        return new ResponseEntity<PartnerProductRepresentation>(partnerActivity.getProduct(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/product/{productId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Message> deleteProduct(@PathVariable(value = "id") Integer partnerId,
-                                                 @PathVariable(value = "productId") Integer productId) throws Exception {
+    public ResponseEntity<Message> deleteProduct(@PathVariable(value = "id") Integer id) throws Exception {
 
-        partnerActivity.deleteProduct(productId, partnerId);
+        partnerActivity.deleteProduct(id);
         return new ResponseEntity<Message>(new Message("Product deleted successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/partner/{id}/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/partners/{id}/orders", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<OrderRepresentation>> getAllOrders(@PathVariable(value = "id") Integer partnerId,
                                                                   @RequestParam(value = "status", required = false) OrderProductStatus status) throws Exception {

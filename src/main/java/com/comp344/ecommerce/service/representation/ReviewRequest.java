@@ -8,7 +8,6 @@ public class ReviewRequest {
     private String title;
     private String comment;
     private Integer rating;
-    private Integer customerId;
 
     public String getTitle() {
         return title;
@@ -32,13 +31,5 @@ public class ReviewRequest {
 
     public void setRating(Integer rating) {
         this.rating = rating;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
     }
 }

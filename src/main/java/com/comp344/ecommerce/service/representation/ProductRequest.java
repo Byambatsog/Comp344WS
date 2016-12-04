@@ -2,7 +2,6 @@ package com.comp344.ecommerce.service.representation;
 
 public class ProductRequest {
 	
-	private Integer id;
 	private String name;
 	private String picture;
 	private String brandName;
@@ -13,12 +12,6 @@ public class ProductRequest {
 	private Double weight;
 	private Integer categoryId;
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}

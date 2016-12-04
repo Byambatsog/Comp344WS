@@ -5,7 +5,7 @@ import com.comp344.ecommerce.domain.CustomerAddress;
 /**
  * Created by Byambatsog on 10/31/16.
  */
-public class AddressRepresentation {
+public class AddressRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String street;

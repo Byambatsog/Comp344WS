@@ -4,10 +4,7 @@ import com.comp344.ecommerce.business.*;
 import com.comp344.ecommerce.domain.*;
 import com.comp344.ecommerce.exception.NotAvailableException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
-import com.comp344.ecommerce.service.representation.OrderCreateRequest;
-import com.comp344.ecommerce.service.representation.OrderProductRepresentation;
-import com.comp344.ecommerce.service.representation.OrderRepresentation;
-import com.comp344.ecommerce.service.representation.OrderStatusRepresentation;
+import com.comp344.ecommerce.service.representation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,17 +27,9 @@ public class OrderActivity {
     @Autowired
     private ProductManager productManager;
 
-    @Autowired
-    private CartManager cartManager;
-
     public OrderRepresentation createOrder(OrderCreateRequest orderCreateRequest) throws Exception {
 
-        Cart cart = cartManager.findActiveCart(orderCreateRequest.getCustomerId());
-        if(cart == null)
-            throw new ResourceNotFoundException("Your cart is empty! Please add your product into your cart.");
-
-        List<CartItem> cartItems = cartManager.findItem(cart.getId());
-        if(cartItems == null || cartItems.size()==0)
+        if(orderCreateRequest.getCartItems() == null || orderCreateRequest.getCartItems().size()==0)
             throw new ResourceNotFoundException("Your cart is empty! Please add your product into your cart.");
 
         Order order = new Order();
@@ -51,9 +40,9 @@ public class OrderActivity {
 
         Double totalPrice = 0d;
         List<OrderProduct> products = new ArrayList<OrderProduct>();
-        for(CartItem cartItem : cartItems){
+        for(CartItem cartItem : orderCreateRequest.getCartItems()){
 
-            Product product = productManager.get(cartItem.getProduct().getId());
+            Product product = productManager.get(cartItem.getProductId());
             if (product == null) {
                 throw new NotAvailableException("The product '" + product.getName() + "' is no longer available");
             } else if (product.getQuantityInStock() < cartItem.getQuantity()) {
@@ -62,8 +51,8 @@ public class OrderActivity {
 
             OrderProduct orderProduct = new OrderProduct();
             orderProduct.setOrder(order);
-            orderProduct.setProduct(cartItem.getProduct());
-            orderProduct.setUnitPrice(cartItem.getProduct().getUnitPrice());
+            orderProduct.setProduct(product);
+            orderProduct.setUnitPrice(product.getUnitPrice());
             orderProduct.setQuantity(cartItem.getQuantity());
             orderProduct.setStatus(OrderProductStatus.ORDERED);
             totalPrice = totalPrice + orderProduct.getUnitPrice() * orderProduct.getQuantity();
@@ -76,9 +65,6 @@ public class OrderActivity {
         order.setLastStatus(OrderStatusType.ORDERED);
         order.setPaidAt(new Date());
         orderManager.create(order);
-
-        cart.setStatus(Boolean.FALSE);
-        cartManager.save(cart);
 
         return new OrderRepresentation(order, Boolean.TRUE, Boolean.TRUE);
     }
@@ -126,17 +112,6 @@ public class OrderActivity {
             productRepresentations.add(new OrderProductRepresentation(product));
         }
         return productRepresentations;
-    }
-
-    public List<OrderRepresentation> getCustomerOrders(Integer customerId) throws Exception {
-        List<Order> orders = orderManager.find(customerId, null, null, null, 0, 0).getElements();
-
-        List<OrderRepresentation> orderRepresentations = new ArrayList<OrderRepresentation>();
-        for(Order order : orders){
-            orderRepresentations.add(new OrderRepresentation(order, Boolean.FALSE, Boolean.FALSE));
-        }
-        return orderRepresentations;
-
     }
 
     public List<OrderRepresentation> getPartnerOrders(Integer partnerId, OrderProductStatus status) throws Exception {
@@ -257,11 +232,14 @@ public class OrderActivity {
         }
     }
 
-    public void cancelOrder(Integer customerId, Integer orderId) throws Exception {
-        Order order = orderManager.get(orderId);
-        if(order == null || !order.getCustomer().getId().equals(customerId)) {
-            throw new ResourceNotFoundException("No order found with id " + orderId);
+    public void cancelOrder(Integer id) throws Exception {
+        Order order = orderManager.get(id);
+
+        if(order == null ) {
+            throw new ResourceNotFoundException("No order found with id " + id);
         }
+
+        //authenticate()
 
         if(order.getLastStatus().equals(OrderStatusType.SHIPPED)
             || order.getLastStatus().equals(OrderStatusType.DELIVERED)

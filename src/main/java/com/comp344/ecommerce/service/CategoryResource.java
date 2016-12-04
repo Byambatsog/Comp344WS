@@ -19,13 +19,13 @@ public class CategoryResource {
     @Autowired
     private CategoryActivity categoryActivity;
 
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<CategoryRepresentation>> getAllCategories() throws Exception {
         return new ResponseEntity<Page<CategoryRepresentation>>(categoryActivity.getAllCategories(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/category/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/categories/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<CategoryRepresentation> getCategory(@PathVariable(value = "id") Integer id) throws Exception {
         return new ResponseEntity<CategoryRepresentation>(categoryActivity.getCategory(id), HttpStatus.OK);

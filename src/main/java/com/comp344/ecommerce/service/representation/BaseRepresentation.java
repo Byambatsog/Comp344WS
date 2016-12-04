@@ -1,5 +1,7 @@
 package com.comp344.ecommerce.service.representation;
 
+import org.springframework.http.HttpMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +10,20 @@ import java.util.List;
  */
 public class BaseRepresentation {
 
-    private List<Link> links = new ArrayList<Link>();
+    public static final String BASE_URI = "http://localhost:8080";
+
+    private List<Link> _links = new ArrayList<Link>();
 
     public List<Link> getLinks() {
-        return links;
+        return _links;
     }
 
     public void setLinks(List<Link> links) {
-        this.links = links;
+        this._links = links;
     }
 
-    public void addLink(String href, String rel, String action) {
-        Link link = new Link(href, rel, action);
+    public void addLink(String href, String rel, HttpMethod action, String mediaType) {
+        Link link = new Link(href, rel, action, mediaType);
         getLinks().add(link);
     }
 }

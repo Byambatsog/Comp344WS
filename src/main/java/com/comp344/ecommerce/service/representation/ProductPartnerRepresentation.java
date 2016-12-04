@@ -1,16 +1,13 @@
 package com.comp344.ecommerce.service.representation;
 
-import com.comp344.ecommerce.domain.Login;
 import com.comp344.ecommerce.domain.Partner;
-import com.comp344.ecommerce.domain.PartnerType;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
- * Created by Byambatsog on 10/29/16.
+ * Created by Byambatsog on 11/26/16.
  */
-public class PartnerRepresentation extends BaseRepresentation {
+public class ProductPartnerRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String companyName;
@@ -19,16 +16,10 @@ public class PartnerRepresentation extends BaseRepresentation {
     private String type;
     private String phone;
     private String email;
-    private String street;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String country;
-    private String createdAt;
 
-    public PartnerRepresentation(){}
+    public ProductPartnerRepresentation(){}
 
-    public PartnerRepresentation(Partner partner){
+    public ProductPartnerRepresentation(Partner partner){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -39,12 +30,6 @@ public class PartnerRepresentation extends BaseRepresentation {
         this.type = partner.getType() != null ? partner.getType().name() : "";
         this.phone = partner.getPhone() != null ? partner.getPhone() : "";
         this.email = partner.getEmail() != null ? partner.getEmail() : "";
-        this.street = partner.getStreet() != null ? partner.getStreet() : "";
-        this.city = partner.getCity() != null ? partner.getCity() : "";
-        this.state = partner.getState() != null ? partner.getState() : "";
-        this.zipCode = partner.getZipCode() != null ? partner.getZipCode() : "";
-        this.country = partner.getCountry() != null ? partner.getCountry() : "";
-        this.createdAt = partner.getCreatedAt() != null ? dateFormat.format(partner.getCreatedAt()) : "";
     }
 
     public Integer getId() {
@@ -75,27 +60,4 @@ public class PartnerRepresentation extends BaseRepresentation {
         return email;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
 }

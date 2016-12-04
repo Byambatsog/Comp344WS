@@ -19,6 +19,7 @@ public class Login implements Serializable{
     private Boolean active;
     private Boolean admin;
     private Date createdAt;
+    private LoginRole role;
 
     @Id
     @GeneratedValue
@@ -69,5 +70,14 @@ public class Login implements Serializable{
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public LoginRole getRole() {
+        return role;
+    }
+
+    public void setRole(LoginRole role) {
+        this.role = role;
     }
 }

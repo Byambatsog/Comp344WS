@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by Byambatsog on 10/4/16.
  */
-public class CustomerRepresentation {
+public class CustomerRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String firstName;

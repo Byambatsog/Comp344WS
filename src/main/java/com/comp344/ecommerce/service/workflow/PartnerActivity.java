@@ -3,17 +3,16 @@ package com.comp344.ecommerce.service.workflow;
 import com.comp344.ecommerce.business.LoginManager;
 import com.comp344.ecommerce.business.PartnerManager;
 import com.comp344.ecommerce.business.ProductManager;
-import com.comp344.ecommerce.domain.Login;
-import com.comp344.ecommerce.domain.Partner;
-import com.comp344.ecommerce.domain.PartnerType;
-import com.comp344.ecommerce.domain.Product;
+import com.comp344.ecommerce.domain.*;
 import com.comp344.ecommerce.exception.LoginRegistrationException;
 import com.comp344.ecommerce.exception.ResourceNotFoundException;
+import com.comp344.ecommerce.jwt.AuthorizationUtil;
 import com.comp344.ecommerce.service.representation.*;
 import com.comp344.ecommerce.utils.ListPage;
 import com.comp344.ecommerce.utils.Page;
 import com.comp344.ecommerce.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,12 +34,18 @@ public class PartnerActivity {
     @Autowired
     private LoginManager loginManager;
 
+    @Autowired
+    private AuthorizationUtil authorizationUtil;
+
     public PartnerRepresentation getPartner(Integer id) throws Exception {
         Partner partner = partnerManager.get(id);
+        authorizationUtil.authorize(partner);
         if(partner == null) {
             throw new ResourceNotFoundException("No partner found with id " + id);
         }
-        return new PartnerRepresentation(partner);
+        PartnerRepresentation partnerRepresentation = new PartnerRepresentation(partner);
+        setLinks(partnerRepresentation, partner);
+        return partnerRepresentation;
     }
 
     public Page<PartnerRepresentation> findPartners(String searchQuery, PartnerType type, String orderBy, int page, int pageSize) throws Exception{
@@ -52,11 +57,12 @@ public class PartnerActivity {
                 orderBy = "order by company_name asc";
             }
         }
-
         Page<Partner> list = partnerManager.find(searchQuery, type, orderBy, page, pageSize);
         List<PartnerRepresentation> partnerRepresentations = new ArrayList<PartnerRepresentation>();
         for(Partner partner : list.getElements()){
-            partnerRepresentations.add(new PartnerRepresentation(partner));
+            PartnerRepresentation partnerRepresentation = new PartnerRepresentation(partner);
+            setLink(partnerRepresentation, partner);
+            partnerRepresentations.add(partnerRepresentation);
         }
         Page<PartnerRepresentation> partnerPage = new ListPage<PartnerRepresentation>(partnerRepresentations, list.getPageNumber(), list.getPageSize(), list.getTotalNumberOfElements());
         return partnerPage;
@@ -75,6 +81,7 @@ public class PartnerActivity {
         login.setPassword(passwordEncoder.encode(partnerCreateRequest.getPassword()));
         login.setActive(Boolean.TRUE);
         login.setAdmin(Boolean.FALSE);
+        login.setRole(LoginRole.ROLE_PARTNER);
         login.setCreatedAt(new Date());
 
         Partner partner = new Partner();
@@ -91,12 +98,16 @@ public class PartnerActivity {
         partner.setCreatedAt(new Date());
         partnerManager.create(partner);
 
-        return new PartnerRepresentation(partner);
+        PartnerRepresentation partnerRepresentation = new PartnerRepresentation(partner);
+        setLinks(partnerRepresentation, partner);
+        return partnerRepresentation;
     }
 
     public void updatePartner(Integer id, PartnerRequest partnerRequest) throws Exception {
 
         Partner partner = partnerManager.get(id);
+        authorizationUtil.authorize(partner);
+
         partner.setCompanyName(partnerRequest.getCompanyName());
         partner.setFirstName(partnerRequest.getFirstName());
         partner.setLastName(partnerRequest.getLastName());
@@ -113,6 +124,7 @@ public class PartnerActivity {
 
     public void deletePartner(Integer id) throws Exception {
         Partner partner = partnerManager.get(id);
+        authorizationUtil.authorize(partner);
         if(partner == null) {
             throw new ResourceNotFoundException("No partner found with id " + id);
         }
@@ -121,6 +133,9 @@ public class PartnerActivity {
 
     public Page<PartnerProductRepresentation> findProducts(String searchQuery, Integer categoryId, Integer partnerId, Boolean status,
                                                            String orderBy, int page, int pageSize) throws Exception{
+
+        Partner partner = partnerManager.get(partnerId);
+        authorizationUtil.authorize(partner);
 
         if(orderBy != null && !orderBy.equals("")){
             if (orderBy.equals("created")){
@@ -134,7 +149,9 @@ public class PartnerActivity {
 
         List<PartnerProductRepresentation> productRepresentations = new ArrayList<PartnerProductRepresentation>();
         for(Product product : products.getElements()){
-            productRepresentations.add(new PartnerProductRepresentation(product));
+            PartnerProductRepresentation productRepresentation = new PartnerProductRepresentation(product);
+            setLinks(productRepresentation, product);
+            productRepresentations.add(productRepresentation);
         }
         Page<PartnerProductRepresentation> productPage = new ListPage<PartnerProductRepresentation>(productRepresentations, products.getPageNumber(), products.getPageSize(), products.getTotalNumberOfElements());
         return productPage;
@@ -142,8 +159,9 @@ public class PartnerActivity {
 
     public PartnerProductRepresentation createProduct(Integer partnerId, ProductRequest productRequest) throws Exception {
 
+        Partner partner = partnerManager.get(partnerId);
+        authorizationUtil.authorize(partner);
         Product product = new Product();
-        product.setId(productRequest.getId());
         product.setName(productRequest.getName());
         product.setPicture(productRequest.getPicture());
         product.setBrandName(productRequest.getBrandName());
@@ -157,12 +175,15 @@ public class PartnerActivity {
         product.setPartner(partnerManager.get(partnerId));
         productManager.save(product);
         PartnerProductRepresentation productRep = new PartnerProductRepresentation(product);
+        setLinks(productRep, product);
         return productRep;
     }
 
     public void updateProduct(Integer id, ProductRequest productRequest) throws Exception {
 
         Product product = productManager.get(id);
+        authorizationUtil.authorize(product.getPartner());
+
         product.setName(productRequest.getName());
         product.setPicture(productRequest.getPicture());
         product.setBrandName(productRequest.getBrandName());
@@ -175,23 +196,52 @@ public class PartnerActivity {
         productManager.save(product);
     }
 
-    public PartnerProductRepresentation getProduct(Integer id, Integer partnerId) throws Exception {
+    public PartnerProductRepresentation getProduct(Integer id) throws Exception {
         Product product = productManager.get(id);
         if(product == null) {
             throw new ResourceNotFoundException("No product found with id " + id);
-        } else if (!product.getPartner().getId().equals(partnerId)){
-            throw new ResourceNotFoundException("No product found with id " + id + "in partner with id " + partnerId);
         }
-        return new PartnerProductRepresentation(product);
+        authorizationUtil.authorize(product.getPartner());
+        PartnerProductRepresentation productRep = new PartnerProductRepresentation(product);
+        setLinks(productRep, product);
+        return productRep;
     }
 
-    public void deleteProduct(Integer id, Integer partnerId) throws Exception {
+    public void deleteProduct(Integer id) throws Exception {
         Product product = productManager.get(id);
         if(product == null) {
             throw new ResourceNotFoundException("No product found with id " + id);
-        } else if (!product.getPartner().getId().equals(partnerId)){
-            throw new ResourceNotFoundException("No product found with id " + id + "in partner with id " + partnerId);
         }
+        authorizationUtil.authorize(product.getPartner());
         productManager.delete(id);
+    }
+
+    private void setLink(PartnerRepresentation partnerRepresentation, Partner partner) {
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId(),
+                "self", HttpMethod.GET, "");
+    }
+
+    private void setLinks(PartnerRepresentation partnerRepresentation, Partner partner) {
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId(),
+                "self", HttpMethod.GET, "");
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId(),
+                "update", HttpMethod.PUT, "application/json");
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId(),
+                "delete", HttpMethod.DELETE, "");
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId() + "/products",
+                "products", HttpMethod.GET, "");
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId() + "/products",
+                "products.create", HttpMethod.POST, "application/json");
+        partnerRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/partners/" + partner.getId() + "/orders",
+                "orders", HttpMethod.GET, "");
+    }
+
+    private void setLinks(PartnerProductRepresentation partnerProductRepresentation, Product product) {
+        partnerProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/products/" + product.getId(),
+                "self", HttpMethod.GET, "");
+        partnerProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/products/" + product.getId(),
+                "update", HttpMethod.PUT, "application/json");
+        partnerProductRepresentation.addLink(BaseRepresentation.BASE_URI + "/partnerservice/products/" + product.getId(),
+                "delete", HttpMethod.DELETE, "");
     }
 }

@@ -1,5 +1,7 @@
 package com.comp344.ecommerce.service.representation;
 
+import java.util.List;
+
 /**
  * Created by Byambatsog on 10/31/16.
  */
@@ -9,6 +11,7 @@ public class OrderCreateRequest {
     private Integer shippingAddressId;
     private Integer billingAddressId;
     private Integer creditCardId;
+    private List<CartItem> cartItems;
 
     public Integer getCustomerId() {
         return customerId;
@@ -40,5 +43,13 @@ public class OrderCreateRequest {
 
     public void setCreditCardId(Integer creditCardId) {
         this.creditCardId = creditCardId;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

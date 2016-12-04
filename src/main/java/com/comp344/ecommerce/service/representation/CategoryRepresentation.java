@@ -5,7 +5,7 @@ import com.comp344.ecommerce.domain.ProductCategory;
 /**
  * Created by Byambatsog on 10/31/16.
  */
-public class CategoryRepresentation {
+public class CategoryRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String name;

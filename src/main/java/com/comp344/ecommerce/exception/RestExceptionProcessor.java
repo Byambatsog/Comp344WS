@@ -1,6 +1,10 @@
 package com.comp344.ecommerce.exception;
 
+import com.comp344.ecommerce.service.representation.BaseRepresentation;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +22,7 @@ public class RestExceptionProcessor {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(value= HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorInfo resourceNotFound(HttpServletRequest req, ResourceNotFoundException ex) {
+    public ErrorInfo handleResourceNotFoundException(HttpServletRequest req, ResourceNotFoundException ex) {
         String errorMessage = ex.getErrorMessage();
         String errorURL = req.getRequestURL().toString();
         return new ErrorInfo(errorURL, errorMessage);
@@ -27,7 +31,7 @@ public class RestExceptionProcessor {
     @ExceptionHandler(LoginRegistrationException.class)
     @ResponseStatus(value= HttpStatus.FORBIDDEN)
     @ResponseBody
-    public ErrorInfo loginRegistration(HttpServletRequest req, LoginRegistrationException ex) {
+    public ErrorInfo handleLoginRegistrationException(HttpServletRequest req, LoginRegistrationException ex) {
         String errorMessage = ex.getErrorMessage();
         String errorURL = req.getRequestURL().toString();
         return new ErrorInfo(errorURL, errorMessage);
@@ -36,8 +40,26 @@ public class RestExceptionProcessor {
     @ExceptionHandler(NotAvailableException.class)
     @ResponseStatus(value= HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorInfo notAvailable(HttpServletRequest req, NotAvailableException ex) {
+    public ErrorInfo handleNotAvailableException(HttpServletRequest req, NotAvailableException ex) {
         String errorMessage = ex.getErrorMessage();
+        String errorURL = req.getRequestURL().toString();
+        return new ErrorInfo(errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(UnAuthorizedException.class)
+    @ResponseStatus(value= HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorInfo handleUnAuthorizedException(HttpServletRequest req, UnAuthorizedException ex) {
+        String errorMessage = ex.getErrorMessage();
+        String errorURL = req.getRequestURL().toString();
+        return new ErrorInfo(errorURL, errorMessage);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(value= HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorInfo handleBadCredentialsException(HttpServletRequest req, BadCredentialsException ex) {
+        String errorMessage = ex.getMessage();
         String errorURL = req.getRequestURL().toString();
         return new ErrorInfo(errorURL, errorMessage);
     }
@@ -45,11 +67,10 @@ public class RestExceptionProcessor {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ErrorInfo internalServerException(HttpServletRequest req, Exception ex) {
+    public ErrorInfo handleInternalServerException(HttpServletRequest req, Exception ex) {
         ex.printStackTrace();
         String errorMessage = "internal server error";
         String errorURL = req.getRequestURL().toString();
         return new ErrorInfo(errorURL, errorMessage);
     }
-
 }

@@ -5,7 +5,7 @@ import com.comp344.ecommerce.domain.Review;
 /**
  * Created by Byambatsog on 10/31/16.
  */
-public class ReviewRepresentation {
+public class ReviewRepresentation extends BaseRepresentation {
 
     private Integer id;
     private String title;

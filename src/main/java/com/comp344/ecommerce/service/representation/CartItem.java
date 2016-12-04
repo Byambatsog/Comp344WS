@@ -1,9 +1,9 @@
 package com.comp344.ecommerce.service.representation;
 
 /**
- * Created by Byambatsog on 10/31/16.
+ * Created by Byambatsog on 11/30/16.
  */
-public class CartItemRequest {
+public class CartItem {
 
     private Integer productId;
     private Integer quantity;

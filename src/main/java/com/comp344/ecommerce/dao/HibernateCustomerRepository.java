@@ -24,7 +24,7 @@ public class HibernateCustomerRepository extends HibernateBaseRepository<Custome
     }
 
     public Customer findByLogin(Integer loginId){
-        List list = getHibernateTemplate().find("from Login where login_id=?", new Object[]{loginId});
+        List list = getHibernateTemplate().find("from Customer where login_id=?", new Object[]{loginId});
         if(list.isEmpty()) return null;
         return (Customer) list.get(0);
     }

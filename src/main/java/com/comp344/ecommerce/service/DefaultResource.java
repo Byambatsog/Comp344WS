@@ -21,18 +21,9 @@ public class DefaultResource {
     @Autowired
     ServletContext servletContext;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
     public String getDocumentation() throws Exception {
-        String jsonContent = "";
-        File file = new File(servletContext.getRealPath("/WEB-INF/classes/documentation.json"));
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            jsonContent = jsonContent + line + " ";
-        }
-        return jsonContent;
+        return "Welcome to E-commerce";
     }
 }

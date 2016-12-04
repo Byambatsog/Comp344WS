@@ -32,6 +32,14 @@ public class OrderResource {
         return new ResponseEntity<OrderRepresentation>(orderActivity.getOrder(id), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/order/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Message> cancelOrder(@PathVariable(value = "id") Integer id) throws Exception {
+
+        orderActivity.cancelOrder(id);
+        return new ResponseEntity<Message>(new Message("Order cancelled successfully"), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/order/{id}/status", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<OrderStatusRepresentation>> getOrderStatuses(@PathVariable(value = "id") Integer orderId) throws Exception {

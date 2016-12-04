@@ -19,7 +19,7 @@ public class ProductResource {
 	@Autowired
     private ProductActivity productActivity;
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<Page<ProductRepresentation>> getProducts(
             @RequestParam(value = "q", required = false) String searchQuery,
@@ -31,21 +31,19 @@ public class ProductResource {
         return new ResponseEntity<Page<ProductRepresentation>>(productActivity.findProducts(searchQuery, categoryId, partnerId, orderBy, page, pageSize), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ProductDetailRepresentation> getProduct(@PathVariable(value = "id") Integer id) throws Exception {
         return new ResponseEntity<ProductDetailRepresentation>(productActivity.getProduct(id), HttpStatus.OK);
     }
 
-
-
-    @RequestMapping(value = "/product/{id}/review", method = RequestMethod.GET)
+    @RequestMapping(value = "/products/{id}/reviews", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<ReviewRepresentation>> getAllReviews(@PathVariable(value = "id") Integer productId) throws Exception {
         return new ResponseEntity<List<ReviewRepresentation>>(productActivity.getAllReviews(productId), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/product/{id}/review", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/products/{id}/reviews", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public ResponseEntity<ReviewRepresentation> createReview(@PathVariable(value = "id") Integer productId,
                                                              @RequestBody ReviewRequest reviewRequest) throws Exception {
@@ -53,29 +51,31 @@ public class ProductResource {
         return new ResponseEntity<ReviewRepresentation>(productActivity.createReview(productId, reviewRequest), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/product/{id}/review/{reviewId}", method = RequestMethod.PUT, consumes = "application/json")
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Message> updateReview(@PathVariable(value = "id") Integer productId,
-                                                @PathVariable(value = "reviewId") Integer reviewId,
+    public ResponseEntity<ReviewRepresentation> getReview(@PathVariable(value = "id") Integer id) throws Exception {
+        return new ResponseEntity<ReviewRepresentation>(productActivity.getReview(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.PUT, consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<Message> updateReview(@PathVariable(value = "id") Integer id,
                                                 @RequestBody ReviewRequest reviewRequest) throws Exception {
-        productActivity.updateReview(reviewId, reviewRequest);
+        productActivity.updateReview(id, reviewRequest);
         return new ResponseEntity<Message>(new Message("Review updated successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/product/{id}/review/{reviewId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<ReviewRepresentation> getReview(@PathVariable(value = "id") Integer productId,
-                                                          @PathVariable(value = "reviewId") Integer reviewId) throws Exception {
-        return new ResponseEntity<ReviewRepresentation>(productActivity.getReview(reviewId, productId), HttpStatus.OK);
+    public ResponseEntity<Message> deleteReview(@PathVariable(value = "id") Integer id) throws Exception {
+        productActivity.deleteReview(id);
+        return new ResponseEntity<Message>(new Message("Review deleted successfully"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/product/{id}/review/{reviewId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/products/{id}/partners", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Message> deleteReview(@PathVariable(value = "id") Integer productId,
-                                                    @PathVariable(value = "reviewId") Integer reviewId) throws Exception {
-
-        productActivity.deleteReview(reviewId, productId);
-        return new ResponseEntity<Message>(new Message("Review deleted successfully"), HttpStatus.OK);
+    public ResponseEntity<ProductPartnerRepresentation> getPartner(@PathVariable(value = "id") Integer productId) throws Exception {
+        return new ResponseEntity<ProductPartnerRepresentation>(productActivity.getPartners(productId), HttpStatus.OK);
     }
     
 }

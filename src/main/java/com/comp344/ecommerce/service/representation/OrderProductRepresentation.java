@@ -8,9 +8,9 @@ import com.comp344.ecommerce.domain.OrderProductStatus;
  */
 public class OrderProductRepresentation {
 
-    private Integer productId;
-    private String productName;
-    private String productPicture;
+    private Integer id;
+    private String name;
+    private String picture;
     private Double unitPrice;
     private Integer quantity;
     private OrderProductStatus status;
@@ -18,24 +18,24 @@ public class OrderProductRepresentation {
     public OrderProductRepresentation(){}
 
     public OrderProductRepresentation(OrderProduct orderProduct){
-        this.productId = orderProduct.getProduct().getId();
-        this.productName = orderProduct.getProduct().getName();
-        this.productPicture = orderProduct.getProduct().getPicture();
+        this.id = orderProduct.getProduct().getId();
+        this.name = orderProduct.getProduct().getName();
+        this.picture = orderProduct.getProduct().getPicture();
         this.unitPrice = orderProduct.getUnitPrice();
         this.quantity = orderProduct.getQuantity();
         this.status = orderProduct.getStatus();
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getId() {
+        return id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public String getProductPicture() {
-        return productPicture;
+    public String getPicture() {
+        return picture;
     }
 
     public Double getUnitPrice() {

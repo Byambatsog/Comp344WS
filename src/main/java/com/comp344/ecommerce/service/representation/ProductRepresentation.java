@@ -2,8 +2,8 @@ package com.comp344.ecommerce.service.representation;
 
 import com.comp344.ecommerce.domain.Product;
 
-public class ProductRepresentation {
-	
+public class ProductRepresentation extends BaseRepresentation {
+
 	private Integer id;
 	private String name;
 	private String picture;
@@ -14,7 +14,7 @@ public class ProductRepresentation {
 	public ProductRepresentation(){}
 	
 	public ProductRepresentation(Product product){
-		
+
 		this.id = product.getId();
 		this.name = product.getName();
 		this.picture = product.getPicture();
@@ -25,15 +25,13 @@ public class ProductRepresentation {
 		else
 			this.partnerName = product.getPartner().getFirstName() + " " + product.getPartner().getLastName();
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public String getName() {
 		return name;
 	}
