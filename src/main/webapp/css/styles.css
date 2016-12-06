@@ -1,0 +1,159 @@
+* {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.header {
+	margin-top: 5px;
+}
+
+.labelArea {
+	/*position: absolute;*/
+	display: block;
+	float: left;
+	margin-left: 10px;
+	margin-top: 20px;
+	width: 300px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.mainArea {
+	/*position: absolute;*/
+	display: block;
+	float: left;
+	margin-top: 20px;
+	margin-left: 10px;
+	overflow-y: scroll;
+	border:solid 1px #CCCCCC;
+	width:300px;
+	height: 500px;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 0px;
+	margin-top: 0px;
+}
+
+li {
+	display: inline-block;
+}
+
+div.block {
+	float: left;
+	display: block;
+	margin: 3px;
+}
+
+div.block div{
+	padding: 2px;
+}
+
+li div.block img{
+	width: 50px;
+	height: 50px;
+	border: solid 1px #CCC;
+	margin: 2px;
+}
+
+li div.block div span.title{
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+div.detailItem{
+	margin: 5px;
+}
+
+div.detailItem img{
+	height: 150px;
+	border: solid 1px #CCC;
+}
+
+div.detailItem label{
+	font-weight: bold;
+	font-size: 14px;
+}
+
+div.detailItem span{
+	font-size: 14px;
+}
+
+div.review{
+	margin: 5px;
+	margin-bottom: 10px;
+}
+
+div.review label{
+	font-weight: bold;
+	font-size: 14px;
+}
+
+div.review span{
+	font-size: 14px;
+}
+
+div.review div{
+	color: #a9a9a9;
+}
+
+input, textarea {
+  border:1px solid #ccc;
+  min-height:30px;
+  outline: none;
+}
+
+.mainArea input {
+  margin-bottom:15px;
+  margin-top:5px;
+  width:270px;
+}
+
+textarea {
+	margin-bottom:15px;
+  	margin-top:5px;
+	height: 100px;
+  	width:270px;
+}
+
+table {
+	border:1px solid #ccc;
+	width: 100%;
+}
+
+table td{
+	border:1px solid #ccc;
+}
+
+div.orderItem{
+	margin: 5px;
+}
+
+div.orderItem label{
+	margin: 10px 0 3px;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+div.orderItem span{
+	margin: 10px 0 3px;
+	font-size: 12px;
+}
+
+
+
+label {
+	display:block;
+}
+
+button {
+	padding:6px;
+}
+
+
+#searchKey {
+	width:160px;
+}

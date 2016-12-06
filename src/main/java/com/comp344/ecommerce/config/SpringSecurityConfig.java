@@ -47,6 +47,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow anonymous resource requests
                 .antMatchers("/").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/index.html").permitAll()
+                .antMatchers("/js/jquery-1.7.1.min.js").permitAll()
+                .antMatchers("/js/main.js").permitAll()
+                .antMatchers("/css/style.css").permitAll()
+                .antMatchers("/index.html").permitAll()
                 .antMatchers("**/*.html").permitAll()
                 .antMatchers("**/*.css").permitAll()
                 .antMatchers("**/*.js").permitAll()
@@ -57,7 +62,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/productservice/**").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/customerservice/customers").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/customerservice/customers").permitAll()
                 .antMatchers(HttpMethod.GET, "/customerservice/customers").hasRole("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/customerservice/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/orderservice/**").permitAll()
                 .antMatchers("/customerservice/**").hasRole("CUSTOMER")
                 .antMatchers("/orderservice/**").hasRole("CUSTOMER")
 

@@ -101,7 +101,7 @@ public class CustomerResource {
     @RequestMapping(value = "/customers/{customerId}/addresses", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<AddressRepresentation>> getAllAddresses(@PathVariable(value = "customerId") Integer customerId) throws Exception {
-        return new ResponseEntity<List<AddressRepresentation>>(customerActivity.getAllAddresses(customerId), HttpStatus.CREATED);
+        return new ResponseEntity<List<AddressRepresentation>>(customerActivity.getAllAddresses(customerId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customers/{customerId}/addresses", method = RequestMethod.POST, consumes = "application/json")
@@ -109,7 +109,7 @@ public class CustomerResource {
     public ResponseEntity<AddressRepresentation> createAddresses(@PathVariable(value = "customerId") Integer customerId,
                                                                      @RequestBody AddressRequest addressRequest) throws Exception {
 
-        return new ResponseEntity<AddressRepresentation>(customerActivity.createAddress(customerId, addressRequest), HttpStatus.OK);
+        return new ResponseEntity<AddressRepresentation>(customerActivity.createAddress(customerId, addressRequest), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/addresses/{id}", method = RequestMethod.PUT, consumes = "application/json")
