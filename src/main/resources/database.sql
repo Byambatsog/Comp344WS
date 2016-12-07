@@ -15,8 +15,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE SCHEMA comp344_ecommerce;
-USE comp344_ecommerce;
 --
 -- Table structure for table `credit_cards`
 --
@@ -68,7 +66,7 @@ CREATE TABLE `customer_addresses` (
   `customers_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_customer_addresses_customers_idx` (`customers_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,60 +75,8 @@ CREATE TABLE `customer_addresses` (
 
 LOCK TABLES `customer_addresses` WRITE;
 /*!40000 ALTER TABLE `customer_addresses` DISABLE KEYS */;
-INSERT INTO `customer_addresses` VALUES (1,'1246 W Pratt blvd','Chicago','IL','60626','United States','7734567212','2016-10-04 20:56:38',1),(2,'6564 N Sheridan rd','Chicago','IL','60626','United States','7737891234','2016-10-04 20:56:37',2),(3,'1584 East 51st str','Brooklyn','NY','10587','United States','3469871254','2016-10-04 20:56:37',3),(4,'1871 S King dr','Phoenix','AZ','87390','United States','6268709809','2016-10-04 20:56:37',4),(5,'2971 W Illinois rd','Chicago','IL','60611','United States','3128975600','2016-10-04 20:56:37',5),(6,'7894 E Rush str','Chicago','IL','60611','United States','7735601209','2016-10-04 20:56:37',6),(7,'11 E Pearson dr','Chicago','IL','60611','United States','7733128910','2016-10-04 20:56:37',7),(8,'151 S Lake str','Chicago','IL','60654','United States','7730980202','2016-10-04 20:56:37',8),(9,'121 N Bluemoon','Chicago','IL','60617','United States','3128901254','2016-10-04 20:56:37',9),(10,'615 Rogers Ave','Chicago','IL','60613','United States','7738091586','2016-10-04 20:56:37',10);
+INSERT INTO `customer_addresses` VALUES (1,'1246 W Pratt blvd','Chicago','IL','60626','United States','7734567212','2016-10-04 20:56:38',1),(2,'6564 N Sheridan rd','Chicago','IL','60626','United States','7737891234','2016-10-04 20:56:37',2),(3,'1584 East 51st str','Brooklyn','NY','10587','United States','3469871254','2016-10-04 20:56:37',3),(4,'1871 S King dr','Phoenix','AZ','87390','United States','6268709809','2016-10-04 20:56:37',4),(5,'2971 W Illinois rd','Chicago','IL','60611','United States','3128975600','2016-10-04 20:56:37',5),(6,'7894 E Rush str','Chicago','IL','60611','United States','7735601209','2016-10-04 20:56:37',6),(7,'11 E Pearson dr','Chicago','IL','60611','United States','7733128910','2016-10-04 20:56:37',7),(8,'151 S Lake str','Chicago','IL','60654','United States','7730980202','2016-10-04 20:56:37',8),(9,'121 N Bluemoon','Chicago','IL','60617','United States','3128901254','2016-10-04 20:56:37',9),(10,'615 Rogers Ave','Chicago','IL','60613','United States','7738091586','2016-10-04 20:56:37',10),(11,'25 E Pearson',' Chicago','IL','60602','United States','1112223333','2016-12-05 23:13:22',1);
 /*!40000 ALTER TABLE `customer_addresses` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `customer_cart_items`
---
-
-DROP TABLE IF EXISTS `customer_cart_items`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer_cart_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `quantity` int(11) DEFAULT NULL,
-  `customer_carts_id` int(11) NOT NULL,
-  `products_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer_cart_items`
---
-
-LOCK TABLES `customer_cart_items` WRITE;
-/*!40000 ALTER TABLE `customer_cart_items` DISABLE KEYS */;
-INSERT INTO `customer_cart_items` VALUES (1,3,1,1),(3,3,1,2),(4,2,2,1),(5,3,2,2),(6,1,2,3),(7,2,3,4),(8,1,3,5),(9,3,4,6),(10,1,4,7),(11,2,5,8),(12,3,5,9),(13,3,6,10),(14,2,6,11),(15,2,7,12),(16,1,7,13),(17,1,8,14),(18,2,8,15),(19,2,9,16),(20,3,9,17),(21,3,10,18),(22,2,10,19),(23,2,11,20),(24,3,11,21);
-/*!40000 ALTER TABLE `customer_cart_items` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `customer_carts`
---
-
-DROP TABLE IF EXISTS `customer_carts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customer_carts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `created_at` varchar(45) DEFAULT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  `customers_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer_carts`
---
-
-LOCK TABLES `customer_carts` WRITE;
-/*!40000 ALTER TABLE `customer_carts` DISABLE KEYS */;
-INSERT INTO `customer_carts` VALUES (1,'2016-10-31 21:00:02.072',0,1),(2,'2016-11-05 22:52:55.165',0,1),(3,'2016-11-05 22:54:37.932',0,2),(4,'2016-11-05 22:54:51.162',0,3),(5,'2016-11-05 22:56:15.76',0,4),(6,'2016-11-05 22:56:27.226',0,5),(7,'2016-11-05 22:56:52.63',0,6),(8,'2016-11-05 22:57:13.191',0,7),(9,'2016-11-05 22:57:43.013',0,8),(10,'2016-11-05 22:57:54.206',0,9),(11,'2016-11-05 22:58:12.185',0,10);
-/*!40000 ALTER TABLE `customer_carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -149,7 +95,7 @@ CREATE TABLE `customers` (
   `login_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_customers_login1_idx` (`login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +104,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'Byambatsog','Chimed','byambatsog@gmail.com','2016-10-04 20:56:37',1),(2,'Francis','Albert','fran@gmail.com','2016-10-04 20:56:37',2),(3,'Albert','Francis','albert@gmail.com','2016-10-04 20:56:37',3),(4,'Ogor','Francis','ogor@gmail.com','2016-10-04 20:56:37',4),(5,'Chris','Emma','cemma@gmail.com','2016-10-04 20:56:37',5),(6,'Perry','Elis','pellis@gmail.com','2016-10-04 20:56:37',6),(7,'Sean','John','sjohn@gmail.com','2016-10-04 20:56:37',7),(8,'Tom','Ford','tford@gmail.com','2016-10-04 20:56:37',8),(9,'Erica','Peter','epeter@gmail.com','2016-10-04 20:56:37',9),(10,'Roneka','Daniels','rdaniels@gmail.com','2016-10-04 20:56:37',10);
+INSERT INTO `customers` VALUES (1,'Byambatsog','Chimed','byambatsog@gmail.com','2016-10-04 20:56:37',1),(2,'Francis','Albert','fran@gmail.com','2016-10-04 20:56:37',2),(3,'Albert','Francis','albert@gmail.com','2016-10-04 20:56:37',3),(4,'Ogor','Francis','ogor@gmail.com','2016-10-04 20:56:37',4),(5,'Chris','Emma','cemma@gmail.com','2016-10-04 20:56:37',5),(6,'Perry','Elis','pellis@gmail.com','2016-10-04 20:56:37',6),(7,'Sean','John','sjohn@gmail.com','2016-10-04 20:56:37',7),(8,'Tom','Ford','tford@gmail.com','2016-10-04 20:56:37',8),(9,'Erica','Peter','epeter@gmail.com','2016-10-04 20:56:37',9),(10,'Roneka','Daniels','rdaniels@gmail.com','2016-10-04 20:56:37',10),(11,'frank','bold','frankbold@gmail.com','2016-12-02 21:44:38',20);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +124,7 @@ CREATE TABLE `login` (
   `role` varchar(20) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +133,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (1,'byambatsog@gmail.com','25f9e794323b453885f5181f1b624d0b',1,0,'2016-10-04 20:56:37'),(2,'fran@gmail.com','2fc27231161d0350e1636984e5445fc6',1,0,'2016-10-30 17:15:47'),(3,'albert@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(4,'ogor@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(5,'cemma@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(6,'pellis@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(7,'sjohn@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(8,'tford@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(9,'epeter@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(10,'rdaniels@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-10-30 21:38:32'),(11,'bigvalueinc@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(12,'alldayzip@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(13,'antonline@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(14,'digitalsystems@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(15,'musicpeople@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(16,'furnitureworld@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(17,'spacejet@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(18,'sportsworld@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40'),(19,'shoesalliance@gmail.com','f23101051a46ffea551fb117564a3fe4',1,0,'2016-11-04 16:37:40');
+INSERT INTO `login` VALUES (1,'byambatsog@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-04 20:56:37'),(2,'fran@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 17:15:47'),(3,'albert@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(4,'ogor@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(5,'cemma@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(6,'pellis@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(7,'sjohn@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(8,'tford@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(9,'epeter@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(10,'rdaniels@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-10-30 21:38:32'),(11,'bigvalueinc@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(12,'alldayzip@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(13,'antonline@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(14,'digital@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(15,'musicpeople@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(16,'furnitureworld@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(17,'spacejet@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(18,'sportsworld@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(19,'shoesalliance@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_PARTNER','2016-11-04 16:37:40'),(20,'frankbold@gmail.com','e10adc3949ba59abbe56e057f20f883e',1,0,'ROLE_CUSTOMER','2016-12-02 21:44:38');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +163,7 @@ CREATE TABLE `order_products` (
 
 LOCK TABLES `order_products` WRITE;
 /*!40000 ALTER TABLE `order_products` DISABLE KEYS */;
-INSERT INTO `order_products` VALUES (1,1,3,1668.92,'SHIPPED','1122334455'),(1,2,3,990.00,'SHIPPED','3344556677'),(2,1,2,1668.92,'ORDERED',NULL),(2,2,3,990.00,'ORDERED',NULL),(2,3,1,679.99,'ORDERED',NULL),(3,4,2,299.99,'ORDERED',NULL),(3,5,1,240.99,'ORDERED',NULL),(4,6,3,899.99,'ORDERED',NULL),(4,7,1,449.99,'ORDERED',NULL),(5,8,2,1065.99,'FULFILLED','3344556673'),(5,9,3,1219.95,'FULFILLED','3344556673'),(6,10,3,1675.00,'ORDERED',NULL),(6,11,2,319.99,'ORDERED',NULL),(7,12,2,13.99,'ORDERED',NULL),(7,13,1,129.99,'ORDERED',NULL),(8,14,1,34.99,'ORDERED',NULL),(8,15,2,14.98,'ORDERED',NULL),(9,16,2,197.99,'ORDERED',NULL),(9,17,3,202.99,'ORDERED',NULL),(10,18,3,343.13,'SHIPPED','3344556672'),(10,19,2,329.13,'SHIPPED','3344556672'),(11,20,2,775.00,'DELIVERED','3344556671'),(11,21,3,1199.00,'DELIVERED','3344556671');
+INSERT INTO `order_products` VALUES (1,1,3,1668.92,'SHIPPED','1122334455'),(1,2,3,990.00,'SHIPPED','3344556677'),(2,1,2,1668.92,'CANCELLED',NULL),(2,2,3,990.00,'CANCELLED',NULL),(2,3,1,679.99,'CANCELLED',NULL),(3,4,2,299.99,'ORDERED',NULL),(3,5,1,240.99,'ORDERED',NULL),(4,6,3,899.99,'ORDERED','111111'),(4,7,1,449.99,'ORDERED','11111111'),(5,8,2,1065.99,'FULFILLED','3344556673'),(5,9,3,1219.95,'FULFILLED','3344556673'),(6,10,3,1675.00,'ORDERED','\'638287193\''),(6,11,2,319.99,'ORDERED',NULL),(7,12,2,13.99,'ORDERED',NULL),(7,13,1,129.99,'ORDERED',NULL),(8,14,1,34.99,'ORDERED',NULL),(8,15,2,14.98,'ORDERED',NULL),(9,16,2,197.99,'CANCELLED',NULL),(9,17,3,202.99,'ORDERED',NULL),(10,18,3,343.13,'SHIPPED','3344556672'),(10,19,2,329.13,'SHIPPED','3344556672'),(11,20,2,775.00,'DELIVERED','3344556671'),(11,21,3,1199.00,'DELIVERED','3344556671'),(12,2,3,990.00,'ORDERED',NULL),(16,15,2,14.98,'ORDERED',NULL),(16,16,2,197.99,'ORDERED',NULL);
 /*!40000 ALTER TABLE `order_products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +181,7 @@ CREATE TABLE `order_status` (
   `orders_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_order_status_orders1_idx` (`orders_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +190,7 @@ CREATE TABLE `order_status` (
 
 LOCK TABLES `order_status` WRITE;
 /*!40000 ALTER TABLE `order_status` DISABLE KEYS */;
-INSERT INTO `order_status` VALUES (1,'ORDERED','2016-11-01 17:53:38',1),(2,'SHIPPED','2016-11-01 20:41:14',1),(3,'ORDERED','2016-11-05 23:08:43',2),(4,'ORDERED','2016-11-05 23:10:15',3),(5,'ORDERED','2016-11-05 23:10:30',4),(6,'ORDERED','2016-11-05 23:10:42',5),(7,'ORDERED','2016-11-05 23:10:55',6),(8,'ORDERED','2016-11-05 23:11:02',7),(9,'ORDERED','2016-11-05 23:11:10',8),(10,'ORDERED','2016-11-05 23:11:19',9),(11,'ORDERED','2016-11-05 23:11:27',10),(12,'ORDERED','2016-11-05 23:11:39',11),(13,'FULFILLED','2016-11-06 12:17:52',11),(14,'SHIPPED','2016-11-06 12:20:34',11),(15,'DELIVERED','2016-11-06 12:28:31',11),(16,'FULFILLED','2016-11-06 12:30:00',10),(17,'SHIPPED','2016-11-06 12:30:25',10),(18,'FULFILLED','2016-11-06 12:32:13',5);
+INSERT INTO `order_status` VALUES (1,'ORDERED','2016-11-01 17:53:38',1),(2,'SHIPPED','2016-11-01 20:41:14',1),(3,'ORDERED','2016-11-05 23:08:43',2),(4,'ORDERED','2016-11-05 23:10:15',3),(5,'ORDERED','2016-11-05 23:10:30',4),(6,'ORDERED','2016-11-05 23:10:42',5),(7,'ORDERED','2016-11-05 23:10:55',6),(8,'ORDERED','2016-11-05 23:11:02',7),(9,'ORDERED','2016-11-05 23:11:10',8),(10,'ORDERED','2016-11-05 23:11:19',9),(11,'ORDERED','2016-11-05 23:11:27',10),(12,'ORDERED','2016-11-05 23:11:39',11),(13,'FULFILLED','2016-11-06 12:17:52',11),(14,'SHIPPED','2016-11-06 12:20:34',11),(15,'DELIVERED','2016-11-06 12:28:31',11),(16,'FULFILLED','2016-11-06 12:30:00',10),(17,'SHIPPED','2016-11-06 12:30:25',10),(18,'FULFILLED','2016-11-06 12:32:13',5),(19,'CANCELLED','2016-11-08 19:56:11',2),(20,'ORDERED','2016-11-08 20:31:25',12),(27,'ORDERED','2016-12-06 10:41:05',16);
 /*!40000 ALTER TABLE `order_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +216,7 @@ CREATE TABLE `orders` (
   KEY `fk_orders_customer_addresses1_idx` (`shipping_addresses_id`),
   KEY `fk_orders_customer_addresses2_idx` (`billing_addresses_id`),
   KEY `fk_orders_customer_credit_card_idx` (`credit_cards_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,7 +225,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,'2016-11-01 17:53:38',7976.76,'2016-11-01 17:53:38','SHIPPED',1,1,1,1),(2,'2016-11-05 23:08:42',6987.83,'2016-11-05 23:08:42','ORDERED',1,1,1,1),(3,'2016-11-05 23:10:15',840.97,'2016-11-05 23:10:15','ORDERED',2,2,2,2),(4,'2016-11-05 23:10:30',3149.96,'2016-11-05 23:10:30','ORDERED',3,3,3,3),(5,'2016-11-05 23:10:42',5791.83,'2016-11-05 23:10:42','FULFILLED',4,4,4,4),(6,'2016-11-05 23:10:55',5664.98,'2016-11-05 23:10:55','ORDERED',5,5,5,5),(7,'2016-11-05 23:11:02',157.97,'2016-11-05 23:11:02','ORDERED',6,6,6,6),(8,'2016-11-05 23:11:10',64.95,'2016-11-05 23:11:10','ORDERED',7,7,7,7),(9,'2016-11-05 23:11:19',1004.95,'2016-11-05 23:11:19','ORDERED',8,8,8,8),(10,'2016-11-05 23:11:27',1687.65,'2016-11-05 23:11:27','SHIPPED',9,9,9,9),(11,'2016-11-05 23:11:39',5147.00,'2016-11-05 23:11:39','DELIVERED',10,10,10,10);
+INSERT INTO `orders` VALUES (1,'2016-11-01 17:53:38',7976.76,'2016-11-01 17:53:38','SHIPPED',1,1,1,1),(2,'2016-11-05 23:08:42',6987.83,'2016-11-05 23:08:42','CANCELLED',1,1,1,1),(3,'2016-11-05 23:10:15',840.97,'2016-11-05 23:10:15','ORDERED',2,2,2,2),(4,'2016-11-05 23:10:30',3149.96,'2016-11-05 23:10:30','ORDERED',3,3,3,3),(5,'2016-11-05 23:10:42',5791.83,'2016-11-05 23:10:42','FULFILLED',4,4,4,4),(6,'2016-11-05 23:10:55',5664.98,'2016-11-05 23:10:55','ORDERED',5,5,5,5),(7,'2016-11-05 23:11:02',157.97,'2016-11-05 23:11:02','ORDERED',6,6,6,6),(8,'2016-11-05 23:11:10',64.95,'2016-11-05 23:11:10','ORDERED',7,7,7,7),(9,'2016-11-05 23:11:19',608.97,'2016-11-05 23:11:19','ORDERED',8,8,8,8),(10,'2016-11-05 23:11:27',1687.65,'2016-11-05 23:11:27','SHIPPED',9,9,9,9),(11,'2016-11-05 23:11:39',5147.00,'2016-11-05 23:11:39','DELIVERED',10,10,10,10),(12,'2016-11-08 20:31:25',2970.00,'2016-11-08 20:31:25','ORDERED',1,1,1,1),(16,'2016-12-06 10:41:05',425.94,'2016-12-06 10:41:05','ORDERED',1,1,1,1);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -307,7 +253,7 @@ CREATE TABLE `partners` (
   `login_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_partners_login1_idx` (`login_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +262,7 @@ CREATE TABLE `partners` (
 
 LOCK TABLES `partners` WRITE;
 /*!40000 ALTER TABLE `partners` DISABLE KEYS */;
-INSERT INTO `partners` VALUES (1,'Big Value Inc','','','COMPANY','7735952314','bigvalueinc@gmail.com','1240 Loyola ave','Chicago','IL','60626','United States','2016-10-24 21:11:16',11),(2,'All day zip','Antonia','Mark','COMPANY','6585074949','alldayzip@gmail.com','6732 Madison Str','Chicago','IL','60615','United States','2016-10-30 17:15:47',12),(4,'Ant online','Patrick','Ewing','COMPANY',NULL,'antonline@gmail.com','7482 Devon Str','Chicago','IL','60621','United States','2016-10-30 21:38:32',13),(5,'Digital Systems','Frank','Emma','COMPANY','3128490900','digitalsystems@gmail.com','5474 Western Str','Chicago','IL','60667','United Stated','2016-10-04 20:56:37',14),(6,'Music People','Marvin','Epps','COMPANY','7737489012','musicpeople@gmail.com','5647 Chicago Ave','Chicago','IL','60689','United States','2016-10-04 20:56:37',15),(7,'Furniture World','Solomon','Vernon','PERSONAL','7733939393','furnitureworld@gmail.com','4563 State Str','Chicago','IL','60611','United States','2016-10-04 20:56:37',16),(8,'Space Jet','Bryan','Louis','PERSONAL','3129874561','spacejet@gmail.com','5646 Chicago Dr','Chicago','IL','60623','United States','2016-10-04 20:56:37',17),(9,'Sports World','Michael','Jordan','PERSONAL','3126789012','sportsworld@gmail.com','6729 Lincoln Ave','Chicago','IL','60612','United States','2016-10-04 20:56:37',18),(10,'Shoes Alliance','Tom','Ford','PERSONAL','3126758998','shoesalliance@gmail.com','8234 Franklin Dr','Chicago','IL','60634','United States','2016-10-04 20:56:37',19);
+INSERT INTO `partners` VALUES (1,'Ant online','Patrick','Ewing','COMPANY','8870091231','antonline@gmail.com','7482 Devon Str','Chicago','IL','60621','United States','2016-10-24 21:11:16',11),(2,'All day zip','Antonia','Mark','COMPANY','6585074949','alldayzip@gmail.com','6732 Madison Str','Chicago','IL','60615','United States','2016-10-30 17:15:47',12),(4,'Ant online','Patrick','Ewing','COMPANY',NULL,'antonline@gmail.com','7482 Devon Str','Chicago','IL','60621','United States','2016-10-30 21:38:32',13),(5,'Digital Systems','Frank','Emma','COMPANY','3128490900','digital@gmail.com','5474 Western Str','Chicago','IL','60667','United Stated','2016-10-04 20:56:37',14),(6,'Music People','Marvin','Epps','COMPANY','7737489012','musicpeople@gmail.com','5647 Chicago Ave','Chicago','IL','60689','United States','2016-10-04 20:56:37',15),(7,'Furniture World','Solomon','Vernon','PERSONAL','7733939393','furnitureworld@gmail.com','4563 State Str','Chicago','IL','60611','United States','2016-10-04 20:56:37',16),(8,'Space Jet','Bryan','Louis','PERSONAL','3129874561','spacejet@gmail.com','5646 Chicago Dr','Chicago','IL','60623','United States','2016-10-04 20:56:37',17),(9,'Sports World','Michael','Jordan','PERSONAL','3126789012','sportsworld@gmail.com','6729 Lincoln Ave','Chicago','IL','60612','United States','2016-10-04 20:56:37',18),(10,'Shoes Alliance','Tom','Ford','PERSONAL','3126758998','shoesalliance@gmail.com','8234 Franklin Dr','Chicago','IL','60634','United States','2016-10-04 20:56:37',19);
 /*!40000 ALTER TABLE `partners` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,7 +317,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`id`),
   KEY `fk_products_product_categories1_idx` (`product_categories_id`),
   KEY `fk_products_partners1_idx` (`partners_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -380,7 +326,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Nikon D500 20.9MP Digital SLR Camera','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','description',1,198,1668.92,32.10,'2016-10-24 21:19:39',1,1),(2,'Apple iPhone 7 Plus (Latest Model)','http://i.ebayimg.com/images/g/yZ8AAOSw4shX-HvJ/s-l500.jpg','Apple','GPS, Internet Browser, Music Player, Near Field Communication',1,197,990.00,2.40,'2016-10-31 15:41:51',3,4),(3,'New Microsoft Surface Pro 3','http://i.ebayimg.com/images/g/sScAAOSwPCVX6VLY/s-l1600.jpg','Microsoft ','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,199,679.99,4.50,'2016-11-04 17:00:57',4,5),(4,'Apple iPad Mini 4 7.9\" Retina Display','http://i.ebayimg.com/images/g/QtgAAOSw4GVYG0pU/s-l1600.jpg','Apple','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,198,299.99,2.50,'2016-11-04 17:04:07',4,5),(5,'7\" Quad Core Google Android 4.4.2 KitKat','http://i.ebayimg.com/images/g/~nkAAOSw7hRWOx5n/s-l1600.jpg','Google','Built-In Front Camera,Built-In Rear Camera,Expanda, Bluetooth, Built-In Front Camera, Built-In Rear Camera, Email, Expandable Memory, File Browsing, HD Compatible, Integrated Speakers, Media Player, MP3 Player, Touch Screen, Video Recorder, Web Browser',1,199,240.99,3.50,'2016-11-04 17:28:25',4,5),(6,'HP - Omen 15.6 inch Laptop - Intel Core i7','http://i.ebayimg.com/images/g/JcwAAOSwFdtXyb5C/s-l1600.jpg','HP','Windows 10 NVIDIA GeForce GTX 950M 2GB dedicated graphics Technical details: 6th Gen Intel Corei7 processor; 15.6 inch display; 8GB memory; 1TB hard drive Special features: Bluetooth; backlit keyboard; HDMI output Note: DVD/CD drive not included',1,197,899.99,5.30,'2016-11-04 17:31:44',4,5),(7,'Dell 15.6 inch HD TouchScreen QuadCore','http://i.ebayimg.com/images/g/EbQAAOSwfZ1WX086/s-l1600.jpg','Dell','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,199,449.99,4.30,'2016-11-04 17:32:45',4,5),(8,'Apple MacBook Pro MF839LL/A 13.3-Inch','http://i.ebayimg.com/images/g/5iQAAOSwLF1YBko3/s-l1600.jpg','Apple','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,198,1065.99,2.30,'2016-11-04 17:33:41',4,5),(9,'Lenovo ThinkPad P50 20EN0013US 15.6 inch','http://i.ebayimg.com/images/g/oC8AAOSwKtlWh~Zq/s-l1600.jpg','Lenovo','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,197,1219.95,3.30,'2016-11-04 17:34:38',4,5),(10,'ASUS ROG GL502VS-DB71 15 inch','http://i.ebayimg.com/images/g/JbgAAOSwr0ZXN5BR/s-l1600.jpg','Asus','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,97,1675.00,4.30,'2016-11-04 17:35:32',4,5),(11,'Apple Watch - 38mm - Stainless Steel Case','http://i.ebayimg.com/images/g/Qd8AAOSwneRXRG1l/s-l1600.jpg','Apple',' A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag. See the seller\'s listing for full details.',1,198,319.99,1.30,'2016-11-05 20:50:18',9,2),(12,'MICRO USB - CAR CHARGER','http://i.ebayimg.com/images/g/k9wAAOSwaB5Xvckz/s-l500.jpg','Eco Charger','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,248,13.99,0.30,'2016-11-05 20:52:28',9,2),(13,'Kicker KPM Bluetooth wireless speaker','http://i.ebayimg.com/images/g/zkUAAOSwuAVWzihG/s-l1600.jpg','Kicker','Kicker KPM50 Bluetooth Speaker delivers elegant bass with Two 2-inch drivers are complemented by dual-balanced bass radiators for exceptional sound from a compact design thanks to the elegant aluminum cabinet. KPM50 brings durable and elegant materials that look great in any décor, with audio performance that is sure to please the most demanding listeners',1,249,129.99,2.30,'2016-11-05 20:55:36',9,2),(14,'LG Electronics Tone Infinim HBS-900 Bluetooth Wireless Stereo Headset','http://i.ebayimg.com/images/g/kw0AAOSwHMJYHUu6/s-l1600.jpg','LG','',1,249,34.99,0.40,'2016-11-05 20:58:19',10,6),(15,'Gaming Headset Surround Stereo Headband Headphone','http://d3d71ba2asa5oz.cloudfront.net/12023541/images/60082-01__1.jpg','Samsung','',1,98,14.98,1.10,'2016-11-05 20:59:59',10,6),(16,'Samsung UN32J4500AFXZA 32-Inch','http://i.ebayimg.com/images/g/Hb8AAOSwZJBX-kEu/s-l500.jpg','Samsung','',1,118,197.99,12.30,'2016-11-05 21:01:45',5,7),(17,'22 Inch Naxa NTD-2252 12 Volt AC/DC Widescreen LED','http://i.ebayimg.com/images/g/ppoAAOSwDN1UUqRY/s-l500.jpg','Naxa','',1,217,202.99,10.30,'2016-11-05 21:02:36',5,7),(18,'New In Box Acer Aspire E 15 15.6 inch','http://i.ebayimg.com/images/g/LE0AAOSw44BYDQ9E/s-l1600.jpg','Acer','',1,137,343.13,4.30,'2016-11-05 21:05:50',4,5),(19,'Dell 12.5 inch Intel Core i5 3.0GHz','http://i.ebayimg.com/images/g/HJkAAOSwmLlYB6Jp/s-l1600.jpg','Dell','',1,238,329.13,5.30,'2016-11-05 21:07:10',4,5),(20,'Dell Inspiron 15 5000 FHD 15.6 Touchscreen','http://i.ebayimg.com/images/g/25sAAOSwXeJYGfqS/s-l500.jpg','Dell','',1,338,775.00,3.30,'2016-11-05 21:07:58',4,5),(21,'Lenovo ThinkPad X1 Carbon 4 i5-6200U','http://i.ebayimg.com/images/g/gKcAAOSwygJXhSKv/s-l1600.jpg','Lenovo','',1,207,1199.00,4.30,'2016-11-05 21:09:37',4,5);
+INSERT INTO `products` VALUES (1,'Nikon D500','http://i.ebayimg.com/images/g/4~wAAOSwLnBX9oYY/s-l500.jpg','Nikon','20.9MP Digital SLR Camera',1,198,1668.92,32.10,'2016-10-24 21:19:39',1,1),(2,'iPhone 7 Plus','http://i.ebayimg.com/images/g/yZ8AAOSw4shX-HvJ/s-l500.jpg','Apple','GPS, Internet Browser, Music Player, Near Field Communication',1,194,990.00,2.40,'2016-10-31 15:41:51',3,4),(3,'Surface Pro 3','http://i.ebayimg.com/images/g/sScAAOSwPCVX6VLY/s-l1600.jpg','Microsoft ','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,199,679.99,4.50,'2016-11-04 17:00:57',4,5),(4,'iPad Mini','http://i.ebayimg.com/images/g/QtgAAOSw4GVYG0pU/s-l1600.jpg','Apple','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,198,299.99,2.50,'2016-11-04 17:04:07',4,5),(5,'Google Android','http://i.ebayimg.com/images/g/~nkAAOSw7hRWOx5n/s-l1600.jpg','Google','Built-In Front Camera,Built-In Rear Camera,Expanda, Bluetooth, Built-In Front Camera, Built-In Rear Camera, Email, Expandable Memory, File Browsing, HD Compatible, Integrated Speakers, Media Player, MP3 Player, Touch Screen, Video Recorder, Web Browser',1,199,240.99,3.50,'2016-11-04 17:28:25',4,5),(6,'HP Laptop','http://i.ebayimg.com/images/g/JcwAAOSwFdtXyb5C/s-l1600.jpg','HP','Windows 10 NVIDIA GeForce GTX 950M 2GB dedicated graphics Technical details: 6th Gen Intel Corei7 processor; 15.6 inch display; 8GB memory; 1TB hard drive Special features: Bluetooth; backlit keyboard; HDMI output Note: DVD/CD drive not included',1,197,899.99,5.30,'2016-11-04 17:31:44',4,5),(7,'Dell Laptop','http://i.ebayimg.com/images/g/EbQAAOSwfZ1WX086/s-l1600.jpg','Dell','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,199,449.99,4.30,'2016-11-04 17:32:45',4,5),(8,'MacBook Pro','http://i.ebayimg.com/images/g/5iQAAOSwLF1YBko3/s-l1600.jpg','Apple','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,198,1065.99,2.30,'2016-11-04 17:33:41',4,5),(9,'Lenovo ThinkPad','http://i.ebayimg.com/images/g/oC8AAOSwKtlWh~Zq/s-l1600.jpg','Lenovo','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,197,1219.95,3.30,'2016-11-04 17:34:38',4,5),(10,'ASUS Laptop','http://i.ebayimg.com/images/g/JbgAAOSwr0ZXN5BR/s-l1600.jpg','Asus','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag.',1,97,1675.00,4.30,'2016-11-04 17:35:32',4,5),(11,'iWatch','http://i.ebayimg.com/images/g/Qd8AAOSwneRXRG1l/s-l1600.jpg','Apple',' A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag. See the seller\'s listing for full details.',1,198,319.99,1.30,'2016-11-05 20:50:18',9,2),(12,'Car charger','http://i.ebayimg.com/images/g/k9wAAOSwaB5Xvckz/s-l500.jpg','Eco Charger','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,246,13.99,0.30,'2016-11-05 20:52:28',9,2),(13,'Wireless speaker','http://i.ebayimg.com/images/g/zkUAAOSwuAVWzihG/s-l1600.jpg','Kicker','Kicker KPM50 Bluetooth Speaker delivers elegant bass with Two 2-inch drivers are complemented by dual-balanced bass radiators for exceptional sound from a compact design thanks to the elegant aluminum cabinet. KPM50 brings durable and elegant materials that look great in any décor, with audio performance that is sure to please the most demanding listeners',1,249,129.99,2.30,'2016-11-05 20:55:36',9,2),(14,'Wireless Headset','http://i.ebayimg.com/images/g/kw0AAOSwHMJYHUu6/s-l1600.jpg','LG','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,247,34.99,0.40,'2016-11-05 20:58:19',10,6),(15,'Gaming Headset','http://d3d71ba2asa5oz.cloudfront.net/12023541/images/60082-01__1.jpg','Samsung','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,92,14.98,1.10,'2016-11-05 20:59:59',10,6),(16,'Samsung','http://i.ebayimg.com/images/g/Hb8AAOSwZJBX-kEu/s-l500.jpg','Samsung','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,114,197.99,12.30,'2016-11-05 21:01:45',5,7),(17,'Display','http://i.ebayimg.com/images/g/ppoAAOSwDN1UUqRY/s-l500.jpg','Naxa','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,213,202.99,10.30,'2016-11-05 21:02:36',5,7),(18,'Acer Aspire','http://i.ebayimg.com/images/g/LE0AAOSw44BYDQ9E/s-l1600.jpg','Acer','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,136,343.13,4.30,'2016-11-05 21:05:50',4,5),(19,'Dell Laptop','http://i.ebayimg.com/images/g/HJkAAOSwmLlYB6Jp/s-l1600.jpg','Dell','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,236,329.13,5.30,'2016-11-05 21:07:10',4,5),(20,'Dell Inspiron','http://i.ebayimg.com/images/g/25sAAOSwXeJYGfqS/s-l500.jpg','Dell','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,338,775.00,3.30,'2016-11-05 21:07:58',4,5),(21,'Lenovo ThinkPad X1','http://i.ebayimg.com/images/g/gKcAAOSwygJXhSKv/s-l1600.jpg','Lenovo','A brand-new, unused, unopened, undamaged item in its original packaging (where packaging is applicable). Packaging should be the same as what is found in a retail store, unless the item is handmade or was packaged by the manufacturer in non-retail packaging, such as an unprinted box or plastic bag',1,207,1199.00,4.30,'2016-11-05 21:09:37',4,5);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -428,4 +374,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-06 12:49:52
+-- Dump completed on 2016-12-06 19:07:38
