@@ -293,9 +293,9 @@ function renderOrder(order){
         content += '<div class="block"><img src="' + product.picture + '"></div>';
         content += '<div class="block"><div><span class="title">' + product.name + '</span></div><div>$' + product.unitPrice + '</div><div>Quantity: ' + product.quantity + '</div><div style="color: red;">Status: ' + product.status + '</div></div>';
         if(product.status == 'ORDERED'){
-            content += '<div class="block"><input type="text" placeholder="tracking number" id="trackingNumber' + product.id + '"/><button identity="'+product.id+'" method="' + product.links[0].method + '" uri="' + product.links[0].href + '" onclick="updateOrderProductStatus(this);">' + product.links[0].rel + '</button></div>';
+            content += '<div class="block"><input type="text" placeholder="tracking number" id="trackingNumber' + product.id + '"/><button identity="'+product.id+'" mediaType="' + product.links[0].mediaType + '" method="' + product.links[0].method + '" uri="' + product.links[0].href + '" onclick="updateOrderProductStatus(this);">' + product.links[0].rel + '</button></div>';
         } else if (product.status == 'FULFILLED' || product.status == 'SHIPPED'){
-            content += '<div class="block"><button identity="'+product.id+'" method="' + product.links[0].method + '" uri="' + product.links[0].href + '" onclick="updateOrderProductStatus(this);">' + product.links[0].rel + '</button></div>';
+            content += '<div class="block"><button identity="'+product.id+'" mediaType="' + product.links[0].mediaType + '" method="' + product.links[0].method + '" uri="' + product.links[0].href + '" onclick="updateOrderProductStatus(this);">' + product.links[0].rel + '</button></div>';
         }
 
         content += '</li>';
@@ -315,6 +315,7 @@ function updateOrderProductStatus(object, orderId) {
     var uri = $(object).attr('uri');
     var id = $(object).attr('identity');
     var method = $(object).attr('method');
+    var mediaType = $(object).attr('mediaType');
 
     if(method == 'POST' && $('#trackingNumber' + id).val() == ''){
         window.alert("Please enter your tracking number!");
@@ -325,7 +326,8 @@ function updateOrderProductStatus(object, orderId) {
 
     $.ajax({
         headers: {
-            'X-AUTH-TOKEN': authToken
+            'X-AUTH-TOKEN': authToken,
+            'Content-Type': mediaType
         },
         type: method,
         url: uri,
