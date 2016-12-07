@@ -1,12 +1,14 @@
 package com.comp344.ecommerce.utils;
 
+import com.comp344.ecommerce.service.representation.BaseRepresentation;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Byambatsog on 9/27/16.
  */
-public class ListPage<E> implements Page<E>, Serializable {
+public class ListPage<E> extends BaseRepresentation implements Page<E>, Serializable {
 
     private static final long serialVersionUID = 6411977861305796799L;
 

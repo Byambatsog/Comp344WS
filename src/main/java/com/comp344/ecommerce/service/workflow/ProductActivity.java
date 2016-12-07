@@ -48,6 +48,8 @@ public class ProductActivity {
 			}
 		}
 
+
+
 		Page<Product> products = productManager.find(searchQuery, categoryId, partnerId, Boolean.TRUE, orderBy, page, pageSize);
 		List<ProductRepresentation> productRepresentations = new ArrayList<ProductRepresentation>();
 		for(Product product : products.getElements()){
@@ -55,8 +57,41 @@ public class ProductActivity {
 			setLink(productRepresentation, product);
 			productRepresentations.add(productRepresentation);
 		}
-		Page<ProductRepresentation> productPage = new ListPage<ProductRepresentation>(productRepresentations, products.getPageNumber(), products.getPageSize(), products.getTotalNumberOfElements());
+
+		String queryParam = "";
+		if(searchQuery != null && !searchQuery.equals(""))
+			queryParam += "q=" + searchQuery + "&";
+		if(categoryId != null)
+			queryParam += "categoryId=" + categoryId + "&";
+		if(partnerId != null)
+			queryParam += "partnerId=" + partnerId + "&";
+
+		ListPage<ProductRepresentation> productPage = new ListPage<ProductRepresentation>(productRepresentations, products.getPageNumber(), products.getPageSize(), products.getTotalNumberOfElements());
+		setLinks(productPage, queryParam);
 		return productPage;
+	}
+
+	private void setLinks(ListPage<ProductRepresentation> productPage, String queryParam) {
+
+		int previousPage = 0;
+		int nextPage = 0;
+
+		if(productPage.getPageNumber() > 1)
+			previousPage = productPage.getPageNumber() - 1;
+
+		if(productPage.getPageNumber() * productPage.getPageSize() < productPage.getTotalNumberOfElements())
+			nextPage = productPage.getPageNumber() + 1;
+
+
+		if(previousPage != 0){
+			productPage.addLink(BaseRepresentation.BASE_URI + "/productservice/products?" + queryParam + "page=" + previousPage + "&pageSize=" + productPage.getPageSize(),
+					"previous", HttpMethod.GET, "");
+		}
+
+		if(nextPage != 0){
+			productPage.addLink(BaseRepresentation.BASE_URI + "/productservice/products?" + queryParam + "page=" + nextPage + "&pageSize=" + productPage.getPageSize(),
+					"next", HttpMethod.GET, "");
+		}
 	}
 
 	public ProductDetailRepresentation getProduct(Integer id) throws Exception {

@@ -175,6 +175,12 @@ public class OrderActivity {
             throw new NotAvailableException("Sorry, your order has been partially shipped or delivered.");
         }
 
+        List<OrderProduct> orderProducts = orderManager.findProduct(id, null, null, null, null);
+        for(OrderProduct orderProduct : orderProducts){
+            orderProduct.setStatus(OrderProductStatus.CANCELLED);
+            orderManager.saveProduct(orderProduct);
+        }
+
         OrderStatus orderStatus = new OrderStatus();
         orderStatus.setCreatedAt(new Date());
         orderStatus.setStatus(OrderStatusType.CANCELLED);

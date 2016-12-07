@@ -70,7 +70,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/orderservice/**").hasRole("CUSTOMER")
 
                 .antMatchers(HttpMethod.POST, "/partnerservice/partners").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/partnerservice/partners").permitAll()
                 .antMatchers(HttpMethod.GET, "/partnerservice/partners").hasRole("ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/partnerservice/**").permitAll()
                 .antMatchers("/partnerservice/**").hasRole("PARTNER")
 
                 // Allow anonymous logins

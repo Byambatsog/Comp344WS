@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>E-commerce</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="labelArea">Partner Page</div>
+<div class="labelArea">
+    Orders
+    <div class="orderSearchBar">
+        <select id="orderStatus" onchange="$('#showOrders').click();">
+            <option value="ORDERED">ORDERED</option>
+            <option value="FULFILLED">FULFILLED</option>
+            <option value="SHIPPED">SHIPPED</option>
+            <option value="DELIVERED">DELIVERED</option>
+            <option value="CANCELLED">CANCELLED</option>
+        </select>
+    </div>
+</div>
+<div class="labelArea">Order Detail</div>
+<div class="labelArea">&nbsp;</div>
+
+
+<div class="mainArea" id="partnerArea"></div>
+<div class="mainArea" id="ordersArea"></div>
+<div class="mainArea" id="orderDetailArea"></div>
+<div class="mainArea" id="orderStatusArea"></div>
+
+<div class="labelArea">Products </div>
+<div class="labelArea">Product Detail</div>
+<div class="labelArea">Product Add</div>
+<div class="labelArea">&nbsp;</div>
+
+
+<div class="mainArea" id="productListArea"></div>
+<div class="mainArea" id="productDetailArea"></div>
+<div class="mainArea" id="productAddArea"></div>
+<div class="mainArea" id="productEditArea"></div>
+
+
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/partner.js"></script>
+
+</body>
+</html>
